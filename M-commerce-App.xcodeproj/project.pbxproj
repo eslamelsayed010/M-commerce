@@ -75,6 +75,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		048FD7D92DEDCD7000F3CC33 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
 		04B477782DE3A1A400CC82F8 = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +105,7 @@
 		04B477832DE3A1A400CC82F8 /* M-commerce-App */ = {
 			isa = PBXGroup;
 			children = (
+				048FD7D92DEDCD7000F3CC33 /* Features */,
 				04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */,
 				04B477862DE3A1A400CC82F8 /* ContentView.swift */,
 				04B477882DE3A1A600CC82F8 /* Assets.xcassets */,
