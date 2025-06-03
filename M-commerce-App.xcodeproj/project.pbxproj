@@ -75,9 +75,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0467C6BE2DEF9E2100DEDD32 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		048FD7D92DEDCD7000F3CC33 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				0467C6BE2DEF9E2100DEDD32 /* Auth */,
 			);
 			path = Features;
 			sourceTree = "<group>";
