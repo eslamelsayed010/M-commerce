@@ -14,7 +14,6 @@ struct SignUpView: View {
     @State private var confirmPassword = ""
     @State private var showPassword = false
     @State private var showConfirmPassword = false
-
     var body: some View { 
         NavigationStack {
             ZStack {
