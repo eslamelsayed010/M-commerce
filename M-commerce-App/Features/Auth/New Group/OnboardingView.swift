@@ -6,6 +6,7 @@
 //
 import SwiftUI
 
+
 struct OnboardingView: View {
     @State private var isActive = false
     
