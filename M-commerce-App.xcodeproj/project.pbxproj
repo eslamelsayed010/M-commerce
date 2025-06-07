@@ -28,6 +28,7 @@
 		22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */; };
 		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
 		22CAE75D2DF4F4C600F0E2E0 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */; };
+		22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
 		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 				22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */,
 				22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */,
 				22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */,
+				22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 			files = (
 				04B5A65B2DF0F8CD0044E0FD /* OnboardingView2.swift in Sources */,
 				22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */,
+				22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */,
 				04B4778E2DE3A1A600CC82F8 /* Persistence.swift in Sources */,
 				22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */,
 				22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */,
