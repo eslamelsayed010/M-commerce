@@ -29,6 +29,7 @@
 		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
 		22CAE75D2DF4F4C600F0E2E0 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */; };
 		22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */; };
+		22CAE7612DF4F54800F0E2E0 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
 		22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
 		22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportSettings.swift; sourceTree = "<group>"; };
+		22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -224,6 +226,7 @@
 				22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */,
 				22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */,
 				22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */,
+				22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				22CAE75D2DF4F4C600F0E2E0 /* SectionHeader.swift in Sources */,
 				04D849412DF0DD3B00564625 /* LottieView.swift in Sources */,
 				04D8493D2DF0DCAD00564625 /* OnboardingView.swift in Sources */,
+				22CAE7612DF4F54800F0E2E0 /* AccountSettings.swift in Sources */,
 				04D8493F2DF0DCF800564625 /* SplashView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
