@@ -10,18 +10,22 @@ import SwiftUI
 struct UserSettings: View {
     var body: some View {
         VStack(spacing: 16) {
-            SectionHeader(title: "Information")
+            SectionHeader(title: "User")
             
             VStack(spacing: 12) {
-                SettingItem(
-                    icon: "location.fill",
-                    settingName: "Address",
-                    subtitle: "Ismailia",
-                    iconColor: .red,
-                    onTap: {
-                        print("Address")
-                    }
-                )
+                NavigationLink{
+
+                }label: {
+                    SettingItem(
+                        icon: "location.fill",
+                        settingName: "Address",
+                        subtitle: "Ismailia",
+                        iconColor: .red,
+                        onTap: {
+                            print("Address")
+                        }
+                    )
+                }
                 
                 SettingItem(
                     icon: "dollarsign.circle.fill",
