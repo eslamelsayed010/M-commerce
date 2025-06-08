@@ -10,6 +10,7 @@ import SwiftUI
 struct CountryPicker: View {
     @State private var selectedCountry: Country = Countries.all[5]
     @State private var isPickerPresented = false
+    @EnvironmentObject var viewModel: SettingsViewModel
     
     var body: some View {
 
@@ -31,9 +32,17 @@ struct CountryPicker: View {
                     selectedCountry: $selectedCountry,
                     isPresented: $isPickerPresented
                 )
+                .environmentObject(viewModel)
             }
         }
         .padding(.horizontal)
+        .onAppear{
+            viewModel.fetchUserInfo()
+            print(viewModel.user?.country ?? "nil")
+            selectedCountry = Countries.all.first{
+                $0.name.contains(viewModel.user?.country ?? "nil")
+            } ?? Country(name: "Your country", code: "00", flag: "🇺🇳", dialCode: "COU")
+        }
     }
 }
 struct CountryPicker_Previews: PreviewProvider {

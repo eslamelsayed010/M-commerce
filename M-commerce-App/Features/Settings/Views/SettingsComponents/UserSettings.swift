@@ -10,6 +10,7 @@ import SwiftUI
 struct UserSettings: View {
     @State private var goToAddress = false
     @State private var goToCurrency = false
+    @State private var city: String = UserDefaults.standard.string(forKey: UserDefaultsKeys.Location.city) ?? "N/A"
     
     var body: some View {
         VStack(spacing: 16) {
@@ -19,7 +20,7 @@ struct UserSettings: View {
                 SettingItem(
                     icon: "location.fill",
                     settingName: "Address",
-                    subtitle: "Ismailia",
+                    subtitle: city,
                     iconColor: .red,
                     onTap: {
                         goToAddress = true
@@ -51,8 +52,12 @@ struct UserSettings: View {
             .cornerRadius(16)
             .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
         }
+        .onAppear {
+            city = UserDefaults.standard.string(forKey: UserDefaultsKeys.Location.city) ?? "N/A"
+        }
     }
 }
+
 
 struct UserSettings_Previews: PreviewProvider {
     static var previews: some View {

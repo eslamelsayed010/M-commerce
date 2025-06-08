@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CountryPickerModal: View {
     @Binding var selectedCountry: Country
+    @EnvironmentObject var viewModel: SettingsViewModel
     @Binding var isPresented: Bool
     @State private var searchText = ""
     @State private var animateIn = false
@@ -68,6 +69,7 @@ struct CountryPickerModal: View {
     
     private func selectCountry(_ country: Country) {
         selectedCountry = country
+        viewModel.setToUserDefault(field: .country(country.name))
         dismissModal()
     }
     

@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct CityPickerModal: View {
-    @StateObject var viewModel = SettingsViewModel(networkManager: SettingsNetworkManager())
+    @EnvironmentObject var viewModel: SettingsViewModel
+    
     
     @Binding var selectedCity: City
     @Binding var isPresented: Bool
@@ -71,6 +72,9 @@ struct CityPickerModal: View {
     
     private func selectCity(_ city: City) {
         selectedCity = city
+        viewModel.setToUserDefault(field: .city(city.name!))
+        viewModel.setToUserDefault(field: .cityId(city.id!))
+        viewModel.setToUserDefault(field: .cityCode(city.code!))
         dismissModal()
     }
     

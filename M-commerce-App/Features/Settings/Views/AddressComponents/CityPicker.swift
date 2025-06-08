@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CityPicker: View {
+    @EnvironmentObject var viewModel: SettingsViewModel
     @State private var isPickerPresented = false
     @State private var selectedCity: City = City(id: 7755221794881, name: "6th of October", code: "SU")
     
@@ -24,15 +25,20 @@ struct CityPicker: View {
                 city: selectedCity,
                 action: {isPickerPresented = true}
             )
-                .sheet(isPresented: $isPickerPresented) {
+            .sheet(isPresented: $isPickerPresented) {
                     CityPickerModal(
                         selectedCity: $selectedCity,
                         isPresented: $isPickerPresented
                     )
+                
                 }
-        }.padding(.horizontal)
-        
-
+        }
+        .padding(.horizontal)
+        .onAppear{
+            viewModel.fetchUserInfo()
+            print(viewModel.user?.city ?? "nil")
+            selectedCity = City(id: viewModel.user?.cityId ?? 1, name: viewModel.user?.city ?? "Your City", code: viewModel.user?.cityCode ?? "CI")
+        }
     }
 }
 

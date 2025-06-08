@@ -31,6 +31,8 @@
 		221C93D12DF5C77B00AD404A /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D02DF5C77B00AD404A /* City.swift */; };
 		221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */; };
 		221C93D52DF5CB5600AD404A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */; };
+		221C93DC2DF5F16A00AD404A /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93DB2DF5F16A00AD404A /* UserDefaultsKeys.swift */; };
+		221C93DE2DF5F4F400AD404A /* UserIfon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93DD2DF5F4F400AD404A /* UserIfon.swift */; };
 		22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */; };
 		22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */; };
 		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
@@ -93,6 +95,8 @@
 		221C93D02DF5C77B00AD404A /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNetworkManager.swift; sourceTree = "<group>"; };
 		221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		221C93DB2DF5F16A00AD404A /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
+		221C93DD2DF5F4F400AD404A /* UserIfon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIfon.swift; sourceTree = "<group>"; };
 		22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
 		22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
 		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 		0474056D2DF123430047C6C2 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				221C93DA2DF5EFC000AD404A /* Consts */,
 				0474056E2DF123500047C6C2 /* Assets */,
 			);
 			path = Utility;
@@ -164,9 +169,9 @@
 		048FD7D92DEDCD7000F3CC33 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */,
-				22CAE7542DF4F0D300F0E2E0 /* Settings */,
 				0467C6BE2DEF9E2100DEDD32 /* Auth */,
+				22CAE7542DF4F0D300F0E2E0 /* Settings */,
+				04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -263,6 +268,14 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		221C93DA2DF5EFC000AD404A /* Consts */ = {
+			isa = PBXGroup;
+			children = (
+				221C93DB2DF5F16A00AD404A /* UserDefaultsKeys.swift */,
+			);
+			path = Consts;
+			sourceTree = "<group>";
+		};
 		22CAE7542DF4F0D300F0E2E0 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -310,6 +323,7 @@
 				22CAE76A2DF5005B00F0E2E0 /* Country.swift */,
 				221C93D02DF5C77B00AD404A /* City.swift */,
 				221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */,
+				221C93DD2DF5F4F400AD404A /* UserIfon.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -459,10 +473,12 @@
 				221C93CF2DF5C02D00AD404A /* CityRow.swift in Sources */,
 				04B4778E2DE3A1A600CC82F8 /* Persistence.swift in Sources */,
 				22CAE7712DF5038200F0E2E0 /* SearchCountryBar.swift in Sources */,
+				221C93DC2DF5F16A00AD404A /* UserDefaultsKeys.swift in Sources */,
 				221C93D52DF5CB5600AD404A /* SettingsViewModel.swift in Sources */,
 				22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */,
 				22CAE7652DF4FA3500F0E2E0 /* AddressView.swift in Sources */,
 				22CAE7632DF4F5CC00F0E2E0 /* SettingsView.swift in Sources */,
+				221C93DE2DF5F4F400AD404A /* UserIfon.swift in Sources */,
 				22CAE76D2DF500DA00F0E2E0 /* CountryPicker.swift in Sources */,
 				22CAE7772DF5116900F0E2E0 /* CustomSettingField.swift in Sources */,
 				221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */,

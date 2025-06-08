@@ -17,16 +17,24 @@ struct CustomSettingField: View {
     let placeholder: String
     let icon: String
     
+    enum ValidationType {
+        case address
+        case phone
+    }
+    let validationType: ValidationType
+    
     init(
         addressName: Binding<String>,
         title: String = "Address",
         placeholder: String = "Enter your address",
-        icon: String = "house.fill"
+        icon: String = "house.fill",
+        validationType: ValidationType = .address
     ) {
         self._addressName = addressName
         self.title = title
         self.placeholder = placeholder
         self.icon = icon
+        self.validationType = validationType
     }
     
     var body: some View {
@@ -71,8 +79,14 @@ struct CustomSettingField: View {
                     .font(.body)
                     .foregroundColor(.primary)
                     .onChange(of: addressName) { newValue in
-                        validateStreetName(newValue)
+                        switch validationType {
+                        case .address:
+                            validateStreetName(newValue)
+                        case .phone:
+                            validatePhoneNumber(newValue)
+                        }
                     }
+
                 
                 // Clear Button
                 if !addressName.isEmpty && isFocused {
@@ -120,7 +134,7 @@ struct CustomSettingField: View {
                         .foregroundColor(.red)
                         .font(.system(size: 12))
                     
-                    Text("Please enter a valid address")
+                    Text(validationType == .phone ? "Please enter a valid phone number" : "Please enter a valid address")
                         .font(.caption)
                         .foregroundColor(.red)
                 }
@@ -142,6 +156,17 @@ struct CustomSettingField: View {
             isValid = hasValidLength && hasValidCharacters
         }
     }
+    
+    private func validatePhoneNumber(_ number: String) {
+        let trimmed = number.trimmingCharacters(in: .whitespacesAndNewlines)
+        let phoneRegex = "^[0-9+]{7,15}$"
+        let isValidPhone = NSPredicate(format: "SELF MATCHES %@", phoneRegex).evaluate(with: trimmed)
+        
+        withAnimation(.easeInOut(duration: 0.2)) {
+            isValid = isValidPhone
+        }
+    }
+
 }
 
 extension View {
