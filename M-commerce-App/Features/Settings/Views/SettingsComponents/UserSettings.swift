@@ -8,24 +8,28 @@
 import SwiftUI
 
 struct UserSettings: View {
+    @State private var goToAddress = false
+    @State private var goToCurrency = false
+    
     var body: some View {
         VStack(spacing: 16) {
             SectionHeader(title: "User")
             
-            VStack(spacing: 12) {
-                NavigationLink{
-
-                }label: {
-                    SettingItem(
-                        icon: "location.fill",
-                        settingName: "Address",
-                        subtitle: "Ismailia",
-                        iconColor: .red,
-                        onTap: {
-                            print("Address")
-                        }
-                    )
+            VStack(spacing: 5) {
+                SettingItem(
+                    icon: "location.fill",
+                    settingName: "Address",
+                    subtitle: "Ismailia",
+                    iconColor: .red,
+                    onTap: {
+                        goToAddress = true
+                    }
+                )
+                
+                NavigationLink(destination: AddressView(), isActive: $goToAddress) {
+                    EmptyView()
                 }
+                .hidden()
                 
                 SettingItem(
                     icon: "dollarsign.circle.fill",
@@ -33,9 +37,13 @@ struct UserSettings: View {
                     subtitle: "EGP",
                     iconColor: .green,
                     onTap: {
-                        print("Currency")
+                        goToCurrency = true
                     }
                 )
+                
+                NavigationLink(destination: AddressView(), isActive: $goToCurrency) {
+                    EmptyView()
+                }
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 16)

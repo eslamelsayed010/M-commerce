@@ -12,7 +12,7 @@ struct SupportSettings: View {
         VStack(spacing: 16) {
             SectionHeader(title: "Support")
             
-            VStack(spacing: 12) {
+            VStack(spacing: 5) {
                 SettingItem(
                     icon: "bubble.left.and.bubble.right.fill",
                     settingName: "Contact Us",

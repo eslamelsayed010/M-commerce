@@ -24,6 +24,13 @@
 		04D8493D2DF0DCAD00564625 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D8493C2DF0DCAD00564625 /* OnboardingView.swift */; };
 		04D8493F2DF0DCF800564625 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D8493E2DF0DCF800564625 /* SplashView.swift */; };
 		04D849412DF0DD3B00564625 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D849402DF0DD3B00564625 /* LottieView.swift */; };
+		221C93C92DF5B4A400AD404A /* CitySelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93C82DF5B4A400AD404A /* CitySelectionButton.swift */; };
+		221C93CB2DF5BCC900AD404A /* CityPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93CA2DF5BCC900AD404A /* CityPicker.swift */; };
+		221C93CD2DF5BE7500AD404A /* CityPickerModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93CC2DF5BE7500AD404A /* CityPickerModal.swift */; };
+		221C93CF2DF5C02D00AD404A /* CityRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93CE2DF5C02D00AD404A /* CityRow.swift */; };
+		221C93D12DF5C77B00AD404A /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D02DF5C77B00AD404A /* City.swift */; };
+		221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */; };
+		221C93D52DF5CB5600AD404A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */; };
 		22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */; };
 		22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */; };
 		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
@@ -31,6 +38,15 @@
 		22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */; };
 		22CAE7612DF4F54800F0E2E0 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */; };
 		22CAE7632DF4F5CC00F0E2E0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7622DF4F5CC00F0E2E0 /* SettingsView.swift */; };
+		22CAE7652DF4FA3500F0E2E0 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7642DF4FA3500F0E2E0 /* AddressView.swift */; };
+		22CAE7682DF4FE3300F0E2E0 /* AdderssBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7672DF4FE3300F0E2E0 /* AdderssBody.swift */; };
+		22CAE76B2DF5005B00F0E2E0 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE76A2DF5005B00F0E2E0 /* Country.swift */; };
+		22CAE76D2DF500DA00F0E2E0 /* CountryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE76C2DF500DA00F0E2E0 /* CountryPicker.swift */; };
+		22CAE76F2DF5022D00F0E2E0 /* CountryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE76E2DF5022D00F0E2E0 /* CountryRow.swift */; };
+		22CAE7712DF5038200F0E2E0 /* SearchCountryBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7702DF5038200F0E2E0 /* SearchCountryBar.swift */; };
+		22CAE7732DF5054900F0E2E0 /* CountryPickerModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7722DF5054900F0E2E0 /* CountryPickerModal.swift */; };
+		22CAE7752DF505E900F0E2E0 /* CountrySelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7742DF505E900F0E2E0 /* CountrySelectionButton.swift */; };
+		22CAE7772DF5116900F0E2E0 /* CustomSettingField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7762DF5116900F0E2E0 /* CustomSettingField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +86,13 @@
 		04D8493C2DF0DCAD00564625 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		04D8493E2DF0DCF800564625 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		04D849402DF0DD3B00564625 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		221C93C82DF5B4A400AD404A /* CitySelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitySelectionButton.swift; sourceTree = "<group>"; };
+		221C93CA2DF5BCC900AD404A /* CityPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityPicker.swift; sourceTree = "<group>"; };
+		221C93CC2DF5BE7500AD404A /* CityPickerModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityPickerModal.swift; sourceTree = "<group>"; };
+		221C93CE2DF5C02D00AD404A /* CityRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityRow.swift; sourceTree = "<group>"; };
+		221C93D02DF5C77B00AD404A /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNetworkManager.swift; sourceTree = "<group>"; };
+		221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
 		22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
 		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -77,6 +100,15 @@
 		22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportSettings.swift; sourceTree = "<group>"; };
 		22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
 		22CAE7622DF4F5CC00F0E2E0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		22CAE7642DF4FA3500F0E2E0 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
+		22CAE7672DF4FE3300F0E2E0 /* AdderssBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdderssBody.swift; sourceTree = "<group>"; };
+		22CAE76A2DF5005B00F0E2E0 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		22CAE76C2DF500DA00F0E2E0 /* CountryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryPicker.swift; sourceTree = "<group>"; };
+		22CAE76E2DF5022D00F0E2E0 /* CountryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryRow.swift; sourceTree = "<group>"; };
+		22CAE7702DF5038200F0E2E0 /* SearchCountryBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCountryBar.swift; sourceTree = "<group>"; };
+		22CAE7722DF5054900F0E2E0 /* CountryPickerModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryPickerModal.swift; sourceTree = "<group>"; };
+		22CAE7742DF505E900F0E2E0 /* CountrySelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountrySelectionButton.swift; sourceTree = "<group>"; };
+		22CAE7762DF5116900F0E2E0 /* CustomSettingField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSettingField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,11 +244,31 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
-		22CAE7542DF4F0D300F0E2E0 /* Settings */ = {
+		221C93D62DF5CB5D00AD404A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		221C93D72DF5CB6700AD404A /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				22CAE7552DF4F13100F0E2E0 /* SettingsComponents */,
+				22CAE7662DF4FDD500F0E2E0 /* AddressComponents */,
 				22CAE7622DF4F5CC00F0E2E0 /* SettingsView.swift */,
+				22CAE7642DF4FA3500F0E2E0 /* AddressView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		22CAE7542DF4F0D300F0E2E0 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				221C93D72DF5CB6700AD404A /* Views */,
+				221C93D62DF5CB5D00AD404A /* ViewModel */,
+				22CAE7692DF5004A00F0E2E0 /* Models */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -232,6 +284,34 @@
 				22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */,
 			);
 			path = SettingsComponents;
+			sourceTree = "<group>";
+		};
+		22CAE7662DF4FDD500F0E2E0 /* AddressComponents */ = {
+			isa = PBXGroup;
+			children = (
+				22CAE7672DF4FE3300F0E2E0 /* AdderssBody.swift */,
+				22CAE76C2DF500DA00F0E2E0 /* CountryPicker.swift */,
+				22CAE76E2DF5022D00F0E2E0 /* CountryRow.swift */,
+				22CAE7702DF5038200F0E2E0 /* SearchCountryBar.swift */,
+				22CAE7722DF5054900F0E2E0 /* CountryPickerModal.swift */,
+				22CAE7742DF505E900F0E2E0 /* CountrySelectionButton.swift */,
+				22CAE7762DF5116900F0E2E0 /* CustomSettingField.swift */,
+				221C93C82DF5B4A400AD404A /* CitySelectionButton.swift */,
+				221C93CA2DF5BCC900AD404A /* CityPicker.swift */,
+				221C93CC2DF5BE7500AD404A /* CityPickerModal.swift */,
+				221C93CE2DF5C02D00AD404A /* CityRow.swift */,
+			);
+			path = AddressComponents;
+			sourceTree = "<group>";
+		};
+		22CAE7692DF5004A00F0E2E0 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				22CAE76A2DF5005B00F0E2E0 /* Country.swift */,
+				221C93D02DF5C77B00AD404A /* City.swift */,
+				221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -373,21 +453,37 @@
 			files = (
 				04B5A65B2DF0F8CD0044E0FD /* OnboardingView2.swift in Sources */,
 				22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */,
+				22CAE7732DF5054900F0E2E0 /* CountryPickerModal.swift in Sources */,
 				22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */,
+				22CAE76F2DF5022D00F0E2E0 /* CountryRow.swift in Sources */,
+				221C93CF2DF5C02D00AD404A /* CityRow.swift in Sources */,
 				04B4778E2DE3A1A600CC82F8 /* Persistence.swift in Sources */,
+				22CAE7712DF5038200F0E2E0 /* SearchCountryBar.swift in Sources */,
+				221C93D52DF5CB5600AD404A /* SettingsViewModel.swift in Sources */,
 				22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */,
+				22CAE7652DF4FA3500F0E2E0 /* AddressView.swift in Sources */,
 				22CAE7632DF4F5CC00F0E2E0 /* SettingsView.swift in Sources */,
+				22CAE76D2DF500DA00F0E2E0 /* CountryPicker.swift in Sources */,
+				22CAE7772DF5116900F0E2E0 /* CustomSettingField.swift in Sources */,
+				221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */,
 				22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */,
+				221C93C92DF5B4A400AD404A /* CitySelectionButton.swift in Sources */,
+				221C93CD2DF5BE7500AD404A /* CityPickerModal.swift in Sources */,
+				22CAE76B2DF5005B00F0E2E0 /* Country.swift in Sources */,
 				04B477872DE3A1A500CC82F8 /* ContentView.swift in Sources */,
 				04B5A65D2DF0FEDA0044E0FD /* LoginView.swift in Sources */,
 				04B477912DE3A1A600CC82F8 /* M_commerce_App.xcdatamodeld in Sources */,
 				04B477852DE3A1A400CC82F8 /* M_commerce_AppApp.swift in Sources */,
 				0474056C2DF11BAD0047C6C2 /* SignUpView.swift in Sources */,
+				221C93D12DF5C77B00AD404A /* City.swift in Sources */,
 				22CAE75D2DF4F4C600F0E2E0 /* SectionHeader.swift in Sources */,
 				04D849412DF0DD3B00564625 /* LottieView.swift in Sources */,
 				04D8493D2DF0DCAD00564625 /* OnboardingView.swift in Sources */,
 				22CAE7612DF4F54800F0E2E0 /* AccountSettings.swift in Sources */,
+				22CAE7682DF4FE3300F0E2E0 /* AdderssBody.swift in Sources */,
 				04D8493F2DF0DCF800564625 /* SplashView.swift in Sources */,
+				221C93CB2DF5BCC900AD404A /* CityPicker.swift in Sources */,
+				22CAE7752DF505E900F0E2E0 /* CountrySelectionButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
