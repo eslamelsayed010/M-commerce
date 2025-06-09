@@ -13,7 +13,9 @@ struct M_commerce_AppApp: App {
 
     var body: some Scene {
         WindowGroup {
-            SettingsView()
+            NavigationView {
+           ProductDetailsView()
+                        }
 //                SplashView()
 //                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }

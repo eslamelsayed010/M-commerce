@@ -19,6 +19,7 @@
 		04B477A72DE3A1A700CC82F8 /* M_commerce_AppUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B477A62DE3A1A700CC82F8 /* M_commerce_AppUITestsLaunchTests.swift */; };
 		04B5A65B2DF0F8CD0044E0FD /* OnboardingView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B5A65A2DF0F8CD0044E0FD /* OnboardingView2.swift */; };
 		04B5A65D2DF0FEDA0044E0FD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B5A65C2DF0FEDA0044E0FD /* LoginView.swift */; };
+		04C46D5C2DF7840F0077AC37 /* ProductDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C46D5B2DF7840F0077AC37 /* ProductDetailsView.swift */; };
 		04D849352DF0CE7E00564625 /* onboard.json in Resources */ = {isa = PBXBuildFile; fileRef = 04D849342DF0CE7E00564625 /* onboard.json */; };
 		04D849382DF0CF3400564625 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 04D849372DF0CF3400564625 /* Lottie */; };
 		04D8493D2DF0DCAD00564625 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D8493C2DF0DCAD00564625 /* OnboardingView.swift */; };
@@ -84,6 +85,7 @@
 		04B477A62DE3A1A700CC82F8 /* M_commerce_AppUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = M_commerce_AppUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		04B5A65A2DF0F8CD0044E0FD /* OnboardingView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView2.swift; sourceTree = "<group>"; };
 		04B5A65C2DF0FEDA0044E0FD /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		04C46D5B2DF7840F0077AC37 /* ProductDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsView.swift; sourceTree = "<group>"; };
 		04D849342DF0CE7E00564625 /* onboard.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = onboard.json; sourceTree = "<group>"; };
 		04D8493C2DF0DCAD00564625 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		04D8493E2DF0DCF800564625 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
@@ -161,6 +163,7 @@
 		0474056E2DF123500047C6C2 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				04B477882DE3A1A600CC82F8 /* Assets.xcassets */,
 				04D849342DF0CE7E00564625 /* onboard.json */,
 			);
 			path = Assets;
@@ -169,6 +172,7 @@
 		048FD7D92DEDCD7000F3CC33 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				04C46D592DF783ED0077AC37 /* ProductDetails */,
 				0467C6BE2DEF9E2100DEDD32 /* Auth */,
 				22CAE7542DF4F0D300F0E2E0 /* Settings */,
 				04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */,
@@ -202,7 +206,6 @@
 				0474056D2DF123430047C6C2 /* Utility */,
 				048FD7D92DEDCD7000F3CC33 /* Features */,
 				04B477862DE3A1A400CC82F8 /* ContentView.swift */,
-				04B477882DE3A1A600CC82F8 /* Assets.xcassets */,
 				04B4778D2DE3A1A600CC82F8 /* Persistence.swift */,
 				04B4778F2DE3A1A600CC82F8 /* M_commerce_App.xcdatamodeld */,
 				04B4778A2DE3A1A600CC82F8 /* Preview Content */,
@@ -233,6 +236,22 @@
 				04B477A62DE3A1A700CC82F8 /* M_commerce_AppUITestsLaunchTests.swift */,
 			);
 			path = "M-commerce-AppUITests";
+			sourceTree = "<group>";
+		};
+		04C46D592DF783ED0077AC37 /* ProductDetails */ = {
+			isa = PBXGroup;
+			children = (
+				04C46D5A2DF783FD0077AC37 /* Views */,
+			);
+			path = ProductDetails;
+			sourceTree = "<group>";
+		};
+		04C46D5A2DF783FD0077AC37 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				04C46D5B2DF7840F0077AC37 /* ProductDetailsView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		04D8493B2DF0D8CB00564625 /* Views */ = {
@@ -482,6 +501,7 @@
 				22CAE76D2DF500DA00F0E2E0 /* CountryPicker.swift in Sources */,
 				22CAE7772DF5116900F0E2E0 /* CustomSettingField.swift in Sources */,
 				221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */,
+				04C46D5C2DF7840F0077AC37 /* ProductDetailsView.swift in Sources */,
 				22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */,
 				221C93C92DF5B4A400AD404A /* CitySelectionButton.swift in Sources */,
 				221C93CD2DF5BE7500AD404A /* CityPickerModal.swift in Sources */,
