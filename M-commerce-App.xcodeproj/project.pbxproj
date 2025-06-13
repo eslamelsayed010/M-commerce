@@ -48,6 +48,7 @@
 		225DD6E92DFC8EFE002681B3 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6E82DFC8EFE002681B3 /* ProductsView.swift */; };
 		225DD6EB2DFC8F4B002681B3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6EA2DFC8F4B002681B3 /* HomeViewModel.swift */; };
 		225DD6ED2DFC8F99002681B3 /* ProductsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6EC2DFC8F99002681B3 /* ProductsViewModel.swift */; };
+		225DD6F32DFC9024002681B3 /* CustomCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6F22DFC9024002681B3 /* CustomCollection.swift */; };
 		22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */; };
 		22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */; };
 		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
@@ -124,6 +125,7 @@
 		225DD6E82DFC8EFE002681B3 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		225DD6EA2DFC8F4B002681B3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		225DD6EC2DFC8F99002681B3 /* ProductsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModel.swift; sourceTree = "<group>"; };
+		225DD6F22DFC9024002681B3 /* CustomCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollection.swift; sourceTree = "<group>"; };
 		22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
 		22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
 		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 		04B477832DE3A1A400CC82F8 /* M-commerce-App */ = {
 			isa = PBXGroup;
 			children = (
+				225DD6EE2DFC8FD7002681B3 /* Category */,
 				225DD6DE2DFC8DFB002681B3 /* Home */,
 				225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */,
 				0474056D2DF123430047C6C2 /* Utility */,
@@ -362,6 +365,38 @@
 			children = (
 				225DD6EA2DFC8F4B002681B3 /* HomeViewModel.swift */,
 				225DD6EC2DFC8F99002681B3 /* ProductsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		225DD6EE2DFC8FD7002681B3 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				225DD6F12DFC8FFE002681B3 /* ViewModel */,
+				225DD6F02DFC8FF0002681B3 /* View */,
+				225DD6EF2DFC8FE4002681B3 /* Models */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		225DD6EF2DFC8FE4002681B3 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				225DD6F22DFC9024002681B3 /* CustomCollection.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		225DD6F02DFC8FF0002681B3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		225DD6F12DFC8FFE002681B3 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -581,6 +616,7 @@
 				221C93DE2DF5F4F400AD404A /* UserIfon.swift in Sources */,
 				22CAE76D2DF500DA00F0E2E0 /* CountryPicker.swift in Sources */,
 				22CAE7772DF5116900F0E2E0 /* CustomSettingField.swift in Sources */,
+				225DD6F32DFC9024002681B3 /* CustomCollection.swift in Sources */,
 				221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */,
 				04C46D5C2DF7840F0077AC37 /* ProductDetailsView.swift in Sources */,
 				22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */,
