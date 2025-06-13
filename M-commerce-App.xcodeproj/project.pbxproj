@@ -12,7 +12,6 @@
 		04B3291D2DF94E8D002CE2DD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3291C2DF94E8D002CE2DD /* FirebaseAuth */; };
 		04B329232DF9E08D002CE2DD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 04B329222DF9E08D002CE2DD /* GoogleSignIn */; };
 		04B329252DF9E08D002CE2DD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 04B329242DF9E08D002CE2DD /* GoogleSignInSwift */; };
-		04B329272DFA876F002CE2DD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 04B329262DFA876F002CE2DD /* GoogleService-Info.plist */; };
 		04B477852DE3A1A400CC82F8 /* M_commerce_AppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */; };
 		04B477872DE3A1A500CC82F8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B477862DE3A1A400CC82F8 /* ContentView.swift */; };
 		04B477892DE3A1A600CC82F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04B477882DE3A1A600CC82F8 /* Assets.xcassets */; };
@@ -39,6 +38,8 @@
 		221C93D52DF5CB5600AD404A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */; };
 		221C93DC2DF5F16A00AD404A /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93DB2DF5F16A00AD404A /* UserDefaultsKeys.swift */; };
 		221C93DE2DF5F4F400AD404A /* UserIfon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93DD2DF5F4F400AD404A /* UserIfon.swift */; };
+		225DD6D72DFC8B69002681B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */; };
+		225DD6D92DFC8C4D002681B3 /* FloatingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */; };
 		22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */; };
 		22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */; };
 		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
@@ -77,7 +78,6 @@
 /* Begin PBXFileReference section */
 		0474056B2DF11BAD0047C6C2 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		04B329182DF939A1002CE2DD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		04B329262DFA876F002CE2DD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		04B477812DE3A1A400CC82F8 /* M-commerce-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "M-commerce-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = M_commerce_AppApp.swift; sourceTree = "<group>"; };
 		04B477862DE3A1A400CC82F8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -106,6 +106,8 @@
 		221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		221C93DB2DF5F16A00AD404A /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		221C93DD2DF5F4F400AD404A /* UserIfon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIfon.swift; sourceTree = "<group>"; };
+		225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTabBar.swift; sourceTree = "<group>"; };
 		22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
 		22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
 		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -213,7 +215,7 @@
 		04B477832DE3A1A400CC82F8 /* M-commerce-App */ = {
 			isa = PBXGroup;
 			children = (
-				04B329262DFA876F002CE2DD /* GoogleService-Info.plist */,
+				225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */,
 				0474056D2DF123430047C6C2 /* Utility */,
 				048FD7D92DEDCD7000F3CC33 /* Features */,
 				04B477862DE3A1A400CC82F8 /* ContentView.swift */,
@@ -221,6 +223,7 @@
 				04B4778F2DE3A1A600CC82F8 /* M_commerce_App.xcdatamodeld */,
 				04B4778A2DE3A1A600CC82F8 /* Preview Content */,
 				04B329182DF939A1002CE2DD /* HomeView.swift */,
+				225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */,
 			);
 			path = "M-commerce-App";
 			sourceTree = "<group>";
@@ -475,7 +478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				04D849352DF0CE7E00564625 /* onboard.json in Resources */,
-				04B329272DFA876F002CE2DD /* GoogleService-Info.plist in Resources */,
+				225DD6D72DFC8B69002681B3 /* GoogleService-Info.plist in Resources */,
 				04B4778C2DE3A1A600CC82F8 /* Preview Assets.xcassets in Resources */,
 				04B477892DE3A1A600CC82F8 /* Assets.xcassets in Resources */,
 			);
@@ -507,6 +510,7 @@
 				22CAE7732DF5054900F0E2E0 /* CountryPickerModal.swift in Sources */,
 				22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */,
 				22CAE76F2DF5022D00F0E2E0 /* CountryRow.swift in Sources */,
+				225DD6D92DFC8C4D002681B3 /* FloatingTabBar.swift in Sources */,
 				221C93CF2DF5C02D00AD404A /* CityRow.swift in Sources */,
 				04B4778E2DE3A1A600CC82F8 /* Persistence.swift in Sources */,
 				22CAE7712DF5038200F0E2E0 /* SearchCountryBar.swift in Sources */,
