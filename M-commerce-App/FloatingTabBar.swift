@@ -27,6 +27,7 @@ struct FloatingTabBar: View {
             Color.black.ignoresSafeArea()
             
             TabView(selection: $selectedTab) {
+              
                 HomeView()
                     .tag("house")
                 

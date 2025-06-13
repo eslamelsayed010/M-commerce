@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseAuth
 
 
-struct HomeView: View {
+struct HomeeView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {

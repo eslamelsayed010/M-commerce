@@ -51,6 +51,8 @@
 		225DD6F32DFC9024002681B3 /* CustomCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6F22DFC9024002681B3 /* CustomCollection.swift */; };
 		225DD6F52DFC9082002681B3 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6F42DFC9082002681B3 /* CategoryView.swift */; };
 		225DD6F72DFC90BD002681B3 /* ProductCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6F62DFC90BD002681B3 /* ProductCardView.swift */; };
+		225DD6F92DFC9103002681B3 /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6F82DFC9103002681B3 /* ProductViewModel.swift */; };
+		225DD6FB2DFC917F002681B3 /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6FA2DFC917F002681B3 /* PersonView.swift */; };
 		22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */; };
 		22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */; };
 		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
@@ -130,6 +132,8 @@
 		225DD6F22DFC9024002681B3 /* CustomCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollection.swift; sourceTree = "<group>"; };
 		225DD6F42DFC9082002681B3 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		225DD6F62DFC90BD002681B3 /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
+		225DD6F82DFC9103002681B3 /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
+		225DD6FA2DFC917F002681B3 /* PersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
 		22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
 		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -250,6 +254,7 @@
 				225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */,
 				225DD6DA2DFC8CFE002681B3 /* ImgCouponView.swift */,
 				225DD6DC2DFC8DB6002681B3 /* ToolBar.swift */,
+				225DD6FA2DFC917F002681B3 /* PersonView.swift */,
 			);
 			path = "M-commerce-App";
 			sourceTree = "<group>";
@@ -403,6 +408,7 @@
 		225DD6F12DFC8FFE002681B3 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				225DD6F82DFC9103002681B3 /* ProductViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -608,6 +614,7 @@
 				22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */,
 				22CAE76F2DF5022D00F0E2E0 /* CountryRow.swift in Sources */,
 				225DD6D92DFC8C4D002681B3 /* FloatingTabBar.swift in Sources */,
+				225DD6FB2DFC917F002681B3 /* PersonView.swift in Sources */,
 				225DD6ED2DFC8F99002681B3 /* ProductsViewModel.swift in Sources */,
 				221C93CF2DF5C02D00AD404A /* CityRow.swift in Sources */,
 				04B4778E2DE3A1A600CC82F8 /* Persistence.swift in Sources */,
@@ -626,6 +633,7 @@
 				225DD6F32DFC9024002681B3 /* CustomCollection.swift in Sources */,
 				221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */,
 				04C46D5C2DF7840F0077AC37 /* ProductDetailsView.swift in Sources */,
+				225DD6F92DFC9103002681B3 /* ProductViewModel.swift in Sources */,
 				22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */,
 				221C93C92DF5B4A400AD404A /* CitySelectionButton.swift in Sources */,
 				221C93CD2DF5BE7500AD404A /* CityPickerModal.swift in Sources */,
