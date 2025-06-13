@@ -1,25 +1,20 @@
-//
-//  OnboardingView2.swift
-//  M-commerce-App
-//
-//  Created by mac on 05/06/2025.
-//
+// Updated OnboardingView2.swift
 import SwiftUI
 
 struct OnboardingView2: View {
-    @State private var isActive = false
-
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
     var body: some View {
         NavigationView {
             ZStack {
                 Color.white
                     .ignoresSafeArea()
-
+                
                 VStack {
                     HStack {
                         Spacer()
                         Button(action: {
-                            isActive = true
+                            authViewModel.completeOnboarding()
                         }) {
                             Text("Skip")
                                 .foregroundColor(Color(red: 0.2, green: 0.2, blue: 0.4))
@@ -27,25 +22,22 @@ struct OnboardingView2: View {
                         }
                         .padding(.trailing, 16)
                     }
-
+                    
                     Image("splash2")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 300, height: 250)
                         .padding(.top, 150)
-                        
-
+                    
                     VStack(alignment: .leading, spacing: 5) {
                         HStack(spacing: 5) {
                             Text("Explore our")
                                 .font(.system(size: 22, weight: .bold))
                                 .foregroundColor(.black)
-
                             Text("exclusive offers")
                                 .font(.system(size: 22, weight: .bold))
                                 .foregroundColor(Color(red: 0.96, green: 0.65, blue: 0.42))
                         }
-
                         Text("just for you.")
                             .font(.system(size: 22, weight: .bold))
                             .foregroundColor(.black)
@@ -53,12 +45,11 @@ struct OnboardingView2: View {
                     .padding(.horizontal, 20)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 20)
-
+                    
                     VStack(alignment: .leading, spacing: 2) {
                         Text("Quality meets affordability")
                             .font(.subheadline)
                             .foregroundColor(Color.gray)
-
                         Text("shop smarter in 2025.")
                             .font(.subheadline)
                             .foregroundColor(Color.gray)
@@ -66,28 +57,32 @@ struct OnboardingView2: View {
                     .padding(.horizontal, 20)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 10)
-
-                    Button(action: {
-                        isActive = true
-                    }) {
-                        Text("Next")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color(red: 0.2, green: 0.2, blue: 0.4))
-                            .cornerRadius(10)
-                            .padding(.horizontal, 20)
+                    
+                    NavigationLink(
+                        destination: HomeView().environmentObject(authViewModel),
+                        isActive: Binding(
+                            get: { authViewModel.currentView == .home },
+                            set: { _ in }
+                        )
+                    ) {
+                        Button(action: {
+                            authViewModel.completeOnboarding()
+                        }) {
+                            Text("Get Started")
+                                .font(.headline)
+                                .foregroundColor(.white)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color(red: 0.2, green: 0.2, blue: 0.4))
+                                .cornerRadius(10)
+                                .padding(.horizontal, 20)
+                        }
                     }
                     .padding(.top, 30)
-
+                    
                     Spacer()
-                    NavigationLink(destination: LoginView(), isActive: $isActive) {
-                        EmptyView()
-                    }
-                    .hidden()
                 }
-
+                
                 Circle()
                     .stroke(Color(red: 0.96, green: 0.65, blue: 0.42), lineWidth: 2)
                     .frame(width: 100, height: 100)
@@ -99,13 +94,7 @@ struct OnboardingView2: View {
                     .offset(x: -135, y: -330)
             }
             .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
         }
-    }
-}
-
-
-struct OnboardingView2_Previews: PreviewProvider {
-    static var previews: some View {
-        OnboardingView2()
     }
 }

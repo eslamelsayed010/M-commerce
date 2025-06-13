@@ -1,14 +1,8 @@
-//
-//  SwiftUIView.swift
-//  M-commerce-App
-//
-//  Created by mac on 04/06/2025.
-//
 
 import SwiftUI
 
 struct SplashView: View {
-    @State private var isActive = false
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
         ZStack {
@@ -46,22 +40,15 @@ struct SplashView: View {
             }
         }
         .onAppear {
-
+            
+            authViewModel.checkAuthState()
+            
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 withAnimation {
-                    isActive = true
+                    authViewModel.completeSplash()
                 }
             }
         }
-        .fullScreenCover(isPresented: $isActive) {
-            OnboardingView()
-        }
     }
 }
-
-struct SplashView_Previews: PreviewProvider {
-    static var previews: some View {
-        SplashView()
-    }
-}
-
