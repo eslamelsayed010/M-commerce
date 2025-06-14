@@ -17,7 +17,7 @@ struct ImgCouponView: View {
                     Image(name)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: 300, height: 200)
+                                .frame(width: 300, height: 150)
                                 .clipped()
                                 .cornerRadius(10)
                                 .overlay(
@@ -28,7 +28,7 @@ struct ImgCouponView: View {
             }
             .padding()
         }
-        .frame(height: 220)
+        .frame(height: 200)
     }
 }
 
@@ -37,3 +37,4 @@ struct ImgCouponView_Previews: PreviewProvider {
         ImgCouponView()
     }
 }
+

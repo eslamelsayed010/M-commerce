@@ -11,3 +11,7 @@ struct CustomCollection: Identifiable {
     let title: String
     let handle: String
 }
+struct Collection: Identifiable, Codable {
+    let id: Int
+    let title: String
+}
