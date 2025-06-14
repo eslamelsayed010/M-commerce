@@ -8,9 +8,12 @@
 import SwiftUI
 
 
+import SwiftUI
+
+
 struct FloatingTabBar: View {
     
-    var tabs = ["house", "book", "person"]
+    var tabs = ["house", "book", "person","cart","heart"]
     
     @State var selectedTab = "house"
     
@@ -36,6 +39,12 @@ struct FloatingTabBar: View {
                 
                 PersonView()
                     .tag("person")
+                
+                CartView()
+                    .tag("cart")
+                FavoriteView()
+                    .tag("heart")
+                
             }
             
             HStack(spacing: 0) {
