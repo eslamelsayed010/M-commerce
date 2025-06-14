@@ -15,18 +15,46 @@ struct HomeView: View {
     ]
     
     @State private var isNavigationActive = false
-    
+    @State private var selected: Int? = nil
+    @State private var isNavigating = false
+
+    let categories = ["Men", "Women", "Kids", "Sale"]
+
     var body: some View {
         NavigationView {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 10) {
                     
                     ToolBar()
-                    
-                    
                     ImgCouponView()
                     
-                    Text("Brands")
+                    VStack {
+                        HStack(spacing: 12) {
+                            ForEach(0..<categories.count, id: \.self) { index in
+                                Button(action: {
+                                    selected = index
+                                    isNavigating = true
+                                }) {
+                                    Text(categories[index])
+                                        .padding(.vertical, 8)
+                                        .padding(.horizontal, 16)
+                                        .background(selected == index ? Color.black : Color.gray.opacity(0.3))
+                                        .foregroundColor(selected == index ? .white : .black)
+                                        .cornerRadius(10)
+                                }
+                            }
+                        }
+                        .padding()
+
+                        NavigationLink(
+                            destination: selectedDestination,
+                            isActive: $isNavigating,
+                            label: { EmptyView() }
+                        )
+                    }
+
+
+                    
                     
                     ScrollView(.horizontal) {
                         LazyHGrid(rows: rows, spacing: 16) {
@@ -90,7 +118,6 @@ struct HomeView: View {
                         .padding()
                     }
 
-                   
                     NavigationLink(
                         destination: ProductsView(brandName: viewModel.selectedBrand?.name ?? ""),
                         isActive: $isNavigationActive,
@@ -99,18 +126,25 @@ struct HomeView: View {
                         }
                     )
                     .hidden()
-
-
-
                 }
                 .padding(.horizontal)
                 .padding(.top, 8)
             }
-           
-            
             .onAppear {
                 viewModel.loadBrands()
             }
+        }
+    }
+
+    
+    @ViewBuilder
+    private var selectedDestination: some View {
+        switch selected {
+        case 0: MenView()
+        case 1: WomenView()
+        case 2: KidsView()
+        case 3: SaleView()
+        default: EmptyView()
         }
     }
 }
