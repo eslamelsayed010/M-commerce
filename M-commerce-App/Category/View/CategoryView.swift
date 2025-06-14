@@ -23,7 +23,12 @@ struct CategoryView: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                
                 ScrollView {
+                    VStack{
+                        ToolBar()
+                        
+                    }
                     if viewModel.isLoading {
                         ProgressView().padding()
                     } else if let error = viewModel.errorMessage {
