@@ -41,7 +41,7 @@ class ProductsViewModel: ObservableObject {
     }
 
     private func fetchProductsForBrand(_ brand: String) -> AnyPublisher<[Product], Error> {
-        let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2023-07/graphql.json")!
+        let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2024-04/graphql.json")!
 
         let query = """
         {
@@ -50,17 +50,24 @@ class ProductsViewModel: ObservableObject {
               node {
                 id
                 title
+                descriptionHtml
                 productType
-                images(first: 1) {
+                images(first: 3) {
                   edges {
                     node {
                       url
                     }
                   }
                 }
-                priceRange {
-                  minVariantPrice {
-                    amount
+                variants(first: 1) {
+                  edges {
+                    node {
+                      price
+                      selectedOptions {
+                        name
+                        value
+                      }
+                    }
                   }
                 }
               }
@@ -79,19 +86,15 @@ class ProductsViewModel: ObservableObject {
             .tryMap { data, response -> [Product] in
                 guard let httpResponse = response as? HTTPURLResponse,
                       (200..<300).contains(httpResponse.statusCode) else {
-                    print("HTTP Response: \(response)") // Debug
+                    print("HTTP Response: \(response)")
                     throw URLError(.badServerResponse)
                 }
 
-               
                 if let jsonString = String(data: data, encoding: .utf8) {
                     print("Raw JSON response: \(jsonString)")
                 }
 
                 let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-
-                
-                print("JSON Response: \(String(describing: json))")
 
                 let edges = (((json?["data"] as? [String: Any])?["products"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
 
@@ -99,28 +102,37 @@ class ProductsViewModel: ObservableObject {
                     guard let node = edge["node"] as? [String: Any],
                           let title = node["title"] as? String,
                           let productType = node["productType"] as? String,
-                          let id = node["id"] as? String else {
+                          let id = node["id"] as? String,
+                          let description = node["descriptionHtml"] as? String else {
                         return nil
                     }
 
-                    let imageUrl = (((node["images"] as? [String: Any])?["edges"] as? [[String: Any]])?.first?["node"] as? [String: Any])?["url"] as? String
+                    let imageEdges = ((node["images"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
+                    let imageUrls = imageEdges.compactMap { edge in
+                        (edge["node"] as? [String: Any])?["url"] as? String
+                    }
 
-                    let minVariantPrice = (node["priceRange"] as? [String: Any])?["minVariantPrice"] as? [String: Any]
-                    let priceString = minVariantPrice?["amount"] as? String
+                    let variantEdges = ((node["variants"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
+                    let variant = variantEdges.first?["node"] as? [String: Any]
+                    let priceString = variant?["price"] as? String
                     let price = Double(priceString ?? "")
 
-                    let currencyCode: String? = nil
+                    let options = (variant?["selectedOptions"] as? [[String: Any]]) ?? []
+                    let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
+                    let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
 
                     return Product(
                         id: id,
                         title: title,
-                        imageUrl: imageUrl,
+                        description: description,
+                        imageUrls: imageUrls,
                         price: price,
-                        currencyCode: currencyCode,
-                        productType: productType
+                        currencyCode: "$", 
+                        productType: productType,
+                        size: size,
+                        color: color
                     )
                 }
-
             }
             .eraseToAnyPublisher()
     }

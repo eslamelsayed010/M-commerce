@@ -37,7 +37,6 @@ class ProductViewModel: ObservableObject {
 
     func filterProducts(by subcategory: String?) {
         selectedSubcategory = subcategory
-       
     }
 
     private func fetchNextPage() {
@@ -46,7 +45,7 @@ class ProductViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2023-07/graphql.json")!
+        let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2024-04/graphql.json")!
         let query = """
         query ($first: Int!, $after: String) {
           products(first: $first, after: $after) {
@@ -55,17 +54,24 @@ class ProductViewModel: ObservableObject {
               node {
                 id
                 title
+                descriptionHtml
                 productType
-                images(first: 1) {
+                images(first: 3) {
                   edges {
                     node {
                       url
                     }
                   }
                 }
-                priceRange {
-                  minVariantPrice {
-                    amount
+                variants(first: 1) {
+                  edges {
+                    node {
+                      price
+                      selectedOptions {
+                        name
+                        value
+                      }
+                    }
                   }
                 }
               }
@@ -112,29 +118,39 @@ class ProductViewModel: ObservableObject {
                     guard let node = edge["node"] as? [String: Any],
                           let title = node["title"] as? String,
                           let productType = node["productType"] as? String,
-                          let id = node["id"] as? String else {
-                        return nil
+                          let id = node["id"] as? String,
+                          let description = node["descriptionHtml"] as? String else {
+                        return nil 
                     }
 
-                    let imageUrl = (((node["images"] as? [String: Any])?["edges"] as? [[String: Any]])?.first?["node"] as? [String: Any])?["url"] as? String
+                    // Parse multiple images
+                    let imageEdges = ((node["images"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
+                    let imageUrls = imageEdges.compactMap { edge in
+                        (edge["node"] as? [String: Any])?["url"] as? String
+                    }
 
-                    let minVariantPrice = (node["priceRange"] as? [String: Any])?["minVariantPrice"] as? [String: Any]
-                    let priceString = minVariantPrice?["amount"] as? String
+                    // Parse variant for price, size, and color
+                    let variantEdges = ((node["variants"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
+                    let variant = variantEdges.first?["node"] as? [String: Any]
+                    let priceString = variant?["price"] as? String
                     let price = Double(priceString ?? "")
-                    
-                    
-                    let currencyCode: String? = nil
+
+                    let options = (variant?["selectedOptions"] as? [[String: Any]]) ?? []
+                    let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
+                    let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
 
                     return Product(
                         id: id,
                         title: title,
-                        imageUrl: imageUrl,
+                        description: description,
+                        imageUrls: imageUrls,
                         price: price,
-                        currencyCode: currencyCode,
-                        productType: productType
+                        currencyCode: "$",
+                        productType: productType,
+                        size: size,
+                        color: color
                     )
                 }
-
 
                 let lastCursor = edges.last?["cursor"] as? String
                 return (products, lastCursor, hasNextPage)
@@ -150,7 +166,6 @@ class ProductViewModel: ObservableObject {
                 self?.lastCursor = result.lastCursor
                 self?.hasNextPage = result.hasNextPage
 
-                
                 let types = Set(result.products.compactMap { $0.productType })
                 print("Loaded product types: \(types)")
 

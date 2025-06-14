@@ -1,14 +1,9 @@
-//
-//  ProductDetailsView.swift
-//  M-commerce-App
-//
-//  Created by mac on 10/06/2025.
-//
-
 import SwiftUI
 
 struct ProductDetailsView: View {
+    let product: Product
     @State private var selectedImageIndex = 0
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         ScrollView {
@@ -19,26 +14,46 @@ struct ProductDetailsView: View {
                 
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.nescafeLight)
+                        .fill(Color.white)
                         .frame(height: 260)
 
                     VStack {
                         TabView(selection: $selectedImageIndex) {
-                            ForEach(0..<3) { index in
-                                Image("jackets")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 220, height: 300)
-                                    .clipped()
+                            ForEach(Array(product.imageUrls.enumerated()), id: \.offset) { index, imageUrl in
+                                if let url = URL(string: imageUrl) {
+                                    AsyncImage(url: url) { phase in
+                                        switch phase {
+                                        case .empty:
+                                            ProgressView()
+                                                .frame(width: 220, height: 220)
+                                        case .success(let image):
+                                            image
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 270, height: 285)
+                                                .clipped()
+                                        case .failure:
+                                            Image(systemName: "photo")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 220, height: 220)
+                                                .foregroundColor(.gray)
+                                        @unknown default:
+                                            EmptyView()
+                                        }
+                                    }
                                     .tag(index)
+                                }
                             }
                         }
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                         .frame(height: 220)
+
+                        
                         HStack(spacing: 8) {
-                            ForEach(0..<3) { index in
+                            ForEach(0..<product.imageUrls.count, id: \.self) { index in
                                 Circle()
-                                    .fill(selectedImageIndex == index ? Color.brown : Color.white.opacity(0.6))
+                                    .fill(selectedImageIndex == index ? Color.brown : Color.gray)
                                     .frame(width: 8, height: 8)
                             }
                         }
@@ -47,15 +62,22 @@ struct ProductDetailsView: View {
                 }
                 .padding(.horizontal)
 
+            
                 HStack {
-                    Text("$110")
-                        .font(.title2)
-                        .fontWeight(.bold)
+                    if let price = product.price, let currency = product.currencyCode {
+                        HStack(spacing: 2) {
+                            Text("\(currency)")
+                                .foregroundColor(Color.brown.opacity(0.7))
+                                .font(.title2)
+                                .fontWeight(.semibold)
 
-                    Text("$174")
-                        .font(.subheadline)
-                        .foregroundColor(.gray)
-                        .strikethrough()
+                            Text("\(price, specifier: "%.2f")")
+                                .foregroundColor(.primary)
+                                .font(.title2)
+                                .fontWeight(.bold)
+                        }
+
+                    }
 
                     Spacer()
 
@@ -70,22 +92,25 @@ struct ProductDetailsView: View {
                 .padding(.horizontal)
 
                 
-                Text("Wool Sweater")
+                Text(product.title)
                     .font(.headline)
                     .padding(.horizontal)
 
-              
-                Text("Lorem ipsum dolor sit amet consectetur. Quam nullam sagittis ut nunc egestas hendrerit. Fermentum sed nunc morbi sed id.")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-                    .padding(.horizontal)
+                
+                if let description = product.description {
+                    Text(description)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .padding(.horizontal)
+                }
 
-               
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Size")
-                        .font(.headline)
-                    HStack(spacing: 12) {
-                        ForEach(["L", "XL", "XXL"], id: \.self) { size in
+                
+                if let size = product.size, let color = product.color {
+                    HStack {
+                        
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text("Size")
+                                .font(.headline)
                             Text(size)
                                 .font(.subheadline)
                                 .fontWeight(.medium)
@@ -93,38 +118,25 @@ struct ProductDetailsView: View {
                                 .background(Color.gray.opacity(0.2))
                                 .clipShape(Circle())
                         }
-                        Spacer()
-                    }
-                }
-                .padding(.horizontal)
 
-              
-                VStack(alignment: .leading, spacing: 12) {
-                    Text("Color")
-                        .font(.headline)
-                    HStack(spacing: 12) {
-                        ForEach([Color.black, Color.yellow, Color.red, Color.blue, Color.brown, Color.green], id: \.self) { color in
-                            Circle()
-                                .fill(color)
-                                .frame(width: 32, height: 32)
-                                .overlay(
-                                    Circle()
-                                        .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-                                )
+                        Spacer()
+
+                        
+                        VStack(alignment: .trailing, spacing: 6) {
+                            Text("Color")
+                                .font(.headline)
+                            ColorView(colorName: color)
                         }
-                        Spacer()
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
-
                 Spacer(minLength: 100)
             }
         }
         .safeAreaInset(edge: .bottom) {
-            
             HStack(spacing: 12) {
                 Button(action: {
-
+                    
                 }) {
                     Text("Add to Cart")
                         .font(.headline)
@@ -152,26 +164,53 @@ struct ProductDetailsView: View {
         }
         .navigationTitle("Product Details")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
+        
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "chevron.left")
-                   .foregroundColor(.primary)
+                        .foregroundColor(.primary)
                 }
             }
         }
+
     }
 }
 
 
-extension Color {
-    static let nescafeLight = Color(red: 0.96, green: 0.92, blue: 0.87)}
 
-struct ProductDetailsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            ProductDetailsView()
+struct ColorView: View {
+    let colorName: String
+
+    var body: some View {
+        let color = colorFromName(colorName.lowercased())
+        return Circle()
+            .fill(color)
+            .frame(width: 32, height: 32)
+            .overlay(
+                Circle()
+                    .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+            )
+    }
+
+    func colorFromName(_ name: String) -> Color {
+        switch name {
+        case "black": return .black
+        case "red": return .red
+        case "blue": return .blue
+        case "yellow": return .yellow
+        case "brown": return .brown
+        case "green": return .green
+        case "white": return .white
+        default: return .gray
         }
     }
 }
+
+extension Color {
+    static let nescafeLight = Color(red: 0.96, green: 0.92, blue: 0.87)
+}
+

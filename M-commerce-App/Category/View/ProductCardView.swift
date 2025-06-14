@@ -11,57 +11,103 @@ struct ProductCardView: View {
     let product: Product
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Button(action: {}) {
-                    Image(systemName: "heart")
-                        .foregroundColor(.red)
-                        .padding(6)
-                        .background(Color.white.opacity(0.8))
-                        .clipShape(Circle())
-                }
-                Spacer()
-                Button(action: {}) {
-                    Image(systemName: "cart")
-                        .foregroundColor(.black)
-                        .padding(6)
-                        .background(Color.white.opacity(0.8))
-                        .clipShape(Circle())
-                }
-            }
-
-            if let urlString = product.imageUrl, let url = URL(string: urlString) {
-                AsyncImage(url: url) { phase in
-                    switch phase {
-                    case .empty:
-                        ProgressView().frame(height: 100).frame(maxWidth: .infinity)
-                    case .success(let image):
-                        image.resizable().scaledToFill().frame(height: 100).clipped().cornerRadius(8)
-                    case .failure:
-                        Image(systemName: "photo").resizable().scaledToFit().frame(height: 100).foregroundColor(.gray)
-                    @unknown default:
-                        EmptyView()
+        NavigationLink(destination: ProductDetailsView(product: product)) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Button(action: {
+                    }) {
+                        Image(systemName: "heart")
+                            .foregroundColor(.red)
+                            .padding(6)
+                            .background(Color.white.opacity(0.8))
+                            .clipShape(Circle())
                     }
+                    .buttonStyle(.plain)
+                    Spacer()
+
+                    Button(action: {
+                        
+                    }) {
+                        Image(systemName: "cart")
+                            .foregroundColor(.black)
+                            .padding(6)
+                            .background(Color.white.opacity(0.8))
+                            .clipShape(Circle())
+                    }
+                    .buttonStyle(.plain) 
                 }
-            } else {
-                Image(systemName: "photo").resizable().scaledToFit().frame(height: 100).foregroundColor(.gray)
+
+                if let urlString = product.imageUrls.first, let url = URL(string: urlString) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            ProgressView()
+                                .frame(height: 100)
+                                .frame(maxWidth: .infinity)
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(height: 100)
+                                .clipped()
+                                .cornerRadius(8)
+                        case .failure:
+                            Image(systemName: "photo")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 100)
+                                .foregroundColor(.gray)
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                } else {
+                    Image(systemName: "photo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 100)
+                        .foregroundColor(.gray)
+                }
+
+                Text(product.title)
+                    .font(.caption)
+                    .foregroundColor(.primary)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text("\(product.currencyCode ?? "$") \(product.price ?? 0, specifier: "%.2f")")
+                    .font(.subheadline)
+                    .bold()
+                    .foregroundColor(.orange)
             }
-
-            Spacer()
-
-            Text(product.title)
-                .font(.caption)
-                .foregroundColor(.primary)
-                .fixedSize(horizontal: false, vertical: true)
-
-            Text("\(product.price ?? 0, specifier: "%.2f") \(product.currencyCode ?? "EGP")") .foregroundColor(.orange)
-
-            Spacer()
+            .padding()
+            .frame(width: 160)
+            .background(Color(.systemBackground))
+            .cornerRadius(12)
+            .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
         }
+    }
+}
+
+struct ProductCardView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationStack {
+            ProductCardView(
+                product: Product(
+                    id: "7575128211521",
+                    title: "ADIDAS | CLASSIC BACKPACK",
+                    description: "This women's backpack has a glam look...",
+                    imageUrls: [
+                        "https://cdn.shopify.com/s/files/1/0657/0177/3377/files/product_29_image1.jpg"
+                    ],
+                    price: 70.00,
+                    currencyCode: "EGP",
+                    productType: "ACCESSORIES",
+                    size: "OS",
+                    color: "black"
+                )
+            )
+        }
+        .previewLayout(.sizeThatFits)
         .padding()
-        .frame(width: 160)
-        .background(Color(.systemBackground))
-        .cornerRadius(12)
-        .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }

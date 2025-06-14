@@ -7,10 +7,13 @@
 
 import Foundation
 struct Product: Identifiable {
-    let id : String
+    let id: String
     let title: String
-    let imageUrl: String?
+    let description: String?
+    let imageUrls: [String]
     let price: Double?
     let currencyCode: String?
     let productType: String?
+    let size: String?
+    let color: String? 
 }

@@ -25,7 +25,7 @@ struct M_commerce_AppApp: App {
                     OnboardingView2()
                         .environmentObject(authViewModel)
                 case .home:
-                    HomeView()
+                    FloatingTabBar()
                         .environmentObject(authViewModel)
                 }
             }
