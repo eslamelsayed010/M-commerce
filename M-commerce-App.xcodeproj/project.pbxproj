@@ -59,6 +59,9 @@
 		227EAC562DFDD94400F0D300 /* CategeoryViemModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC552DFDD94400F0D300 /* CategeoryViemModels.swift */; };
 		227EAC582DFDD99200F0D300 /* MenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC572DFDD99200F0D300 /* MenView.swift */; };
 		227EAC5A2DFDD9FD00F0D300 /* ProductGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC592DFDD9FD00F0D300 /* ProductGridView.swift */; };
+		227EAC5C2DFDDA6D00F0D300 /* WomenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5B2DFDDA6D00F0D300 /* WomenView.swift */; };
+		227EAC5E2DFDDABE00F0D300 /* KidsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5D2DFDDABE00F0D300 /* KidsView.swift */; };
+		227EAC602DFDDAFD00F0D300 /* SaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */; };
 		22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */; };
 		22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */; };
 		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
@@ -146,6 +149,9 @@
 		227EAC552DFDD94400F0D300 /* CategeoryViemModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategeoryViemModels.swift; sourceTree = "<group>"; };
 		227EAC572DFDD99200F0D300 /* MenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenView.swift; sourceTree = "<group>"; };
 		227EAC592DFDD9FD00F0D300 /* ProductGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGridView.swift; sourceTree = "<group>"; };
+		227EAC5B2DFDDA6D00F0D300 /* WomenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WomenView.swift; sourceTree = "<group>"; };
+		227EAC5D2DFDDABE00F0D300 /* KidsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KidsView.swift; sourceTree = "<group>"; };
+		227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleView.swift; sourceTree = "<group>"; };
 		22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
 		22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
 		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
@@ -417,6 +423,9 @@
 				225DD6F62DFC90BD002681B3 /* ProductCardView.swift */,
 				227EAC572DFDD99200F0D300 /* MenView.swift */,
 				227EAC592DFDD9FD00F0D300 /* ProductGridView.swift */,
+				227EAC5B2DFDDA6D00F0D300 /* WomenView.swift */,
+				227EAC5D2DFDDABE00F0D300 /* KidsView.swift */,
+				227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -639,6 +648,7 @@
 				221C93CF2DF5C02D00AD404A /* CityRow.swift in Sources */,
 				04B4778E2DE3A1A600CC82F8 /* Persistence.swift in Sources */,
 				22CAE7712DF5038200F0E2E0 /* SearchCountryBar.swift in Sources */,
+				227EAC5E2DFDDABE00F0D300 /* KidsView.swift in Sources */,
 				221C93DC2DF5F16A00AD404A /* UserDefaultsKeys.swift in Sources */,
 				221C93D52DF5CB5600AD404A /* SettingsViewModel.swift in Sources */,
 				225DD6E32DFC8E52002681B3 /* Brand.swift in Sources */,
@@ -669,6 +679,7 @@
 				225DD6DD2DFC8DB6002681B3 /* ToolBar.swift in Sources */,
 				04B477912DE3A1A600CC82F8 /* M_commerce_App.xcdatamodeld in Sources */,
 				04B477852DE3A1A400CC82F8 /* M_commerce_AppApp.swift in Sources */,
+				227EAC5C2DFDDA6D00F0D300 /* WomenView.swift in Sources */,
 				0474056C2DF11BAD0047C6C2 /* SignUpView.swift in Sources */,
 				221C93D12DF5C77B00AD404A /* City.swift in Sources */,
 				22CAE75D2DF4F4C600F0E2E0 /* SectionHeader.swift in Sources */,
@@ -681,6 +692,7 @@
 				227EAC582DFDD99200F0D300 /* MenView.swift in Sources */,
 				04D8493F2DF0DCF800564625 /* SplashView.swift in Sources */,
 				221C93CB2DF5BCC900AD404A /* CityPicker.swift in Sources */,
+				227EAC602DFDDAFD00F0D300 /* SaleView.swift in Sources */,
 				22CAE7752DF505E900F0E2E0 /* CountrySelectionButton.swift in Sources */,
 				225DD6E52DFC8E79002681B3 /* Product.swift in Sources */,
 			);
