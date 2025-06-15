@@ -12,6 +12,7 @@ enum UserDefaultsKeys {
         static let name = "name"
         static let phone = "phone"
     }
+    
     enum Location {
         static let country = "country"
         static let address = "address"
@@ -19,6 +20,7 @@ enum UserDefaultsKeys {
         static let cityId = "cityId"
         static let cityCode = "cityCode"
     }
+    
     enum Currency {
         static let currency = "Currency"
     }
