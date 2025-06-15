@@ -10,3 +10,4 @@ import Foundation
 class TabBarVisibilityManager: ObservableObject {
     @Published var isTabBarHidden: Bool = false
 }
+
