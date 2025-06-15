@@ -19,5 +19,8 @@ enum UserDefaultsKeys {
         static let cityId = "cityId"
         static let cityCode = "cityCode"
     }
+    enum Currency {
+        static let currency = "Currency"
+    }
 }
 

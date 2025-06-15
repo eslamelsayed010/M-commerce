@@ -12,88 +12,86 @@ import SwiftUI
 
 
 struct FloatingTabBar: View {
+    @StateObject var visibilityManager = TabBarVisibilityManager()
     
     var tabs = ["house", "book", "person","cart","heart"]
-    
     @State var selectedTab = "house"
-    
     @State var xAxis: CGFloat = 0
     @Namespace var animation
-    
+
     init() {
         UITabBar.appearance().isHidden = true
     }
-    
+
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
-            
             Color.black.ignoresSafeArea()
-            
+
             TabView(selection: $selectedTab) {
-              
                 HomeView()
-                    .tag("house")
-                
+                .tag("house")
+
                 CategoryView()
                     .tag("book")
-                
-                PersonView()
+                SettingsView()
+                    .environmentObject(visibilityManager)
                     .tag("person")
-                
                 CartView()
                     .tag("cart")
                 FavoriteView()
                     .tag("heart")
-                
             }
-            
-            HStack(spacing: 0) {
-                ForEach(tabs, id: \.self) { image in
-                    GeometryReader { reader in
-                        Button(action: {
-                            withAnimation {
-                                selectedTab = image
-                                xAxis = reader.frame(in: .global).minX
-                            }
-                        }) {
-                            Image(systemName: image)
-                                .font(.system(size: 22, weight: .regular))
-                                .foregroundColor(selectedTab == image ? .black : .gray)
-                                .padding(selectedTab == image ? 15 : 0)
-                                .background(Color.yellow.opacity(selectedTab == image ? 1 : 0).clipShape(Circle()))
-                                .matchedGeometryEffect(id: image, in: animation)
-                                .offset(x: selectedTab == image ? -10 : 0, y: selectedTab == image ? -50 : 0)
+
+            if !visibilityManager.isTabBarHidden {
+                tabBarView
+            }
+        }
+        .ignoresSafeArea()
+    }
+
+    var tabBarView: some View {
+        HStack(spacing: 0) {
+            ForEach(tabs, id: \.self) { image in
+                GeometryReader { reader in
+                    Button(action: {
+                        withAnimation {
+                            selectedTab = image
+                            xAxis = reader.frame(in: .global).minX
                         }
-                        .onAppear {
-                            if image == tabs.first {
-                                xAxis = reader.frame(in: .global).minX
-                            }
-                        }
+                    }) {
+                        Image(systemName: image)
+                            .font(.system(size: 22, weight: .regular))
+                            .foregroundColor(selectedTab == image ? .black : .gray)
+                            .padding(selectedTab == image ? 15 : 0)
+                            .background(Color.yellow.opacity(selectedTab == image ? 1 : 0).clipShape(Circle()))
+                            .matchedGeometryEffect(id: image, in: animation)
+                            .offset(x: selectedTab == image ? -10 : 0, y: selectedTab == image ? -50 : 0)
                     }
-                    .frame(width: 20.0, height: 25.0)
-                    
-                    if image != tabs.last {
-                        Spacer()
+                    .onAppear {
+                        if image == tabs.first {
+                            xAxis = reader.frame(in: .global).minX
+                        }
                     }
                 }
+                .frame(width: 20.0, height: 25.0)
+
+                if image != tabs.last {
+                    Spacer()
+                }
             }
-            .padding(.horizontal, 30)
-            .padding(.vertical)
-            .background(
-                Color.black
-                    .clipShape(CustomShape(xAxis: xAxis))
-                    .cornerRadius(30)
-                    .shadow(color: .gray.opacity(0.3), radius: 8, x: 0, y: -2)
-            )
-            .padding(.horizontal)
-            .padding(.bottom, 4)
         }
-        .ignoresSafeArea(.all, edges: .all)
+        .padding(.horizontal, 30)
+        .padding(.vertical)
+        .background(
+            Color.black
+                .clipShape(CustomShape(xAxis: xAxis))
+                .cornerRadius(30)
+                .shadow(color: .gray.opacity(0.3), radius: 8, x: 0, y: -2)
+        )
+        .padding(.horizontal)
+        .padding(.bottom, 4)
     }
 }
-
-
-
 
 struct CustomShape: Shape {
     var xAxis: CGFloat

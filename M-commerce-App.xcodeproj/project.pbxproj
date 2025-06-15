@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0474056C2DF11BAD0047C6C2 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0474056B2DF11BAD0047C6C2 /* SignUpView.swift */; };
-		04B329192DF939A1002CE2DD /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B329182DF939A1002CE2DD /* HomeView.swift */; };
 		04B3291D2DF94E8D002CE2DD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3291C2DF94E8D002CE2DD /* FirebaseAuth */; };
 		04B329232DF9E08D002CE2DD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 04B329222DF9E08D002CE2DD /* GoogleSignIn */; };
 		04B329252DF9E08D002CE2DD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 04B329242DF9E08D002CE2DD /* GoogleSignInSwift */; };
@@ -29,15 +28,44 @@
 		04D8493D2DF0DCAD00564625 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D8493C2DF0DCAD00564625 /* OnboardingView.swift */; };
 		04D8493F2DF0DCF800564625 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D8493E2DF0DCF800564625 /* SplashView.swift */; };
 		04D849412DF0DD3B00564625 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D849402DF0DD3B00564625 /* LottieView.swift */; };
-		221C93C92DF5B4A400AD404A /* CitySelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93C82DF5B4A400AD404A /* CitySelectionButton.swift */; };
-		221C93CB2DF5BCC900AD404A /* CityPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93CA2DF5BCC900AD404A /* CityPicker.swift */; };
-		221C93CD2DF5BE7500AD404A /* CityPickerModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93CC2DF5BE7500AD404A /* CityPickerModal.swift */; };
-		221C93CF2DF5C02D00AD404A /* CityRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93CE2DF5C02D00AD404A /* CityRow.swift */; };
-		221C93D12DF5C77B00AD404A /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D02DF5C77B00AD404A /* City.swift */; };
-		221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */; };
-		221C93D52DF5CB5600AD404A /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */; };
-		221C93DC2DF5F16A00AD404A /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93DB2DF5F16A00AD404A /* UserDefaultsKeys.swift */; };
-		221C93DE2DF5F4F400AD404A /* UserIfon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 221C93DD2DF5F4F400AD404A /* UserIfon.swift */; };
+		223477152DFF1DF9000FB708 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477142DFF1DF9000FB708 /* HomeView.swift */; };
+		2234773F2DFF1E88000FB708 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477182DFF1E88000FB708 /* SettingsViewModel.swift */; };
+		223477402DFF1E88000FB708 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477192DFF1E88000FB708 /* LocationViewModel.swift */; };
+		223477412DFF1E88000FB708 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234771B2DFF1E88000FB708 /* Address.swift */; };
+		223477422DFF1E88000FB708 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234771C2DFF1E88000FB708 /* City.swift */; };
+		223477432DFF1E88000FB708 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234771D2DFF1E88000FB708 /* Currency.swift */; };
+		223477442DFF1E88000FB708 /* ShopifyLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234771F2DFF1E88000FB708 /* ShopifyLocationService.swift */; };
+		223477452DFF1E88000FB708 /* SettingsNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477202DFF1E88000FB708 /* SettingsNetworkManager.swift */; };
+		223477462DFF1E88000FB708 /* UserIfon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477212DFF1E88000FB708 /* UserIfon.swift */; };
+		223477472DFF1E88000FB708 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477222DFF1E88000FB708 /* Country.swift */; };
+		223477482DFF1E88000FB708 /* ContactUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477242DFF1E88000FB708 /* ContactUsView.swift */; };
+		223477492DFF1E88000FB708 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477252DFF1E88000FB708 /* SettingsView.swift */; };
+		2234774A2DFF1E88000FB708 /* CountryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477272DFF1E88000FB708 /* CountryPicker.swift */; };
+		2234774B2DFF1E88000FB708 /* CityRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477282DFF1E88000FB708 /* CityRow.swift */; };
+		2234774C2DFF1E88000FB708 /* AddressFormField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477292DFF1E88000FB708 /* AddressFormField.swift */; };
+		2234774D2DFF1E88000FB708 /* CustomSettingField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234772A2DFF1E88000FB708 /* CustomSettingField.swift */; };
+		2234774E2DFF1E88000FB708 /* CustomSegment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234772B2DFF1E88000FB708 /* CustomSegment.swift */; };
+		2234774F2DFF1E88000FB708 /* AdderssBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234772C2DFF1E88000FB708 /* AdderssBody.swift */; };
+		223477502DFF1E88000FB708 /* SearchCountryBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234772D2DFF1E88000FB708 /* SearchCountryBar.swift */; };
+		223477512DFF1E88000FB708 /* CountryPickerModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234772E2DFF1E88000FB708 /* CountryPickerModal.swift */; };
+		223477522DFF1E88000FB708 /* CountrySelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234772F2DFF1E88000FB708 /* CountrySelectionButton.swift */; };
+		223477532DFF1E88000FB708 /* CountryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477302DFF1E88000FB708 /* CountryRow.swift */; };
+		223477542DFF1E88000FB708 /* SubmitAddrressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477312DFF1E88000FB708 /* SubmitAddrressButton.swift */; };
+		223477552DFF1E88000FB708 /* CitySelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477322DFF1E88000FB708 /* CitySelectionButton.swift */; };
+		223477562DFF1E88000FB708 /* CityPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477332DFF1E88000FB708 /* CityPicker.swift */; };
+		223477572DFF1E88000FB708 /* CityPickerModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477342DFF1E88000FB708 /* CityPickerModal.swift */; };
+		223477582DFF1E88000FB708 /* AboutUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477352DFF1E88000FB708 /* AboutUsView.swift */; };
+		223477592DFF1E88000FB708 /* SupportSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477372DFF1E88000FB708 /* SupportSettings.swift */; };
+		2234775A2DFF1E88000FB708 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477382DFF1E88000FB708 /* HeaderSettings.swift */; };
+		2234775B2DFF1E88000FB708 /* CurrencyPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477392DFF1E88000FB708 /* CurrencyPickerView.swift */; };
+		2234775C2DFF1E88000FB708 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234773A2DFF1E88000FB708 /* UserSettings.swift */; };
+		2234775D2DFF1E88000FB708 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234773B2DFF1E88000FB708 /* SettingItem.swift */; };
+		2234775E2DFF1E88000FB708 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234773C2DFF1E88000FB708 /* AccountSettings.swift */; };
+		2234775F2DFF1E88000FB708 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234773D2DFF1E88000FB708 /* SectionHeader.swift */; };
+		223477602DFF1E88000FB708 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2234773E2DFF1E88000FB708 /* AddressView.swift */; };
+		223477632DFF1F07000FB708 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477622DFF1F07000FB708 /* UserDefaultsKeys.swift */; };
+		223477662DFF1F0D000FB708 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477652DFF1F0D000FB708 /* Toast.swift */; };
+		2234776A2DFF2059000FB708 /* TabBarVisibilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477692DFF2059000FB708 /* TabBarVisibilityManager.swift */; };
 		225DD6D72DFC8B69002681B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */; };
 		225DD6D92DFC8C4D002681B3 /* FloatingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */; };
 		225DD6DB2DFC8CFE002681B3 /* ImgCouponView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6DA2DFC8CFE002681B3 /* ImgCouponView.swift */; };
@@ -52,7 +80,6 @@
 		225DD6F52DFC9082002681B3 /* CategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6F42DFC9082002681B3 /* CategoryView.swift */; };
 		225DD6F72DFC90BD002681B3 /* ProductCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6F62DFC90BD002681B3 /* ProductCardView.swift */; };
 		225DD6F92DFC9103002681B3 /* ProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6F82DFC9103002681B3 /* ProductViewModel.swift */; };
-		225DD6FB2DFC917F002681B3 /* PersonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6FA2DFC917F002681B3 /* PersonView.swift */; };
 		227EAC502DFDD5A300F0D300 /* CartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC4F2DFDD5A300F0D300 /* CartView.swift */; };
 		227EAC522DFDD5B800F0D300 /* FavoriteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC512DFDD5B800F0D300 /* FavoriteView.swift */; };
 		227EAC542DFDD76100F0D300 /* BaseProductViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC532DFDD76100F0D300 /* BaseProductViewModel.swift */; };
@@ -62,22 +89,6 @@
 		227EAC5C2DFDDA6D00F0D300 /* WomenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5B2DFDDA6D00F0D300 /* WomenView.swift */; };
 		227EAC5E2DFDDABE00F0D300 /* KidsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5D2DFDDABE00F0D300 /* KidsView.swift */; };
 		227EAC602DFDDAFD00F0D300 /* SaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */; };
-		22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */; };
-		22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */; };
-		22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */; };
-		22CAE75D2DF4F4C600F0E2E0 /* SectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */; };
-		22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */; };
-		22CAE7612DF4F54800F0E2E0 /* AccountSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */; };
-		22CAE7632DF4F5CC00F0E2E0 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7622DF4F5CC00F0E2E0 /* SettingsView.swift */; };
-		22CAE7652DF4FA3500F0E2E0 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7642DF4FA3500F0E2E0 /* AddressView.swift */; };
-		22CAE7682DF4FE3300F0E2E0 /* AdderssBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7672DF4FE3300F0E2E0 /* AdderssBody.swift */; };
-		22CAE76B2DF5005B00F0E2E0 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE76A2DF5005B00F0E2E0 /* Country.swift */; };
-		22CAE76D2DF500DA00F0E2E0 /* CountryPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE76C2DF500DA00F0E2E0 /* CountryPicker.swift */; };
-		22CAE76F2DF5022D00F0E2E0 /* CountryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE76E2DF5022D00F0E2E0 /* CountryRow.swift */; };
-		22CAE7712DF5038200F0E2E0 /* SearchCountryBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7702DF5038200F0E2E0 /* SearchCountryBar.swift */; };
-		22CAE7732DF5054900F0E2E0 /* CountryPickerModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7722DF5054900F0E2E0 /* CountryPickerModal.swift */; };
-		22CAE7752DF505E900F0E2E0 /* CountrySelectionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7742DF505E900F0E2E0 /* CountrySelectionButton.swift */; };
-		22CAE7772DF5116900F0E2E0 /* CustomSettingField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CAE7762DF5116900F0E2E0 /* CustomSettingField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,7 +110,6 @@
 
 /* Begin PBXFileReference section */
 		0474056B2DF11BAD0047C6C2 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
-		04B329182DF939A1002CE2DD /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		04B477812DE3A1A400CC82F8 /* M-commerce-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "M-commerce-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = M_commerce_AppApp.swift; sourceTree = "<group>"; };
 		04B477862DE3A1A400CC82F8 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -119,15 +129,44 @@
 		04D8493C2DF0DCAD00564625 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		04D8493E2DF0DCF800564625 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		04D849402DF0DD3B00564625 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
-		221C93C82DF5B4A400AD404A /* CitySelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitySelectionButton.swift; sourceTree = "<group>"; };
-		221C93CA2DF5BCC900AD404A /* CityPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityPicker.swift; sourceTree = "<group>"; };
-		221C93CC2DF5BE7500AD404A /* CityPickerModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityPickerModal.swift; sourceTree = "<group>"; };
-		221C93CE2DF5C02D00AD404A /* CityRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityRow.swift; sourceTree = "<group>"; };
-		221C93D02DF5C77B00AD404A /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
-		221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNetworkManager.swift; sourceTree = "<group>"; };
-		221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
-		221C93DB2DF5F16A00AD404A /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
-		221C93DD2DF5F4F400AD404A /* UserIfon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserIfon.swift; sourceTree = "<group>"; };
+		223477142DFF1DF9000FB708 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		223477182DFF1E88000FB708 /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		223477192DFF1E88000FB708 /* LocationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
+		2234771B2DFF1E88000FB708 /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		2234771C2DFF1E88000FB708 /* City.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
+		2234771D2DFF1E88000FB708 /* Currency.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
+		2234771F2DFF1E88000FB708 /* ShopifyLocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopifyLocationService.swift; sourceTree = "<group>"; };
+		223477202DFF1E88000FB708 /* SettingsNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsNetworkManager.swift; sourceTree = "<group>"; };
+		223477212DFF1E88000FB708 /* UserIfon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserIfon.swift; sourceTree = "<group>"; };
+		223477222DFF1E88000FB708 /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		223477242DFF1E88000FB708 /* ContactUsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; };
+		223477252DFF1E88000FB708 /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		223477272DFF1E88000FB708 /* CountryPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryPicker.swift; sourceTree = "<group>"; };
+		223477282DFF1E88000FB708 /* CityRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityRow.swift; sourceTree = "<group>"; };
+		223477292DFF1E88000FB708 /* AddressFormField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressFormField.swift; sourceTree = "<group>"; };
+		2234772A2DFF1E88000FB708 /* CustomSettingField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSettingField.swift; sourceTree = "<group>"; };
+		2234772B2DFF1E88000FB708 /* CustomSegment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegment.swift; sourceTree = "<group>"; };
+		2234772C2DFF1E88000FB708 /* AdderssBody.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdderssBody.swift; sourceTree = "<group>"; };
+		2234772D2DFF1E88000FB708 /* SearchCountryBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCountryBar.swift; sourceTree = "<group>"; };
+		2234772E2DFF1E88000FB708 /* CountryPickerModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryPickerModal.swift; sourceTree = "<group>"; };
+		2234772F2DFF1E88000FB708 /* CountrySelectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountrySelectionButton.swift; sourceTree = "<group>"; };
+		223477302DFF1E88000FB708 /* CountryRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryRow.swift; sourceTree = "<group>"; };
+		223477312DFF1E88000FB708 /* SubmitAddrressButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubmitAddrressButton.swift; sourceTree = "<group>"; };
+		223477322DFF1E88000FB708 /* CitySelectionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitySelectionButton.swift; sourceTree = "<group>"; };
+		223477332DFF1E88000FB708 /* CityPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityPicker.swift; sourceTree = "<group>"; };
+		223477342DFF1E88000FB708 /* CityPickerModal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CityPickerModal.swift; sourceTree = "<group>"; };
+		223477352DFF1E88000FB708 /* AboutUsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutUsView.swift; sourceTree = "<group>"; };
+		223477372DFF1E88000FB708 /* SupportSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportSettings.swift; sourceTree = "<group>"; };
+		223477382DFF1E88000FB708 /* HeaderSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
+		223477392DFF1E88000FB708 /* CurrencyPickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrencyPickerView.swift; sourceTree = "<group>"; };
+		2234773A2DFF1E88000FB708 /* UserSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
+		2234773B2DFF1E88000FB708 /* SettingItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
+		2234773C2DFF1E88000FB708 /* AccountSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
+		2234773D2DFF1E88000FB708 /* SectionHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
+		2234773E2DFF1E88000FB708 /* AddressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
+		223477622DFF1F07000FB708 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
+		223477652DFF1F0D000FB708 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		223477692DFF2059000FB708 /* TabBarVisibilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVisibilityManager.swift; sourceTree = "<group>"; };
 		225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTabBar.swift; sourceTree = "<group>"; };
 		225DD6DA2DFC8CFE002681B3 /* ImgCouponView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgCouponView.swift; sourceTree = "<group>"; };
@@ -142,7 +181,6 @@
 		225DD6F42DFC9082002681B3 /* CategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryView.swift; sourceTree = "<group>"; };
 		225DD6F62DFC90BD002681B3 /* ProductCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCardView.swift; sourceTree = "<group>"; };
 		225DD6F82DFC9103002681B3 /* ProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModel.swift; sourceTree = "<group>"; };
-		225DD6FA2DFC917F002681B3 /* PersonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonView.swift; sourceTree = "<group>"; };
 		227EAC4F2DFDD5A300F0D300 /* CartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartView.swift; sourceTree = "<group>"; };
 		227EAC512DFDD5B800F0D300 /* FavoriteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteView.swift; sourceTree = "<group>"; };
 		227EAC532DFDD76100F0D300 /* BaseProductViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductViewModel.swift; sourceTree = "<group>"; };
@@ -152,22 +190,6 @@
 		227EAC5B2DFDDA6D00F0D300 /* WomenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WomenView.swift; sourceTree = "<group>"; };
 		227EAC5D2DFDDABE00F0D300 /* KidsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KidsView.swift; sourceTree = "<group>"; };
 		227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleView.swift; sourceTree = "<group>"; };
-		22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingItem.swift; sourceTree = "<group>"; };
-		22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderSettings.swift; sourceTree = "<group>"; };
-		22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSettings.swift; sourceTree = "<group>"; };
-		22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeader.swift; sourceTree = "<group>"; };
-		22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportSettings.swift; sourceTree = "<group>"; };
-		22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSettings.swift; sourceTree = "<group>"; };
-		22CAE7622DF4F5CC00F0E2E0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		22CAE7642DF4FA3500F0E2E0 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
-		22CAE7672DF4FE3300F0E2E0 /* AdderssBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdderssBody.swift; sourceTree = "<group>"; };
-		22CAE76A2DF5005B00F0E2E0 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
-		22CAE76C2DF500DA00F0E2E0 /* CountryPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryPicker.swift; sourceTree = "<group>"; };
-		22CAE76E2DF5022D00F0E2E0 /* CountryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryRow.swift; sourceTree = "<group>"; };
-		22CAE7702DF5038200F0E2E0 /* SearchCountryBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCountryBar.swift; sourceTree = "<group>"; };
-		22CAE7722DF5054900F0E2E0 /* CountryPickerModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountryPickerModal.swift; sourceTree = "<group>"; };
-		22CAE7742DF505E900F0E2E0 /* CountrySelectionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountrySelectionButton.swift; sourceTree = "<group>"; };
-		22CAE7762DF5116900F0E2E0 /* CustomSettingField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSettingField.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,7 +232,8 @@
 		0474056D2DF123430047C6C2 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				221C93DA2DF5EFC000AD404A /* Consts */,
+				223477642DFF1F0D000FB708 /* Components */,
+				223477612DFF1F07000FB708 /* Consts */,
 				0474056E2DF123500047C6C2 /* Assets */,
 			);
 			path = Utility;
@@ -228,9 +251,14 @@
 		048FD7D92DEDCD7000F3CC33 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				223477162DFF1E88000FB708 /* Settings */,
+				223477132DFF1D6B000FB708 /* Cart */,
+				223477122DFF1D5C000FB708 /* Favorite */,
+				223477112DFF1D2F000FB708 /* FloatingTabBar */,
+				225DD6EE2DFC8FD7002681B3 /* Category */,
+				225DD6DE2DFC8DFB002681B3 /* Home */,
 				04C46D592DF783ED0077AC37 /* ProductDetails */,
 				0467C6BE2DEF9E2100DEDD32 /* Auth */,
-				22CAE7542DF4F0D300F0E2E0 /* Settings */,
 				04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */,
 			);
 			path = Features;
@@ -259,22 +287,13 @@
 		04B477832DE3A1A400CC82F8 /* M-commerce-App */ = {
 			isa = PBXGroup;
 			children = (
-				225DD6EE2DFC8FD7002681B3 /* Category */,
-				225DD6DE2DFC8DFB002681B3 /* Home */,
 				225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */,
+				04B4778F2DE3A1A600CC82F8 /* M_commerce_App.xcdatamodeld */,
+				04B4778A2DE3A1A600CC82F8 /* Preview Content */,
 				0474056D2DF123430047C6C2 /* Utility */,
 				048FD7D92DEDCD7000F3CC33 /* Features */,
 				04B477862DE3A1A400CC82F8 /* ContentView.swift */,
 				04B4778D2DE3A1A600CC82F8 /* Persistence.swift */,
-				04B4778F2DE3A1A600CC82F8 /* M_commerce_App.xcdatamodeld */,
-				04B4778A2DE3A1A600CC82F8 /* Preview Content */,
-				04B329182DF939A1002CE2DD /* HomeView.swift */,
-				225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */,
-				225DD6DA2DFC8CFE002681B3 /* ImgCouponView.swift */,
-				225DD6DC2DFC8DB6002681B3 /* ToolBar.swift */,
-				225DD6FA2DFC917F002681B3 /* PersonView.swift */,
-				227EAC4F2DFDD5A300F0D300 /* CartView.swift */,
-				227EAC512DFDD5B800F0D300 /* FavoriteView.swift */,
 			);
 			path = "M-commerce-App";
 			sourceTree = "<group>";
@@ -334,31 +353,151 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
-		221C93D62DF5CB5D00AD404A /* ViewModel */ = {
+		223477112DFF1D2F000FB708 /* FloatingTabBar */ = {
 			isa = PBXGroup;
 			children = (
-				221C93D42DF5CB5600AD404A /* SettingsViewModel.swift */,
+				223477682DFF2044000FB708 /* ViewModel */,
+				223477672DFF203A000FB708 /* views */,
+			);
+			path = FloatingTabBar;
+			sourceTree = "<group>";
+		};
+		223477122DFF1D5C000FB708 /* Favorite */ = {
+			isa = PBXGroup;
+			children = (
+				227EAC512DFDD5B800F0D300 /* FavoriteView.swift */,
+			);
+			path = Favorite;
+			sourceTree = "<group>";
+		};
+		223477132DFF1D6B000FB708 /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				227EAC4F2DFDD5A300F0D300 /* CartView.swift */,
+			);
+			path = Cart;
+			sourceTree = "<group>";
+		};
+		223477162DFF1E88000FB708 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				223477172DFF1E88000FB708 /* ViewModel */,
+				2234771A2DFF1E88000FB708 /* Models */,
+				223477232DFF1E88000FB708 /* Views */,
+			);
+			name = Settings;
+			path = "../../../../Documents/M-commerce-App/M-commerce-App/Features/Settings";
+			sourceTree = "<group>";
+		};
+		223477172DFF1E88000FB708 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				223477182DFF1E88000FB708 /* SettingsViewModel.swift */,
+				223477192DFF1E88000FB708 /* LocationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		221C93D72DF5CB6700AD404A /* Views */ = {
+		2234771A2DFF1E88000FB708 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				22CAE7552DF4F13100F0E2E0 /* SettingsComponents */,
-				22CAE7662DF4FDD500F0E2E0 /* AddressComponents */,
-				22CAE7622DF4F5CC00F0E2E0 /* SettingsView.swift */,
-				22CAE7642DF4FA3500F0E2E0 /* AddressView.swift */,
+				2234771B2DFF1E88000FB708 /* Address.swift */,
+				2234771C2DFF1E88000FB708 /* City.swift */,
+				2234771D2DFF1E88000FB708 /* Currency.swift */,
+				2234771E2DFF1E88000FB708 /* network */,
+				223477212DFF1E88000FB708 /* UserIfon.swift */,
+				223477222DFF1E88000FB708 /* Country.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		2234771E2DFF1E88000FB708 /* network */ = {
+			isa = PBXGroup;
+			children = (
+				2234771F2DFF1E88000FB708 /* ShopifyLocationService.swift */,
+				223477202DFF1E88000FB708 /* SettingsNetworkManager.swift */,
+			);
+			path = network;
+			sourceTree = "<group>";
+		};
+		223477232DFF1E88000FB708 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				223477242DFF1E88000FB708 /* ContactUsView.swift */,
+				223477252DFF1E88000FB708 /* SettingsView.swift */,
+				223477352DFF1E88000FB708 /* AboutUsView.swift */,
+				2234773E2DFF1E88000FB708 /* AddressView.swift */,
+				223477262DFF1E88000FB708 /* AddressComponents */,
+				223477362DFF1E88000FB708 /* SettingsComponents */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		221C93DA2DF5EFC000AD404A /* Consts */ = {
+		223477262DFF1E88000FB708 /* AddressComponents */ = {
 			isa = PBXGroup;
 			children = (
-				221C93DB2DF5F16A00AD404A /* UserDefaultsKeys.swift */,
+				223477272DFF1E88000FB708 /* CountryPicker.swift */,
+				223477282DFF1E88000FB708 /* CityRow.swift */,
+				223477292DFF1E88000FB708 /* AddressFormField.swift */,
+				2234772A2DFF1E88000FB708 /* CustomSettingField.swift */,
+				2234772B2DFF1E88000FB708 /* CustomSegment.swift */,
+				2234772C2DFF1E88000FB708 /* AdderssBody.swift */,
+				2234772D2DFF1E88000FB708 /* SearchCountryBar.swift */,
+				2234772E2DFF1E88000FB708 /* CountryPickerModal.swift */,
+				2234772F2DFF1E88000FB708 /* CountrySelectionButton.swift */,
+				223477302DFF1E88000FB708 /* CountryRow.swift */,
+				223477312DFF1E88000FB708 /* SubmitAddrressButton.swift */,
+				223477322DFF1E88000FB708 /* CitySelectionButton.swift */,
+				223477332DFF1E88000FB708 /* CityPicker.swift */,
+				223477342DFF1E88000FB708 /* CityPickerModal.swift */,
+			);
+			path = AddressComponents;
+			sourceTree = "<group>";
+		};
+		223477362DFF1E88000FB708 /* SettingsComponents */ = {
+			isa = PBXGroup;
+			children = (
+				223477372DFF1E88000FB708 /* SupportSettings.swift */,
+				223477382DFF1E88000FB708 /* HeaderSettings.swift */,
+				223477392DFF1E88000FB708 /* CurrencyPickerView.swift */,
+				2234773A2DFF1E88000FB708 /* UserSettings.swift */,
+				2234773B2DFF1E88000FB708 /* SettingItem.swift */,
+				2234773C2DFF1E88000FB708 /* AccountSettings.swift */,
+				2234773D2DFF1E88000FB708 /* SectionHeader.swift */,
+			);
+			path = SettingsComponents;
+			sourceTree = "<group>";
+		};
+		223477612DFF1F07000FB708 /* Consts */ = {
+			isa = PBXGroup;
+			children = (
+				223477622DFF1F07000FB708 /* UserDefaultsKeys.swift */,
 			);
 			path = Consts;
+			sourceTree = "<group>";
+		};
+		223477642DFF1F0D000FB708 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				223477652DFF1F0D000FB708 /* Toast.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		223477672DFF203A000FB708 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */,
+			);
+			path = views;
+			sourceTree = "<group>";
+		};
+		223477682DFF2044000FB708 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				223477692DFF2059000FB708 /* TabBarVisibilityManager.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		225DD6DE2DFC8DFB002681B3 /* Home */ = {
@@ -383,7 +522,10 @@
 		225DD6E02DFC8E1C002681B3 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				225DD6DA2DFC8CFE002681B3 /* ImgCouponView.swift */,
+				225DD6DC2DFC8DB6002681B3 /* ToolBar.swift */,
 				225DD6E62DFC8EC6002681B3 /*  HomeView.swift */,
+				223477142DFF1DF9000FB708 /* HomeView.swift */,
 				225DD6E82DFC8EFE002681B3 /* ProductsView.swift */,
 			);
 			path = View;
@@ -438,58 +580,6 @@
 				227EAC552DFDD94400F0D300 /* CategeoryViemModels.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		22CAE7542DF4F0D300F0E2E0 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				221C93D72DF5CB6700AD404A /* Views */,
-				221C93D62DF5CB5D00AD404A /* ViewModel */,
-				22CAE7692DF5004A00F0E2E0 /* Models */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		22CAE7552DF4F13100F0E2E0 /* SettingsComponents */ = {
-			isa = PBXGroup;
-			children = (
-				22CAE7562DF4F14600F0E2E0 /* SettingItem.swift */,
-				22CAE7582DF4F43D00F0E2E0 /* HeaderSettings.swift */,
-				22CAE75A2DF4F48000F0E2E0 /* UserSettings.swift */,
-				22CAE75C2DF4F4C600F0E2E0 /* SectionHeader.swift */,
-				22CAE75E2DF4F4F600F0E2E0 /* SupportSettings.swift */,
-				22CAE7602DF4F54800F0E2E0 /* AccountSettings.swift */,
-			);
-			path = SettingsComponents;
-			sourceTree = "<group>";
-		};
-		22CAE7662DF4FDD500F0E2E0 /* AddressComponents */ = {
-			isa = PBXGroup;
-			children = (
-				22CAE7672DF4FE3300F0E2E0 /* AdderssBody.swift */,
-				22CAE76C2DF500DA00F0E2E0 /* CountryPicker.swift */,
-				22CAE76E2DF5022D00F0E2E0 /* CountryRow.swift */,
-				22CAE7702DF5038200F0E2E0 /* SearchCountryBar.swift */,
-				22CAE7722DF5054900F0E2E0 /* CountryPickerModal.swift */,
-				22CAE7742DF505E900F0E2E0 /* CountrySelectionButton.swift */,
-				22CAE7762DF5116900F0E2E0 /* CustomSettingField.swift */,
-				221C93C82DF5B4A400AD404A /* CitySelectionButton.swift */,
-				221C93CA2DF5BCC900AD404A /* CityPicker.swift */,
-				221C93CC2DF5BE7500AD404A /* CityPickerModal.swift */,
-				221C93CE2DF5C02D00AD404A /* CityRow.swift */,
-			);
-			path = AddressComponents;
-			sourceTree = "<group>";
-		};
-		22CAE7692DF5004A00F0E2E0 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				22CAE76A2DF5005B00F0E2E0 /* Country.swift */,
-				221C93D02DF5C77B00AD404A /* City.swift */,
-				221C93D22DF5C98300AD404A /* SettingsNetworkManager.swift */,
-				221C93DD2DF5F4F400AD404A /* UserIfon.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -636,64 +726,75 @@
 			buildActionMask = 2147483647;
 			files = (
 				04B5A65B2DF0F8CD0044E0FD /* OnboardingView2.swift in Sources */,
-				22CAE7592DF4F43D00F0E2E0 /* HeaderSettings.swift in Sources */,
+				223477502DFF1E88000FB708 /* SearchCountryBar.swift in Sources */,
 				227EAC502DFDD5A300F0D300 /* CartView.swift in Sources */,
-				22CAE7732DF5054900F0E2E0 /* CountryPickerModal.swift in Sources */,
-				22CAE75F2DF4F4F600F0E2E0 /* SupportSettings.swift in Sources */,
-				22CAE76F2DF5022D00F0E2E0 /* CountryRow.swift in Sources */,
+				2234775F2DFF1E88000FB708 /* SectionHeader.swift in Sources */,
+				223477462DFF1E88000FB708 /* UserIfon.swift in Sources */,
 				225DD6D92DFC8C4D002681B3 /* FloatingTabBar.swift in Sources */,
-				225DD6FB2DFC917F002681B3 /* PersonView.swift in Sources */,
+				2234775C2DFF1E88000FB708 /* UserSettings.swift in Sources */,
+				223477152DFF1DF9000FB708 /* HomeView.swift in Sources */,
 				225DD6ED2DFC8F99002681B3 /* ProductsViewModel.swift in Sources */,
 				227EAC542DFDD76100F0D300 /* BaseProductViewModel.swift in Sources */,
-				221C93CF2DF5C02D00AD404A /* CityRow.swift in Sources */,
+				223477592DFF1E88000FB708 /* SupportSettings.swift in Sources */,
+				223477542DFF1E88000FB708 /* SubmitAddrressButton.swift in Sources */,
+				2234774E2DFF1E88000FB708 /* CustomSegment.swift in Sources */,
+				2234774D2DFF1E88000FB708 /* CustomSettingField.swift in Sources */,
 				04B4778E2DE3A1A600CC82F8 /* Persistence.swift in Sources */,
-				22CAE7712DF5038200F0E2E0 /* SearchCountryBar.swift in Sources */,
+				223477452DFF1E88000FB708 /* SettingsNetworkManager.swift in Sources */,
 				227EAC5E2DFDDABE00F0D300 /* KidsView.swift in Sources */,
-				221C93DC2DF5F16A00AD404A /* UserDefaultsKeys.swift in Sources */,
-				221C93D52DF5CB5600AD404A /* SettingsViewModel.swift in Sources */,
+				2234775D2DFF1E88000FB708 /* SettingItem.swift in Sources */,
+				223477402DFF1E88000FB708 /* LocationViewModel.swift in Sources */,
 				225DD6E32DFC8E52002681B3 /* Brand.swift in Sources */,
 				225DD6F72DFC90BD002681B3 /* ProductCardView.swift in Sources */,
-				22CAE7572DF4F14600F0E2E0 /* SettingItem.swift in Sources */,
-				22CAE7652DF4FA3500F0E2E0 /* AddressView.swift in Sources */,
-				22CAE7632DF4F5CC00F0E2E0 /* SettingsView.swift in Sources */,
+				223477422DFF1E88000FB708 /* City.swift in Sources */,
 				225DD6DB2DFC8CFE002681B3 /* ImgCouponView.swift in Sources */,
-				221C93DE2DF5F4F400AD404A /* UserIfon.swift in Sources */,
-				22CAE76D2DF500DA00F0E2E0 /* CountryPicker.swift in Sources */,
-				22CAE7772DF5116900F0E2E0 /* CustomSettingField.swift in Sources */,
+				223477552DFF1E88000FB708 /* CitySelectionButton.swift in Sources */,
+				223477412DFF1E88000FB708 /* Address.swift in Sources */,
 				225DD6F32DFC9024002681B3 /* CustomCollection.swift in Sources */,
 				227EAC562DFDD94400F0D300 /* CategeoryViemModels.swift in Sources */,
-				221C93D32DF5C98300AD404A /* SettingsNetworkManager.swift in Sources */,
+				223477662DFF1F0D000FB708 /* Toast.swift in Sources */,
+				2234775B2DFF1E88000FB708 /* CurrencyPickerView.swift in Sources */,
 				04C46D5C2DF7840F0077AC37 /* ProductDetailsView.swift in Sources */,
+				2234774F2DFF1E88000FB708 /* AdderssBody.swift in Sources */,
 				225DD6F92DFC9103002681B3 /* ProductViewModel.swift in Sources */,
-				22CAE75B2DF4F48000F0E2E0 /* UserSettings.swift in Sources */,
-				221C93C92DF5B4A400AD404A /* CitySelectionButton.swift in Sources */,
-				221C93CD2DF5BE7500AD404A /* CityPickerModal.swift in Sources */,
+				2234776A2DFF2059000FB708 /* TabBarVisibilityManager.swift in Sources */,
+				223477492DFF1E88000FB708 /* SettingsView.swift in Sources */,
+				2234775A2DFF1E88000FB708 /* HeaderSettings.swift in Sources */,
+				223477482DFF1E88000FB708 /* ContactUsView.swift in Sources */,
 				227EAC522DFDD5B800F0D300 /* FavoriteView.swift in Sources */,
-				22CAE76B2DF5005B00F0E2E0 /* Country.swift in Sources */,
+				2234773F2DFF1E88000FB708 /* SettingsViewModel.swift in Sources */,
 				04B477872DE3A1A500CC82F8 /* ContentView.swift in Sources */,
-				04B329192DF939A1002CE2DD /* HomeView.swift in Sources */,
+				223477632DFF1F07000FB708 /* UserDefaultsKeys.swift in Sources */,
 				04B5A65D2DF0FEDA0044E0FD /* LoginView.swift in Sources */,
+				223477582DFF1E88000FB708 /* AboutUsView.swift in Sources */,
 				227EAC5A2DFDD9FD00F0D300 /* ProductGridView.swift in Sources */,
+				223477572DFF1E88000FB708 /* CityPickerModal.swift in Sources */,
+				223477512DFF1E88000FB708 /* CountryPickerModal.swift in Sources */,
 				225DD6EB2DFC8F4B002681B3 /* HomeViewModel.swift in Sources */,
 				225DD6E92DFC8EFE002681B3 /* ProductsView.swift in Sources */,
 				225DD6DD2DFC8DB6002681B3 /* ToolBar.swift in Sources */,
 				04B477912DE3A1A600CC82F8 /* M_commerce_App.xcdatamodeld in Sources */,
+				2234774A2DFF1E88000FB708 /* CountryPicker.swift in Sources */,
+				223477522DFF1E88000FB708 /* CountrySelectionButton.swift in Sources */,
 				04B477852DE3A1A400CC82F8 /* M_commerce_AppApp.swift in Sources */,
+				223477602DFF1E88000FB708 /* AddressView.swift in Sources */,
 				227EAC5C2DFDDA6D00F0D300 /* WomenView.swift in Sources */,
 				0474056C2DF11BAD0047C6C2 /* SignUpView.swift in Sources */,
-				221C93D12DF5C77B00AD404A /* City.swift in Sources */,
-				22CAE75D2DF4F4C600F0E2E0 /* SectionHeader.swift in Sources */,
+				223477442DFF1E88000FB708 /* ShopifyLocationService.swift in Sources */,
 				225DD6F52DFC9082002681B3 /* CategoryView.swift in Sources */,
+				223477432DFF1E88000FB708 /* Currency.swift in Sources */,
 				04D849412DF0DD3B00564625 /* LottieView.swift in Sources */,
 				225DD6E72DFC8EC6002681B3 /*  HomeView.swift in Sources */,
 				04D8493D2DF0DCAD00564625 /* OnboardingView.swift in Sources */,
-				22CAE7612DF4F54800F0E2E0 /* AccountSettings.swift in Sources */,
-				22CAE7682DF4FE3300F0E2E0 /* AdderssBody.swift in Sources */,
+				223477472DFF1E88000FB708 /* Country.swift in Sources */,
+				223477532DFF1E88000FB708 /* CountryRow.swift in Sources */,
+				2234774B2DFF1E88000FB708 /* CityRow.swift in Sources */,
 				227EAC582DFDD99200F0D300 /* MenView.swift in Sources */,
 				04D8493F2DF0DCF800564625 /* SplashView.swift in Sources */,
-				221C93CB2DF5BCC900AD404A /* CityPicker.swift in Sources */,
+				2234774C2DFF1E88000FB708 /* AddressFormField.swift in Sources */,
 				227EAC602DFDDAFD00F0D300 /* SaleView.swift in Sources */,
-				22CAE7752DF505E900F0E2E0 /* CountrySelectionButton.swift in Sources */,
+				223477562DFF1E88000FB708 /* CityPicker.swift in Sources */,
+				2234775E2DFF1E88000FB708 /* AccountSettings.swift in Sources */,
 				225DD6E52DFC8E79002681B3 /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
