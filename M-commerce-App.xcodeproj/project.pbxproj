@@ -28,6 +28,8 @@
 		04D8493D2DF0DCAD00564625 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D8493C2DF0DCAD00564625 /* OnboardingView.swift */; };
 		04D8493F2DF0DCF800564625 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D8493E2DF0DCF800564625 /* SplashView.swift */; };
 		04D849412DF0DD3B00564625 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D849402DF0DD3B00564625 /* LottieView.swift */; };
+		04F6AE0A2E007ED200BBC2FA /* FavoritesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F6AE092E007ED200BBC2FA /* FavoritesManager.swift */; };
+		04F6AE0C2E00919200BBC2FA /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F6AE0B2E00919200BBC2FA /* NetworkMonitor.swift */; };
 		223477152DFF1DF9000FB708 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477142DFF1DF9000FB708 /* HomeView.swift */; };
 		223477632DFF1F07000FB708 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477622DFF1F07000FB708 /* UserDefaultsKeys.swift */; };
 		223477662DFF1F0D000FB708 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477652DFF1F0D000FB708 /* Toast.swift */; };
@@ -129,6 +131,8 @@
 		04D8493C2DF0DCAD00564625 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		04D8493E2DF0DCF800564625 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
 		04D849402DF0DD3B00564625 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		04F6AE092E007ED200BBC2FA /* FavoritesManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesManager.swift; sourceTree = "<group>"; };
+		04F6AE0B2E00919200BBC2FA /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		223477142DFF1DF9000FB708 /* HomeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		223477622DFF1F07000FB708 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		223477652DFF1F0D000FB708 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 		0474056D2DF123430047C6C2 /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				04F6AE082E007EA700BBC2FA /* CoreData */,
 				223477642DFF1F0D000FB708 /* Components */,
 				223477612DFF1F07000FB708 /* Consts */,
 				0474056E2DF123500047C6C2 /* Assets */,
@@ -351,6 +356,15 @@
 			);
 			name = Views;
 			path = "New Group";
+			sourceTree = "<group>";
+		};
+		04F6AE082E007EA700BBC2FA /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				04F6AE092E007ED200BBC2FA /* FavoritesManager.swift */,
+				04F6AE0B2E00919200BBC2FA /* NetworkMonitor.swift */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		223477112DFF1D2F000FB708 /* FloatingTabBar */ = {
@@ -731,6 +745,7 @@
 				22F696332DFF41C500D2E247 /* SearchCountryBar.swift in Sources */,
 				04B5A65B2DF0F8CD0044E0FD /* OnboardingView2.swift in Sources */,
 				227EAC502DFDD5A300F0D300 /* CartView.swift in Sources */,
+				04F6AE0A2E007ED200BBC2FA /* FavoritesManager.swift in Sources */,
 				225DD6D92DFC8C4D002681B3 /* FloatingTabBar.swift in Sources */,
 				223477152DFF1DF9000FB708 /* HomeView.swift in Sources */,
 				225DD6ED2DFC8F99002681B3 /* ProductsViewModel.swift in Sources */,
@@ -794,6 +809,7 @@
 				22F6963D2DFF41C500D2E247 /* HeaderSettings.swift in Sources */,
 				22F696322DFF41C500D2E247 /* AdderssBody.swift in Sources */,
 				22F6963C2DFF41C500D2E247 /* SupportSettings.swift in Sources */,
+				04F6AE0C2E00919200BBC2FA /* NetworkMonitor.swift in Sources */,
 				225DD6E52DFC8E79002681B3 /* Product.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

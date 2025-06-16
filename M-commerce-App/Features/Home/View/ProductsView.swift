@@ -8,6 +8,7 @@ import SwiftUI
 
 struct ProductsView: View {
     @StateObject private var viewModel: ProductsViewModel
+    @EnvironmentObject var favoritesManager: FavoritesManager
     @State private var searchText = ""
     @State private var hasNavigated = false
     @State private var selectedProduct: Product?
@@ -50,10 +51,10 @@ struct ProductsView: View {
                                 VStack(alignment: .leading, spacing: 8) {
                                     HStack {
                                         Button {
-                                        
+                                            favoritesManager.toggleFavorite(product: product)
                                         } label: {
-                                            Image(systemName: "heart")
-                                                .foregroundColor(.red)
+                                            Image(systemName: favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart")
+                                                .foregroundColor(favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red)
                                                 .padding(6)
                                                 .background(Color.white.opacity(0.8))
                                                 .clipShape(Circle())
@@ -148,11 +149,13 @@ struct ProductsView: View {
         .onChange(of: searchText) { newValue in
             viewModel.filterProducts(bySearch: newValue)
         }
+        .environmentObject(favoritesManager)
     }
 }
 
 struct ProductsView_Previews: PreviewProvider {
     static var previews: some View {
         ProductsView(brandName: "Sample Brand")
+            .environmentObject(FavoritesManager.shared)
     }
 }

@@ -7,6 +7,7 @@ import GoogleSignIn
 struct M_commerce_AppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var authViewModel = AuthViewModel()
+    private let persistenceController = PersistenceController.shared // إضافة PersistenceController
     
     var body: some Scene {
         WindowGroup {
@@ -15,18 +16,28 @@ struct M_commerce_AppApp: App {
                 case .splash:
                     SplashView()
                         .environmentObject(authViewModel)
+                        .environmentObject(FavoritesManager.shared)
+                        .environment(\.managedObjectContext, persistenceController.container.viewContext) // إضافة viewContext
                 case .login:
                     LoginView()
                         .environmentObject(authViewModel)
+                        .environmentObject(FavoritesManager.shared)
+                        .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 case .onboarding:
                     OnboardingView()
                         .environmentObject(authViewModel)
+                        .environmentObject(FavoritesManager.shared)
+                        .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 case .onboarding2:
                     OnboardingView2()
                         .environmentObject(authViewModel)
+                        .environmentObject(FavoritesManager.shared)
+                        .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 case .home:
                     FloatingTabBar()
                         .environmentObject(authViewModel)
+                        .environmentObject(FavoritesManager.shared)
+                        .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 }
             }
         }
@@ -88,12 +99,11 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
     func completeSplash() {
-            hasSeenSplash = true
-            currentView = isLoggedIn ? .home : .login
-        }
-        
-        
+        hasSeenSplash = true
+        currentView = isLoggedIn ? .home : .login
+    }
     
     func startOnboarding() {
         isNewUser = true

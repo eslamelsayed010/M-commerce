@@ -11,10 +11,11 @@ import Foundation
 
 struct CategoryView: View {
     @ObservedObject var viewModel = ProductViewModel()
-    @State private var searchText = "" // State to hold search text
+    @EnvironmentObject var favoritesManager: FavoritesManager
+    @State private var searchText = ""
     @State private var showFilters = false
-    @State private var hasNavigated = false // Track navigation to ProductDetailsView
-    @State private var selectedProduct: Product? // Track selected product for navigation
+    @State private var hasNavigated = false
+    @State private var selectedProduct: Product?
 
     let subcategories = ["Shirts", "Shoes", "Accessories", "All"]
 
@@ -52,7 +53,7 @@ struct CategoryView: View {
                                         .onTapGesture {
                                             viewModel.selectProduct(product)
                                             selectedProduct = product
-                                            hasNavigated = true 
+                                            hasNavigated = true
                                         }
                                 }
                             }
@@ -108,15 +109,15 @@ struct CategoryView: View {
             }
             .onAppear {
                 viewModel.loadAllProducts()
-                // Clear search text only if returning from navigation
                 if hasNavigated {
                     searchText = ""
-                    hasNavigated = false // Reset navigation flag
+                    hasNavigated = false
                 }
             }
             .onChange(of: searchText) { newValue in
                 viewModel.filterProducts(bySearch: newValue)
             }
+            .environmentObject(favoritesManager)
         }
     }
 }
@@ -124,5 +125,6 @@ struct CategoryView: View {
 struct CategoryView_Previews: PreviewProvider {
     static var previews: some View {
         CategoryView()
+            .environmentObject(FavoritesManager.shared)
     }
 }

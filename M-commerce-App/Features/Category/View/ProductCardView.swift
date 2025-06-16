@@ -9,32 +9,34 @@ import SwiftUI
 
 struct ProductCardView: View {
     let product: Product
+    @EnvironmentObject var favoritesManager: FavoritesManager
 
     var body: some View {
         NavigationLink(destination: ProductDetailsView(product: product)) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Button(action: {
-                    }) {
-                        Image(systemName: "heart")
-                            .foregroundColor(.red)
+                    Button {
+                        favoritesManager.toggleFavorite(product: product)
+                    } label: {
+                        Image(systemName: favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart")
+                            .foregroundColor(favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red)
                             .padding(6)
                             .background(Color.white.opacity(0.8))
                             .clipShape(Circle())
                     }
                     .buttonStyle(.plain)
+
                     Spacer()
 
-                    Button(action: {
-                        
-                    }) {
+                    Button {
+                    } label: {
                         Image(systemName: "cart")
                             .foregroundColor(.black)
                             .padding(6)
                             .background(Color.white.opacity(0.8))
                             .clipShape(Circle())
                     }
-                    .buttonStyle(.plain) 
+                    .buttonStyle(.plain)
                 }
 
                 if let urlString = product.imageUrls.first, let url = URL(string: urlString) {
@@ -106,6 +108,7 @@ struct ProductCardView_Previews: PreviewProvider {
                     color: "black"
                 )
             )
+            .environmentObject(FavoritesManager.shared)
         }
         .previewLayout(.sizeThatFits)
         .padding()

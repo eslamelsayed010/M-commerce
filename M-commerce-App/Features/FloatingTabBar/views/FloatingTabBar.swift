@@ -6,11 +6,6 @@
 //
 
 import SwiftUI
-
-
-import SwiftUI
-
-
 struct FloatingTabBar: View {
     @StateObject var visibilityManager = TabBarVisibilityManager()
     

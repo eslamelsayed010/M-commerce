@@ -4,14 +4,13 @@ struct ProductDetailsView: View {
     let product: Product
     @State private var selectedImageIndex = 0
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var favoritesManager: FavoritesManager
 
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
-                
                 Spacer(minLength: 20)
 
-                
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color.white)
@@ -49,7 +48,6 @@ struct ProductDetailsView: View {
                         .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                         .frame(height: 220)
 
-                        
                         HStack(spacing: 8) {
                             ForEach(0..<product.imageUrls.count, id: \.self) { index in
                                 Circle()
@@ -62,7 +60,6 @@ struct ProductDetailsView: View {
                 }
                 .padding(.horizontal)
 
-            
                 HStack {
                     if let price = product.price, let currency = product.currencyCode {
                         HStack(spacing: 2) {
@@ -76,7 +73,6 @@ struct ProductDetailsView: View {
                                 .font(.title2)
                                 .fontWeight(.bold)
                         }
-
                     }
 
                     Spacer()
@@ -91,12 +87,10 @@ struct ProductDetailsView: View {
                 }
                 .padding(.horizontal)
 
-                
                 Text(product.title)
                     .font(.headline)
                     .padding(.horizontal)
 
-                
                 if let description = product.description {
                     Text(description)
                         .font(.subheadline)
@@ -104,10 +98,8 @@ struct ProductDetailsView: View {
                         .padding(.horizontal)
                 }
 
-                
                 if let size = product.size, let color = product.color {
                     HStack {
-                        
                         VStack(alignment: .leading, spacing: 6) {
                             Text("Size")
                                 .font(.headline)
@@ -121,7 +113,6 @@ struct ProductDetailsView: View {
 
                         Spacer()
 
-                        
                         VStack(alignment: .trailing, spacing: 6) {
                             Text("Color")
                                 .font(.headline)
@@ -135,9 +126,9 @@ struct ProductDetailsView: View {
         }
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: 12) {
-                Button(action: {
+                Button {
                     
-                }) {
+                } label: {
                     Text("Add to Cart")
                         .font(.headline)
                         .foregroundColor(.white)
@@ -147,12 +138,12 @@ struct ProductDetailsView: View {
                         .cornerRadius(12)
                 }
 
-                Button(action: {
-                    
-                }) {
-                    Image(systemName: "heart")
+                Button {
+                    favoritesManager.toggleFavorite(product: product)
+                } label: {
+                    Image(systemName: favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart")
                         .font(.title2)
-                        .foregroundColor(.brown)
+                        .foregroundColor(favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red)
                         .padding()
                         .background(Color.white)
                         .cornerRadius(12)
@@ -167,21 +158,17 @@ struct ProductDetailsView: View {
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-        
+                Button {
                     presentationMode.wrappedValue.dismiss()
-                }) {
+                } label: {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.primary)
                 }
             }
         }
-
+        .environmentObject(favoritesManager)
     }
 }
-
-
-
 struct ColorView: View {
     let colorName: String
 
@@ -210,7 +197,23 @@ struct ColorView: View {
     }
 }
 
-extension Color {
-    static let nescafeLight = Color(red: 0.96, green: 0.92, blue: 0.87)
+struct ProductDetailsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProductDetailsView(
+            product: Product(
+                id: "7575128211521",
+                title: "ADIDAS | CLASSIC BACKPACK",
+                description: "This women's backpack has a glam look...",
+                imageUrls: [
+                    "https://cdn.shopify.com/s/files/1/0657/0177/3377/files/product_29_image1.jpg"
+                ],
+                price: 70.00,
+                currencyCode: "EGP",
+                productType: "ACCESSORIES",
+                size: "OS",
+                color: "black"
+            )
+        )
+        .environmentObject(FavoritesManager.shared)
+    }
 }
-
