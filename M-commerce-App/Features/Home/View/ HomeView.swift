@@ -1,31 +1,30 @@
-//
-//  HomeView.swift
-//  M-commerce-App
-//
-//  Created by Macos on 04/06/2025.
-//
+
 import SwiftUI
+
+// نوع بيانات مخصص لإدارة التنقل عشان خاطري خلي بالكو بلاش لعب هنا
+enum NavigationDestination: Hashable {
+    case brand(String)
+    case category(String)
+}
 
 struct HomeView: View {
     @StateObject private var viewModel = HomeViewModel()
-
+    @State private var searchText = ""
     let rows = [
         GridItem(.fixed(150)),
         GridItem(.fixed(150))
     ]
     
-    @State private var isNavigationActive = false
+    @State private var navigationPath = NavigationPath()
     @State private var selected: Int? = nil
-    @State private var isNavigating = false
 
     let categories = ["Men", "Women", "Kids", "Sale"]
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $navigationPath) {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 10) {
-                    
-                    ToolBar()
+                    ToolBar(searchText: $searchText)
                     ImgCouponView()
                     
                     VStack {
@@ -33,7 +32,9 @@ struct HomeView: View {
                             ForEach(0..<categories.count, id: \.self) { index in
                                 Button(action: {
                                     selected = index
-                                    isNavigating = true
+                                    print("Navigating to category: \(categories[index])")
+                                    navigationPath = NavigationPath([NavigationDestination.category(categories[index])])
+                                    print("NavigationPath updated: \(navigationPath)")
                                 }) {
                                     Text(categories[index])
                                         .padding(.vertical, 8)
@@ -45,16 +46,7 @@ struct HomeView: View {
                             }
                         }
                         .padding()
-
-                        NavigationLink(
-                            destination: selectedDestination,
-                            isActive: $isNavigating,
-                            label: { EmptyView() }
-                        )
                     }
-
-
-                    
                     
                     ScrollView(.horizontal) {
                         LazyHGrid(rows: rows, spacing: 16) {
@@ -65,11 +57,17 @@ struct HomeView: View {
                                 Text("Error: \(error)")
                                     .foregroundColor(.red)
                                     .gridCellColumns(2)
+                            } else if viewModel.filteredBrands.isEmpty {
+                                Text("No brands found")
+                                    .foregroundColor(.gray)
+                                    .gridCellColumns(2)
                             } else {
-                                ForEach(viewModel.brands) { brand in
+                                ForEach(viewModel.filteredBrands) { brand in
                                     Button {
+                                        print("Selecting brand: \(brand.name)")
                                         viewModel.selectBrand(brand)
-                                        isNavigationActive = true
+                                        navigationPath = NavigationPath([NavigationDestination.brand(brand.name.lowercased())])
+                                        print("NavigationPath updated: \(navigationPath)")
                                     } label: {
                                         VStack {
                                             if let url = brand.imageUrl.flatMap(URL.init) {
@@ -117,15 +115,6 @@ struct HomeView: View {
                         }
                         .padding()
                     }
-
-                    NavigationLink(
-                        destination: ProductsView(brandName: viewModel.selectedBrand?.name ?? ""),
-                        isActive: $isNavigationActive,
-                        label: {
-                            EmptyView()
-                        }
-                    )
-                    .hidden()
                 }
                 .padding(.horizontal)
                 .padding(.top, 8)
@@ -133,22 +122,26 @@ struct HomeView: View {
             .onAppear {
                 viewModel.loadBrands()
             }
-        }
-    }
-
-    
-    @ViewBuilder
-    private var selectedDestination: some View {
-        switch selected {
-        case 0: MenView()
-        case 1: WomenView()
-        case 2: KidsView()
-        case 3: SaleView()
-        default: EmptyView()
+            .onChange(of: searchText) { newValue in
+                viewModel.filterBrands(with: newValue)
+            }
+            .navigationDestination(for: NavigationDestination.self) { destination in
+                switch destination {
+                case .brand(let brandName):
+                    ProductsView(brandName: brandName)
+                case .category(let categoryName):
+                    switch categoryName {
+                    case "Men": MenView()
+                    case "Women": WomenView()
+                    case "Kids": KidsView()
+                    case "Sale": SaleView()
+                    default: EmptyView()
+                    }
+                }
+            }
         }
     }
 }
-
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {

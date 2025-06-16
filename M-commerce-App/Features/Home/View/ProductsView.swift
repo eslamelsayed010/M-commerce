@@ -8,6 +8,9 @@ import SwiftUI
 
 struct ProductsView: View {
     @StateObject private var viewModel: ProductsViewModel
+    @State private var searchText = ""
+    @State private var hasNavigated = false
+    @State private var selectedProduct: Product?
     private let columns = [
         GridItem(.fixed(160), spacing: 12),
         GridItem(.fixed(160), spacing: 12)
@@ -18,28 +21,36 @@ struct ProductsView: View {
     }
 
     var body: some View {
-        ScrollView {
-            if viewModel.isLoading {
-                ProgressView("Loading products…")
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if let error = viewModel.errorMessage {
-                Text("Error: \(error)")
-                    .foregroundColor(.red)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else if viewModel.products.isEmpty {
-                Text("No products found")
-                    .italic()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-            } else {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(viewModel.products) { product in
-                        NavigationLink(
-                            destination: ProductDetailsView(product: product),
-                            label: {
+        VStack {
+            ToolBar(searchText: $searchText)
+            ScrollView {
+                if viewModel.isLoading {
+                    ProgressView("Loading products…")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if let error = viewModel.errorMessage {
+                    Text("Error: \(error)")
+                        .foregroundColor(.red)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else if viewModel.filteredProducts.isEmpty {
+                    Text("No products found")
+                        .italic()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(viewModel.filteredProducts) { product in
+                            NavigationLink(
+                                destination: ProductDetailsView(product: product),
+                                isActive: Binding(
+                                    get: { selectedProduct?.id == product.id },
+                                    set: { isActive in
+                                        if !isActive { selectedProduct = nil }
+                                    }
+                                )
+                            ) {
                                 VStack(alignment: .leading, spacing: 8) {
                                     HStack {
                                         Button {
-                                            
+                                        
                                         } label: {
                                             Image(systemName: "heart")
                                                 .foregroundColor(.red)
@@ -51,7 +62,7 @@ struct ProductsView: View {
                                         Spacer()
 
                                         Button {
-                                
+                                            
                                         } label: {
                                             Image(systemName: "cart")
                                                 .foregroundColor(.black)
@@ -113,12 +124,35 @@ struct ProductsView: View {
                                 .cornerRadius(12)
                                 .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
                             }
-                        )
+                            .onTapGesture {
+                                print("Navigating to ProductDetailsView for product: \(product.title)")
+                                viewModel.selectProduct(product)
+                                selectedProduct = product
+                                hasNavigated = true
+                            }
+                        }
                     }
+                    .padding()
                 }
-                .padding()
             }
         }
         .navigationTitle("Products")
+        .onAppear {
+           
+            viewModel.loadProducts()
+            if hasNavigated {
+                searchText = ""
+                hasNavigated = false
+            }
+        }
+        .onChange(of: searchText) { newValue in
+            viewModel.filterProducts(bySearch: newValue)
+        }
+    }
+}
+
+struct ProductsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProductsView(brandName: "Sample Brand")
     }
 }

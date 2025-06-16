@@ -10,6 +10,7 @@ import Combine
 
 class HomeViewModel: ObservableObject {
     @Published var brands: [Brand] = []
+    @Published var filteredBrands: [Brand] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var selectedBrand: Brand?
@@ -21,6 +22,7 @@ class HomeViewModel: ObservableObject {
                 let fetchedBrands = try await fetchBrandsFromGraphQL()
                 await MainActor.run {
                     self.brands = fetchedBrands
+                    self.filteredBrands = fetchedBrands // Initialize filteredBrands
                     self.isLoading = false
                 }
             } catch {
@@ -31,10 +33,20 @@ class HomeViewModel: ObservableObject {
             }
         }
     }
+    
     func selectBrand(_ brand: Brand) {
-            selectedBrand = brand
+        selectedBrand = brand
+    }
+    
+    func filterBrands(with searchText: String) {
+        if searchText.isEmpty {
+            filteredBrands = brands // Show all brands if search is empty
+        } else {
+            filteredBrands = brands.filter { brand in
+                brand.name.lowercased().contains(searchText.lowercased())
+            }
         }
-
+    }
 
     private func fetchBrandsFromGraphQL() async throws -> [Brand] {
         let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2024-04/graphql.json")!
@@ -78,7 +90,7 @@ class HomeViewModel: ObservableObject {
                 return nil
             }
             let imageUrl = (node["image"] as? [String: Any])?["url"] as? String
-            return Brand(name: title, imageUrl: imageUrl)
+            return Brand(name: title, imageUrl: imageUrl) 
         }
     }
 }

@@ -10,8 +10,11 @@ import Combine
 
 class ProductsViewModel: ObservableObject {
     @Published var products: [Product] = []
+    @Published var filteredProducts: [Product] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
+    @Published private var searchText: String = ""
+    @Published var selectedProductId: String? = nil 
 
     private var cancellables = Set<AnyCancellable>()
     private let brandName: String
@@ -36,8 +39,24 @@ class ProductsViewModel: ObservableObject {
             } receiveValue: { [weak self] products in
                 print("Fetched products count: \(products.count)")
                 self?.products = products
+                self?.filteredProducts = products
             }
             .store(in: &cancellables)
+    }
+
+    func filterProducts(bySearch searchText: String) {
+        self.searchText = searchText
+        if searchText.isEmpty {
+            filteredProducts = products
+        } else {
+            filteredProducts = products.filter {
+                $0.title.lowercased().contains(searchText.lowercased())
+            }
+        }
+    }
+
+    func selectProduct(_ product: Product) {
+        selectedProductId = product.id
     }
 
     private func fetchProductsForBrand(_ brand: String) -> AnyPublisher<[Product], Error> {
@@ -95,7 +114,6 @@ class ProductsViewModel: ObservableObject {
                 }
 
                 let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
-
                 let edges = (((json?["data"] as? [String: Any])?["products"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
 
                 return edges.compactMap { edge in
@@ -127,7 +145,7 @@ class ProductsViewModel: ObservableObject {
                         description: description,
                         imageUrls: imageUrls,
                         price: price,
-                        currencyCode: "$", 
+                        currencyCode: "$",
                         productType: productType,
                         size: size,
                         color: color

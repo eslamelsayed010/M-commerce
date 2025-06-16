@@ -13,6 +13,8 @@ class ProductViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var selectedSubcategory: String? = nil
+    @Published private var searchText: String = ""
+    @Published var selectedProductId: String? = nil 
 
     private var cancellables = Set<AnyCancellable>()
     private let pageSize = 50
@@ -27,16 +29,32 @@ class ProductViewModel: ObservableObject {
     }
 
     var filteredProducts: [Product] {
-        guard let sub = selectedSubcategory, !sub.isEmpty else {
-            return products
+        var filtered = products
+        // Apply subcategory filter
+        if let sub = selectedSubcategory, !sub.isEmpty {
+            filtered = filtered.filter {
+                $0.productType?.localizedCaseInsensitiveContains(sub) == true
+            }
         }
-        return products.filter {
-            $0.productType?.localizedCaseInsensitiveContains(sub) == true
+        // Apply search filter
+        if !searchText.isEmpty {
+            filtered = filtered.filter {
+                $0.title.lowercased().contains(searchText.lowercased())
+            }
         }
+        return filtered
     }
 
     func filterProducts(by subcategory: String?) {
         selectedSubcategory = subcategory
+    }
+
+    func filterProducts(bySearch searchText: String) {
+        self.searchText = searchText
+    }
+
+    func selectProduct(_ product: Product) {
+        selectedProductId = product.id
     }
 
     private func fetchNextPage() {
@@ -120,16 +138,14 @@ class ProductViewModel: ObservableObject {
                           let productType = node["productType"] as? String,
                           let id = node["id"] as? String,
                           let description = node["descriptionHtml"] as? String else {
-                        return nil 
+                        return nil
                     }
 
-                    // Parse multiple images
                     let imageEdges = ((node["images"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
                     let imageUrls = imageEdges.compactMap { edge in
                         (edge["node"] as? [String: Any])?["url"] as? String
                     }
 
-                    // Parse variant for price, size, and color
                     let variantEdges = ((node["variants"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
                     let variant = variantEdges.first?["node"] as? [String: Any]
                     let priceString = variant?["price"] as? String

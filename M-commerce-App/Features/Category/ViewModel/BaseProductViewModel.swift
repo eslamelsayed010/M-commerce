@@ -13,21 +13,39 @@ class BaseProductViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published var selectedSubcategory: String?
+    @Published private var searchText: String = "" // Store search text for filtering
+    @Published var selectedProductId: String? = nil // Track selected product for navigation
 
     var categoryKeyword: String { "" }
     private var cancellables = Set<AnyCancellable>()
 
     var filteredProducts: [Product] {
-        guard let filter = selectedSubcategory, !filter.isEmpty else {
-            return products
+        var filtered = products
+        // Apply subcategory filter
+        if let sub = selectedSubcategory, !sub.isEmpty {
+            filtered = filtered.filter {
+                $0.productType?.localizedCaseInsensitiveContains(sub) == true
+            }
         }
-        return products.filter {
-            $0.productType?.localizedCaseInsensitiveContains(filter) == true
+        // Apply search filter
+        if !searchText.isEmpty {
+            filtered = filtered.filter {
+                $0.title.lowercased().contains(searchText.lowercased())
+            }
         }
+        return filtered
     }
 
     func filterProducts(by sub: String?) {
         selectedSubcategory = sub
+    }
+
+    func filterProducts(bySearch searchText: String) {
+        self.searchText = searchText
+    }
+
+    func selectProduct(_ product: Product) {
+        selectedProductId = product.id
     }
 
     func loadCategoryProducts() {
@@ -117,7 +135,7 @@ class BaseProductViewModel: ObservableObject {
                         description: description,
                         imageUrls: imageUrls,
                         price: priceValue,
-                        currencyCode: "$", 
+                        currencyCode: "$",
                         productType: node["productType"] as? String,
                         size: size,
                         color: color

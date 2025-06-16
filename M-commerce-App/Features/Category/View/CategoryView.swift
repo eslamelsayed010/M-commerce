@@ -11,7 +11,10 @@ import Foundation
 
 struct CategoryView: View {
     @ObservedObject var viewModel = ProductViewModel()
+    @State private var searchText = "" // State to hold search text
     @State private var showFilters = false
+    @State private var hasNavigated = false // Track navigation to ProductDetailsView
+    @State private var selectedProduct: Product? // Track selected product for navigation
 
     let subcategories = ["Shirts", "Shoes", "Accessories", "All"]
 
@@ -23,20 +26,35 @@ struct CategoryView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                
                 ScrollView {
-                    VStack{
-                        ToolBar()
-                        
+                    VStack {
+                        ToolBar(searchText: $searchText)
                     }
                     if viewModel.isLoading {
                         ProgressView().padding()
                     } else if let error = viewModel.errorMessage {
                         Text("Error: \(error)").foregroundColor(.red).padding()
+                    } else if viewModel.filteredProducts.isEmpty {
+                        Text("No products found").foregroundColor(.gray).padding()
                     } else {
                         LazyVGrid(columns: columns, spacing: 16) {
                             ForEach(viewModel.filteredProducts) { product in
-                                ProductCardView(product: product)
+                                NavigationLink(
+                                    destination: ProductDetailsView(product: product),
+                                    isActive: Binding(
+                                        get: { selectedProduct?.id == product.id },
+                                        set: { isActive in
+                                            if !isActive { selectedProduct = nil }
+                                        }
+                                    )
+                                ) {
+                                    ProductCardView(product: product)
+                                        .onTapGesture {
+                                            viewModel.selectProduct(product)
+                                            selectedProduct = product
+                                            hasNavigated = true 
+                                        }
+                                }
                             }
                         }
                         .padding()
@@ -90,6 +108,14 @@ struct CategoryView: View {
             }
             .onAppear {
                 viewModel.loadAllProducts()
+                // Clear search text only if returning from navigation
+                if hasNavigated {
+                    searchText = ""
+                    hasNavigated = false // Reset navigation flag
+                }
+            }
+            .onChange(of: searchText) { newValue in
+                viewModel.filterProducts(bySearch: newValue)
             }
         }
     }
