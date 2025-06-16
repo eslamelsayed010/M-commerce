@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+
 class BaseProductViewModel: ObservableObject {
     @Published var products: [Product] = []
     @Published var isLoading = false
@@ -40,17 +41,24 @@ class BaseProductViewModel: ObservableObject {
               node {
                 id
                 title
+                descriptionHtml
                 productType
-                images(first: 1) {
+                images(first: 3) {
                   edges {
                     node {
                       url
                     }
                   }
                 }
-                priceRange {
-                  minVariantPrice {
-                    amount
+                variants(first: 1) {
+                  edges {
+                    node {
+                      price
+                      selectedOptions {
+                        name
+                        value
+                      }
+                    }
                   }
                 }
               }
@@ -64,7 +72,7 @@ class BaseProductViewModel: ObservableObject {
             "query": "tag:\(categoryKeyword)"
         ]
 
-        let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2023-07/graphql.json")!
+        let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2024-04/graphql.json")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: ["query": query, "variables": variables])
@@ -85,23 +93,23 @@ class BaseProductViewModel: ObservableObject {
                 return edges.compactMap { edge in
                     guard let node = edge["node"] as? [String: Any],
                           let title = node["title"] as? String,
-                          let id = node["id"] as? String else {
+                          let id = node["id"] as? String,
+                          let description = node["descriptionHtml"] as? String else {
                         return nil
                     }
-
-                    let description = node["description"] as? String
 
                     let imageUrls: [String] = (((node["images"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []).compactMap {
                         ($0["node"] as? [String: Any])?["url"] as? String
                     }
 
-                    let price = ((node["priceRange"] as? [String: Any])?["minVariantPrice"] as? [String: Any])?["amount"] as? String
-                    let priceValue = Double(price ?? "")
+                    let variantEdges = ((node["variants"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
+                    let variant = variantEdges.first?["node"] as? [String: Any]
+                    let priceString = variant?["price"] as? String
+                    let priceValue = Double(priceString ?? "")
 
-                    let currencyCode: String? = nil 
-                    let productType = node["productType"] as? String
-                    let size = node["size"] as? String
-                    let color = node["color"] as? String
+                    let options = (variant?["selectedOptions"] as? [[String: Any]]) ?? []
+                    let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
+                    let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
 
                     return Product(
                         id: id,
@@ -109,13 +117,12 @@ class BaseProductViewModel: ObservableObject {
                         description: description,
                         imageUrls: imageUrls,
                         price: priceValue,
-                        currencyCode: currencyCode,
-                        productType: productType,
+                        currencyCode: "$", 
+                        productType: node["productType"] as? String,
                         size: size,
                         color: color
                     )
                 }
-
             }
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
