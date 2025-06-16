@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct AccountSettings: View {
     @State private var showingLogoutAlert: Bool = false
+    @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
         VStack(spacing: 16) {
@@ -51,7 +53,7 @@ struct AccountSettings: View {
         .alert("Logout", isPresented: $showingLogoutAlert) {
             Button("Cancel", role: .cancel) { }
             Button("Logout", role: .destructive) {
-                print("User logged out")
+                authViewModel.signOut() 
             }
         } message: {
             Text("Are you sure you want to logout?")
@@ -62,5 +64,6 @@ struct AccountSettings: View {
 struct AccountSettings_Previews: PreviewProvider {
     static var previews: some View {
         AccountSettings()
+            .environmentObject(AuthViewModel())
     }
 }
