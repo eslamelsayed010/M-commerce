@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		041B956D2E019C010090934C /* EmailVerificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041B956C2E019C010090934C /* EmailVerificationView.swift */; };
 		0474056C2DF11BAD0047C6C2 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0474056B2DF11BAD0047C6C2 /* SignUpView.swift */; };
 		04B3291D2DF94E8D002CE2DD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 04B3291C2DF94E8D002CE2DD /* FirebaseAuth */; };
 		04B329232DF9E08D002CE2DD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 04B329222DF9E08D002CE2DD /* GoogleSignIn */; };
@@ -111,6 +112,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		041B956C2E019C010090934C /* EmailVerificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationView.swift; sourceTree = "<group>"; };
 		0474056B2DF11BAD0047C6C2 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		04B477812DE3A1A400CC82F8 /* M-commerce-App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "M-commerce-App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		04B477842DE3A1A400CC82F8 /* M_commerce_AppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = M_commerce_AppApp.swift; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 				04D8493C2DF0DCAD00564625 /* OnboardingView.swift */,
 				04B5A65C2DF0FEDA0044E0FD /* LoginView.swift */,
 				0474056B2DF11BAD0047C6C2 /* SignUpView.swift */,
+				041B956C2E019C010090934C /* EmailVerificationView.swift */,
 			);
 			name = Views;
 			path = "New Group";
@@ -758,6 +761,7 @@
 				22F696392DFF41C500D2E247 /* CityPicker.swift in Sources */,
 				225DD6F72DFC90BD002681B3 /* ProductCardView.swift in Sources */,
 				225DD6DB2DFC8CFE002681B3 /* ImgCouponView.swift in Sources */,
+				041B956D2E019C010090934C /* EmailVerificationView.swift in Sources */,
 				22F696262DFF41C500D2E247 /* Currency.swift in Sources */,
 				22F696282DFF41C500D2E247 /* SettingsNetworkManager.swift in Sources */,
 				225DD6F32DFC9024002681B3 /* CustomCollection.swift in Sources */,

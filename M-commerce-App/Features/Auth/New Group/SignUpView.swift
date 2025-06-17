@@ -303,22 +303,22 @@ struct SignUpView: View {
         passwordError = false
         confirmPasswordError = false
         showingError = false
-        
+
         var isValid = true
-        
+
         if username.isEmpty {
             usernameError = true
             isValid = false
         }
-        
+
         if !validateEmail() {
             isValid = false
         }
-        
+
         if !validatePassword() {
             isValid = false
         }
-        
+
         if confirmPassword.isEmpty {
             confirmPasswordError = true
             isValid = false
@@ -327,22 +327,22 @@ struct SignUpView: View {
             showingError = true
             isValid = false
         }
-        
+
         if !isValid {
             return
         }
-        
+
         isSigningUp = true
-        
         authViewModel.beginSignUp()
+
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 isSigningUp = false
-                
+
                 if let error = error as NSError? {
                     print("Firebase Error Code: \(error.code)")
                     print("Firebase Error Description: \(error.localizedDescription)")
-                    
+
                     switch error.code {
                     case AuthErrorCode.emailAlreadyInUse.rawValue:
                         errorMessage = "This email is already in use. Please try a different email."
@@ -369,7 +369,17 @@ struct SignUpView: View {
                                 showingError = true
                                 authViewModel.isSigningUp = false
                             } else {
-                                authViewModel.startOnboarding()
+                            
+                                authViewModel.sendEmailVerification { error in
+                                    if let error = error {
+                                        errorMessage = "Failed to send verification email: \(error.localizedDescription)"
+                                        showingError = true
+                                        authViewModel.isSigningUp = false
+                                    } else {
+                                        authViewModel.isEmailVerified = user.isEmailVerified
+                                        authViewModel.currentView = .emailVerification 
+                                    }
+                                }
                             }
                         }
                     }

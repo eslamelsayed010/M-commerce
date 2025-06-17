@@ -241,11 +241,16 @@ struct LoginView: View {
                     errorMessage = "An error occurred: \(error.localizedDescription)"
                 }
                 showingError = true
-            } else {
-                if authViewModel.isNewUser {
-                    authViewModel.startOnboarding()
+            } else if let user = result?.user {
+                authViewModel.isNewUser = false
+                if user.isEmailVerified {
+                    authViewModel.isEmailVerified = true
+                    authViewModel.currentView = .home  
                 } else {
-                    authViewModel.completeOnboarding()
+                    authViewModel.isEmailVerified = false
+                    authViewModel.currentView = .emailVerification
+                    errorMessage = "Please verify your email to proceed."
+                    showingError = true
                 }
             }
         }
