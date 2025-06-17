@@ -11,7 +11,7 @@ struct Product: Identifiable {
     let title: String
     let description: String?
     let imageUrls: [String]
-    let price: Double?
+    var price: Double?
     let currencyCode: String?
     let productType: String?
     let size: String?

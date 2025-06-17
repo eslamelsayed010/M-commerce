@@ -38,8 +38,21 @@ class ProductsViewModel: ObservableObject {
                 }
             } receiveValue: { [weak self] products in
                 print("Fetched products count: \(products.count)")
-                self?.products = products
-                self?.filteredProducts = products
+                
+                let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+                let isCurrencySet = UserDefaults.standard.object(forKey: UserDefaultsKeys.Currency.currency) != nil
+                let finalCurrency = isCurrencySet ? currency : 1.0
+                
+                let updatedProducts = products.map { product in
+                    var updatedProduct = product
+                    if let price = product.price {
+                        updatedProduct.price = price * finalCurrency
+                    }
+                    return updatedProduct
+                }
+
+                self?.products = updatedProducts
+                self?.filteredProducts = updatedProducts
             }
             .store(in: &cancellables)
     }
