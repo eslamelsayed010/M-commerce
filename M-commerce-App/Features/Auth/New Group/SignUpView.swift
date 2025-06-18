@@ -38,6 +38,7 @@ struct SignUpView: View {
                     .foregroundColor(.gray)
                 
                 VStack(spacing: 25) {
+                    // Email Field
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Email")
                             .font(.system(size: 14, weight: .medium))
@@ -53,8 +54,8 @@ struct SignUpView: View {
                             )
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
-                            .disableAutocorrection(true) // Disable autocorrection
-                            .textContentType(.none) // Disable autofill suggestions
+                            .disableAutocorrection(true)
+                            .textContentType(.none)
                         
                         if emailError {
                             Text(emailErrorMessage)
@@ -65,6 +66,7 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
+                    // Username Field
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Username")
                             .font(.system(size: 14, weight: .medium))
@@ -79,8 +81,8 @@ struct SignUpView: View {
                                     .stroke(usernameError ? Color.red : Color.gray.opacity(0.3), lineWidth: 1)
                             )
                             .autocapitalization(.none)
-                            .disableAutocorrection(true) // Disable autocorrection
-                            .textContentType(.none) // Disable autofill suggestions
+                            .disableAutocorrection(true)
+                            .textContentType(.none)
                         
                         if usernameError {
                             Text("This field is required")
@@ -91,6 +93,7 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
+                    // Password Field
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Password")
                             .font(.system(size: 14, weight: .medium))
@@ -105,8 +108,8 @@ struct SignUpView: View {
                                 }
                             }
                             .padding()
-                            .disableAutocorrection(true) // Disable autocorrection
-                            .textContentType(.none) // Disable autofill suggestions
+                            .disableAutocorrection(true)
+                            .textContentType(.none)
                             
                             Button(action: {
                                 showPassword.toggle()
@@ -132,6 +135,7 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
+                    // Confirm Password Field
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Confirm Password")
                             .font(.system(size: 14, weight: .medium))
@@ -146,8 +150,8 @@ struct SignUpView: View {
                                 }
                             }
                             .padding()
-                            .disableAutocorrection(true) // Disable autocorrection
-                            .textContentType(.none) // Disable autofill suggestions
+                            .disableAutocorrection(true)
+                            .textContentType(.none)
                             
                             Button(action: {
                                 showConfirmPassword.toggle()
@@ -173,6 +177,7 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
+                    // Sign Up Button
                     NavigationLink(
                         destination: EmailVerificationView().environmentObject(authViewModel),
                         isActive: Binding(
@@ -203,6 +208,7 @@ struct SignUpView: View {
                         }
                     }
                     
+                    // Divider
                     HStack {
                         Rectangle()
                             .frame(height: 1)
@@ -216,6 +222,7 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
+                    // Google Sign-In Button
                     Button(action: {
                         signInWithGoogle()
                     }) {
@@ -226,8 +233,9 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
+                    // Guest Sign-In Button
                     Button(action: {
-                        signInAnonymously()
+                        signInAsGuest()
                     }) {
                         Text("Continue as a guest")
                             .font(.system(size: 14, weight: .bold))
@@ -236,6 +244,7 @@ struct SignUpView: View {
                     }
                     .padding(.vertical, 5)
                     
+                    // Navigation to Login
                     NavigationLink(
                         destination: LoginView()
                             .environmentObject(authViewModel)
@@ -503,35 +512,23 @@ struct SignUpView: View {
                 
                 let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
                 
-                Auth.auth().signIn(with: credential) { authResult, error in
-                    DispatchQueue.main.async {
-                        if let error = error {
-                            errorMessage = "Failed to sign in with Google: \(error.localizedDescription)"
-                            showingError = true
-                            authViewModel.isSigningUp = false
-                        } else {
-                            authViewModel.startOnboarding()
-                        }
+    
+                authViewModel.signInWithGoogle(credential: credential) { error in
+                    if let error = error {
+                        self.errorMessage = "Failed to sign in with Google: \(error.localizedDescription)"
+                        self.showingError = true
+                        authViewModel.isSigningUp = false
                     }
                 }
             }
         }
     }
     
-    private func signInAnonymously() {
+    private func signInAsGuest() {
         isSigningUp = true
-        authViewModel.beginSignUp()
-        Auth.auth().signInAnonymously { result, error in
-            DispatchQueue.main.async {
-                isSigningUp = false
-                if let error = error {
-                    errorMessage = "Failed to sign in as a guest: \(error.localizedDescription)"
-                    showingError = true
-                    authViewModel.isSigningUp = false
-                } else {
-                    authViewModel.startOnboarding()
-                }
-            }
+        DispatchQueue.main.async {
+            self.isSigningUp = false
+            self.authViewModel.signInAsGuest()
         }
     }
 }

@@ -9,9 +9,12 @@ import SwiftUI
 struct ProductsView: View {
     @StateObject private var viewModel: ProductsViewModel
     @EnvironmentObject var favoritesManager: FavoritesManager
+    @EnvironmentObject var authViewModel: AuthViewModel
     @State private var searchText = ""
     @State private var hasNavigated = false
     @State private var selectedProduct: Product?
+    @State private var showGuestAlert = false
+
     private let columns = [
         GridItem(.fixed(160), spacing: 12),
         GridItem(.fixed(160), spacing: 12)
@@ -51,7 +54,12 @@ struct ProductsView: View {
                                 VStack(alignment: .leading, spacing: 8) {
                                     HStack {
                                         Button {
-                                            favoritesManager.toggleFavorite(product: product)
+                                            
+                                            if authViewModel.isGuest {
+                                                showGuestAlert = true
+                                            } else {
+                                                favoritesManager.toggleFavorite(product: product)
+                                            }
                                         } label: {
                                             Image(systemName: favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart")
                                                 .foregroundColor(favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red)
@@ -64,6 +72,12 @@ struct ProductsView: View {
 
                                         Button {
                                             
+                                            if authViewModel.isGuest {
+                                                showGuestAlert = true
+                                            } else {
+                                                
+                                                print("Add to Cart pressed for product: \(product.title)")
+                                            }
                                         } label: {
                                             Image(systemName: "cart")
                                                 .foregroundColor(.black)
@@ -139,7 +153,6 @@ struct ProductsView: View {
         }
         .navigationTitle("Products")
         .onAppear {
-           
             viewModel.loadProducts()
             if hasNavigated {
                 searchText = ""
@@ -150,6 +163,16 @@ struct ProductsView: View {
             viewModel.filterProducts(bySearch: newValue)
         }
         .environmentObject(favoritesManager)
+        .alert(isPresented: $showGuestAlert) {
+            Alert(
+                title: Text("Sign In Required"),
+                message: Text("You need to sign in to add this product to your cart or favorites. Would you like to sign in now?"),
+                primaryButton: .default(Text("Login")) {
+                    authViewModel.currentView = .login
+                },
+                secondaryButton: .cancel(Text("Cancel"))
+            )
+        }
     }
 }
 
@@ -157,5 +180,6 @@ struct ProductsView_Previews: PreviewProvider {
     static var previews: some View {
         ProductsView(brandName: "Sample Brand")
             .environmentObject(FavoritesManager.shared)
+            .environmentObject(AuthViewModel())
     }
 }

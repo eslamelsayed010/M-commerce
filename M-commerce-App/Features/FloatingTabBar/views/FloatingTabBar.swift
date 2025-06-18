@@ -1,15 +1,11 @@
-//
-//  FloatingTabBar.swift
-//  M-commerce-App
-//
-//  Created by Macos on 04/06/2025.
-//
-
 import SwiftUI
+
 struct FloatingTabBar: View {
     @StateObject var visibilityManager = TabBarVisibilityManager()
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @State private var showGuestAlert = false
     
-    var tabs = ["house", "book", "person","cart","heart"]
+    var tabs = ["house", "book", "person", "cart", "heart"]
     @State var selectedTab = "house"
     @State var xAxis: CGFloat = 0
     @Namespace var animation
@@ -24,8 +20,7 @@ struct FloatingTabBar: View {
 
             TabView(selection: $selectedTab) {
                 HomeView()
-                .tag("house")
-
+                    .tag("house")
                 CategoryView()
                     .tag("book")
                 SettingsView()
@@ -42,6 +37,16 @@ struct FloatingTabBar: View {
             }
         }
         .ignoresSafeArea()
+        .alert(isPresented: $showGuestAlert) {
+            Alert(
+                title: Text("Sign In Required"),
+                message: Text("You need to sign in to access this feature. Would you like to sign in now?"),
+                primaryButton: .default(Text("Login")) {
+                    authViewModel.currentView = .login
+                },
+                secondaryButton: .cancel(Text("Cancel"))
+            )
+        }
     }
 
     var tabBarView: some View {
@@ -49,9 +54,14 @@ struct FloatingTabBar: View {
             ForEach(tabs, id: \.self) { image in
                 GeometryReader { reader in
                     Button(action: {
-                        withAnimation {
-                            selectedTab = image
-                            xAxis = reader.frame(in: .global).minX
+                        
+                        if authViewModel.isGuest && image != "house" && image != "book" {
+                            showGuestAlert = true
+                        } else {
+                            withAnimation {
+                                selectedTab = image
+                                xAxis = reader.frame(in: .global).minX
+                            }
                         }
                     }) {
                         Image(systemName: image)
@@ -125,5 +135,6 @@ struct CustomShape: Shape {
 struct FloatingTabBar_Previews: PreviewProvider {
     static var previews: some View {
         FloatingTabBar()
+            .environmentObject(AuthViewModel())
     }
 }

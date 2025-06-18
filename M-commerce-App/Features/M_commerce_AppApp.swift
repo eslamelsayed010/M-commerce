@@ -69,6 +69,7 @@ class AuthViewModel: ObservableObject {
     @Published var isSigningUp = false
     @Published var isCheckingAuth = false
     @Published var isEmailVerified = false
+    @Published var isGuest = false
 
     // Store splash screen visibility state using UserDefaults
     private var hasSeenSplash: Bool {
@@ -96,12 +97,14 @@ class AuthViewModel: ObservableObject {
         guard !isCheckingAuth else { return }
         isCheckingAuth = true
 
+    
         Auth.auth().addStateDidChangeListener { _, user in
             DispatchQueue.main.async {
                 self.isLoggedIn = user != nil
                 self.isEmailVerified = user?.isEmailVerified ?? false
-
+        
                 if user != nil {
+                    self.isGuest = false
                     if !self.isSigningUp {
                         if self.isEmailVerified {
                             self.currentView = self.isNewUser ? .onboarding : .home
@@ -110,13 +113,24 @@ class AuthViewModel: ObservableObject {
                         }
                     }
                 } else {
-                    self.currentView = .login
+                    
+                    self.currentView = self.isGuest ? .home : .login
                     self.isNewUser = false
                     self.isSigningUp = false
                     self.isEmailVerified = false
                 }
                 self.isCheckingAuth = false
             }
+        }
+    }
+
+    
+    func updateAuthStateAfterLogin(user: User) {
+        DispatchQueue.main.async {
+            self.isLoggedIn = true
+            self.isGuest = false
+            self.isEmailVerified = user.isEmailVerified
+            self.currentView = self.isEmailVerified ? (self.isNewUser ? .onboarding : .home) : .emailVerification
         }
     }
 
@@ -141,6 +155,7 @@ class AuthViewModel: ObservableObject {
                         completion(false, error)
                     } else {
                         self.isEmailVerified = user.isEmailVerified
+                        self.isGuest = false
                         if self.isEmailVerified {
                             self.currentView = self.isNewUser ? .onboarding : .home
                         }
@@ -157,7 +172,6 @@ class AuthViewModel: ObservableObject {
     func createShopifyCustomer(email: String, username: String, completion: @escaping (Result<Int64, Error>) -> Void) {
         let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2025-04/customers.json")!
         
-        // Shopify API key
         let apiKey = "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"
         
         var request = URLRequest(url: url)
@@ -301,6 +315,7 @@ class AuthViewModel: ObservableObject {
                     self.isNewUser = false
                     self.isSigningUp = false
                     self.isEmailVerified = false
+                    self.isGuest = false
                     self.currentView = .login
                     // Sign out
                     do {
@@ -318,6 +333,7 @@ class AuthViewModel: ObservableObject {
                 self.isNewUser = false
                 self.isSigningUp = false
                 self.isEmailVerified = false
+                self.isGuest = false
                 self.currentView = .login
                 UserDefaults.standard.removeObject(forKey: "pendingDisplayName")
                 completion(nil)
@@ -325,7 +341,7 @@ class AuthViewModel: ObservableObject {
         }
     }
 
-    // Extract username and customer_id from displayName (very important)
+    // Extract username and customer_id from displayName
     func getCustomerIdAndUsername() -> (username: String?, customerId: Int64?) {
         guard let displayName = Auth.auth().currentUser?.displayName else {
             return (nil, nil)
@@ -341,13 +357,14 @@ class AuthViewModel: ObservableObject {
     // Complete splash screen and navigate to next view
     func completeSplash() {
         hasSeenSplash = true
-        currentView = isLoggedIn ? (isEmailVerified ? (isNewUser ? .onboarding : .home) : .emailVerification) : .login
+        currentView = isGuest ? .home : (isLoggedIn ? (isEmailVerified ? (isNewUser ? .onboarding : .home) : .emailVerification) : .login)
     }
 
     // Start onboarding process
     func startOnboarding() {
         isNewUser = true
         isSigningUp = false
+        isGuest = false
         currentView = isEmailVerified ? .onboarding : .emailVerification
     }
 
@@ -370,6 +387,7 @@ class AuthViewModel: ObservableObject {
             isNewUser = false
             isSigningUp = false
             isEmailVerified = false
+            isGuest = false
             currentView = .login
         } catch {
             print("Error signing out: \(error)")
@@ -380,5 +398,56 @@ class AuthViewModel: ObservableObject {
     func beginSignUp() {
         isSigningUp = true
         isNewUser = true
+        isGuest = false
+    }
+
+
+    func signInAsGuest() {
+        DispatchQueue.main.async {
+            self.isGuest = true
+            self.isLoggedIn = false
+            self.isNewUser = false
+            self.isSigningUp = false
+            self.isEmailVerified = false
+            self.currentView = .home
+        }
+    }
+
+
+    func signInWithEmail(email: String, password: String, completion: @escaping (Error?) -> Void) {
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                if let user = result?.user {
+                    self.isLoggedIn = true
+                    self.isGuest = false
+                    self.isEmailVerified = user.isEmailVerified
+                    self.isNewUser = false
+                    self.currentView = user.isEmailVerified ? .home : .emailVerification
+                    completion(nil)
+                }
+            }
+        }
+    }
+
+    func signInWithGoogle(credential: AuthCredential, completion: @escaping (Error?) -> Void) {
+        Auth.auth().signIn(with: credential) { result, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                if let user = result?.user {
+                    self.isLoggedIn = true
+                    self.isGuest = false
+                    self.isEmailVerified = user.isEmailVerified
+                    self.startOnboarding()
+                    completion(nil)
+                }
+            }
+        }
     }
 }

@@ -1,3 +1,5 @@
+
+
 import SwiftUI
 
 struct ProductDetailsView: View {
@@ -5,7 +7,8 @@ struct ProductDetailsView: View {
     @State private var selectedImageIndex = 0
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var favoritesManager: FavoritesManager
-
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @State private var showGuestAlert = false
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
@@ -128,6 +131,11 @@ struct ProductDetailsView: View {
             HStack(spacing: 12) {
                 Button {
                     
+                    if authViewModel.isGuest {
+                        showGuestAlert = true 
+                    } else {
+                        print("Add to Cart pressed for product: \(product.title)")
+                    }
                 } label: {
                     Text("Add to Cart")
                         .font(.headline)
@@ -139,7 +147,12 @@ struct ProductDetailsView: View {
                 }
 
                 Button {
-                    favoritesManager.toggleFavorite(product: product)
+                    
+                    if authViewModel.isGuest {
+                        showGuestAlert = true
+                    } else {
+                        favoritesManager.toggleFavorite(product: product)
+                    }
                 } label: {
                     Image(systemName: favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart")
                         .font(.title2)
@@ -167,8 +180,19 @@ struct ProductDetailsView: View {
             }
         }
         .environmentObject(favoritesManager)
+        .alert(isPresented: $showGuestAlert) {
+            Alert(
+                title: Text("Sign In Required"),
+                message: Text("You need to sign in to \(authViewModel.isGuest ? "add this product to your cart or favorites" : "perform this action"). Would you like to sign in now?"),
+                primaryButton: .default(Text("Login")) {
+                    authViewModel.currentView = .login 
+                },
+                secondaryButton: .cancel(Text("Cancel"))
+            )
+        }
     }
 }
+
 struct ColorView: View {
     let colorName: String
 
@@ -215,5 +239,6 @@ struct ProductDetailsView_Previews: PreviewProvider {
             )
         )
         .environmentObject(FavoritesManager.shared)
+        .environmentObject(AuthViewModel())
     }
 }

@@ -48,8 +48,8 @@ struct LoginView: View {
                                 )
                                 .keyboardType(.emailAddress)
                                 .autocapitalization(.none)
-                                .disableAutocorrection(true) // منع التصحيح التلقائي
-                                .textContentType(.none) // منع اقتراحات Autofill
+                                .disableAutocorrection(true)
+                                .textContentType(.none)
                             
                             if emailError {
                                 Text("This field is required")
@@ -74,8 +74,8 @@ struct LoginView: View {
                                     }
                                 }
                                 .padding()
-                                .disableAutocorrection(true) // منع التصحيح التلقائي
-                                .textContentType(.none) // منع اقتراحات Autofill
+                                .disableAutocorrection(true)
+                                .textContentType(.none)
 
                                 Button(action: {
                                     showPassword.toggle()
@@ -157,7 +157,7 @@ struct LoginView: View {
                         .padding(.horizontal, 20)
 
                         Button(action: {
-                            signInAnonymously()
+                            signInAsGuest()
                         }) {
                             Text("Continue as a guest")
                                 .font(.system(size: 14, weight: .bold))
@@ -192,7 +192,6 @@ struct LoginView: View {
         }
     }
 
-    // باقي الكود (destinationView, loginWithEmail, signInWithGoogle, signInAnonymously) يظل بدون تغيير
     @ViewBuilder
     private func destinationView() -> some View {
         if authViewModel.isNewUser {
@@ -223,40 +222,31 @@ struct LoginView: View {
 
         isLoggingIn = true
 
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            isLoggingIn = false
+        // استخدام الدالة من AuthViewModel
+        authViewModel.signInWithEmail(email: email, password: password) { error in
+            DispatchQueue.main.async {
+                self.isLoggingIn = false
+                if let error = error as NSError? {
+                    print("Firebase Error Code: \(error.code)")
+                    print("Firebase Error Description: \(error.localizedDescription)")
 
-            if let error = error as NSError? {
-                print("Firebase Error Code: \(error.code)")
-                print("Firebase Error Description: \(error.localizedDescription)")
-
-                switch error.code {
-                case AuthErrorCode.wrongPassword.rawValue,
-                     AuthErrorCode.invalidEmail.rawValue,
-                     AuthErrorCode.invalidCredential.rawValue:
-                    errorMessage = "The email or password is incorrect. Please check your credentials and try again."
-                case AuthErrorCode.userNotFound.rawValue:
-                    errorMessage = "No account found with this email. Please sign up."
-                case AuthErrorCode.tooManyRequests.rawValue:
-                    errorMessage = "Too many attempts. Please try again later."
-                case AuthErrorCode.networkError.rawValue:
-                    errorMessage = "Network error. Please check your internet connection and try again."
-                case 17499:
-                    errorMessage = "An unexpected error occurred. Please try again or contact support."
-                default:
-                    errorMessage = "An error occurred: \(error.localizedDescription)"
-                }
-                showingError = true
-            } else if let user = result?.user {
-                authViewModel.isNewUser = false
-                if user.isEmailVerified {
-                    authViewModel.isEmailVerified = true
-                    authViewModel.currentView = .home
-                } else {
-                    authViewModel.isEmailVerified = false
-                    authViewModel.currentView = .emailVerification
-                    errorMessage = "Please verify your email to proceed."
-                    showingError = true
+                    switch error.code {
+                    case AuthErrorCode.wrongPassword.rawValue,
+                         AuthErrorCode.invalidEmail.rawValue,
+                         AuthErrorCode.invalidCredential.rawValue:
+                        self.errorMessage = "The email or password is incorrect. Please check your credentials and try again."
+                    case AuthErrorCode.userNotFound.rawValue:
+                        self.errorMessage = "No account found with this email. Please sign up."
+                    case AuthErrorCode.tooManyRequests.rawValue:
+                        self.errorMessage = "Too many attempts. Please try again later."
+                    case AuthErrorCode.networkError.rawValue:
+                        self.errorMessage = "Network error. Please check your internet connection and try again."
+                    case 17499:
+                        self.errorMessage = "An unexpected error occurred. Please try again or contact support."
+                    default:
+                        self.errorMessage = "An error occurred: \(error.localizedDescription)"
+                    }
+                    self.showingError = true
                 }
             }
         }
@@ -277,41 +267,41 @@ struct LoginView: View {
             return
         }
 
+        isLoggingIn = true
         GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { result, error in
-            if let error = error {
-                errorMessage = "Google Sign-In failed: \(error.localizedDescription)"
-                showingError = true
-                return
-            }
-
-            guard let user = result?.user,
-                  let idToken = user.idToken?.tokenString else {
-                errorMessage = "Failed to retrieve Google authentication token."
-                showingError = true
-                return
-            }
-
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
-
-            Auth.auth().signIn(with: credential) { authResult, error in
+            DispatchQueue.main.async {
+                self.isLoggingIn = false
                 if let error = error {
-                    errorMessage = "Failed to sign in with Google: \(error.localizedDescription)"
-                    showingError = true
-                } else {
-                    authViewModel.startOnboarding()
+                    self.errorMessage = "Google Sign-In failed: \(error.localizedDescription)"
+                    self.showingError = true
+                    return
+                }
+
+                guard let user = result?.user,
+                      let idToken = user.idToken?.tokenString else {
+                    self.errorMessage = "Failed to retrieve Google authentication token."
+                    self.showingError = true
+                    return
+                }
+
+                let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
+
+            
+                self.authViewModel.signInWithGoogle(credential: credential) { error in
+                    if let error = error {
+                        self.errorMessage = "Failed to sign in with Google: \(error.localizedDescription)"
+                        self.showingError = true
+                    }
                 }
             }
         }
     }
 
-    private func signInAnonymously() {
-        Auth.auth().signInAnonymously { result, error in
-            if let error = error {
-                errorMessage = "Failed to sign in as a guest: \(error.localizedDescription)"
-                showingError = true
-            } else {
-                authViewModel.startOnboarding()
-            }
+    private func signInAsGuest() {
+        isLoggingIn = true
+        DispatchQueue.main.async {
+            self.isLoggingIn = false
+            self.authViewModel.signInAsGuest()
         }
     }
 }

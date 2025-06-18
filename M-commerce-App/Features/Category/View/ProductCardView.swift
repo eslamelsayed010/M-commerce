@@ -10,13 +10,20 @@ import SwiftUI
 struct ProductCardView: View {
     let product: Product
     @EnvironmentObject var favoritesManager: FavoritesManager
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @State private var showGuestAlert = false
 
     var body: some View {
         NavigationLink(destination: ProductDetailsView(product: product)) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Button {
-                        favoritesManager.toggleFavorite(product: product)
+                         
+                        if authViewModel.isGuest {
+                            showGuestAlert = true
+                        } else {
+                            favoritesManager.toggleFavorite(product: product)
+                        }
                     } label: {
                         Image(systemName: favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart")
                             .foregroundColor(favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red)
@@ -29,6 +36,13 @@ struct ProductCardView: View {
                     Spacer()
 
                     Button {
+                        
+                        if authViewModel.isGuest {
+                            showGuestAlert = true
+                        } else {
+                        
+                            print("Add to Cart pressed for product: \(product.title)")
+                        }
                     } label: {
                         Image(systemName: "cart")
                             .foregroundColor(.black)
@@ -87,6 +101,16 @@ struct ProductCardView: View {
             .cornerRadius(12)
             .shadow(color: .black.opacity(0.1), radius: 4, x: 0, y: 2)
         }
+        .alert(isPresented: $showGuestAlert) {
+            Alert(
+                title: Text("Sign In Required"),
+                message: Text("You need to sign in to add this product to your cart or favorites. Would you like to sign in now?"),
+                primaryButton: .default(Text("Login")) {
+                    authViewModel.currentView = .login
+                },
+                secondaryButton: .cancel(Text("Cancel"))
+            )
+        }
     }
 }
 
@@ -109,6 +133,7 @@ struct ProductCardView_Previews: PreviewProvider {
                 )
             )
             .environmentObject(FavoritesManager.shared)
+            .environmentObject(AuthViewModel())
         }
         .previewLayout(.sizeThatFits)
         .padding()
