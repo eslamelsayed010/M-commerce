@@ -20,6 +20,9 @@ struct SignUpView: View {
     @State private var emailErrorMessage = ""
     @State private var passwordErrorMessage = ""
     @State private var isSigningUp = false
+    @State private var customerId: Int64?
+    @State private var isCustomerExisting = false
+    @State private var showingSuccessAlert = false
     @EnvironmentObject var authViewModel: AuthViewModel
     
     var body: some View {
@@ -35,7 +38,6 @@ struct SignUpView: View {
                     .foregroundColor(.gray)
                 
                 VStack(spacing: 25) {
-                  
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Email")
                             .font(.system(size: 14, weight: .medium))
@@ -51,6 +53,8 @@ struct SignUpView: View {
                             )
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
+                            .disableAutocorrection(true) // Disable autocorrection
+                            .textContentType(.none) // Disable autofill suggestions
                         
                         if emailError {
                             Text(emailErrorMessage)
@@ -61,7 +65,6 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
-                   
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Username")
                             .font(.system(size: 14, weight: .medium))
@@ -76,6 +79,8 @@ struct SignUpView: View {
                                     .stroke(usernameError ? Color.red : Color.gray.opacity(0.3), lineWidth: 1)
                             )
                             .autocapitalization(.none)
+                            .disableAutocorrection(true) // Disable autocorrection
+                            .textContentType(.none) // Disable autofill suggestions
                         
                         if usernameError {
                             Text("This field is required")
@@ -85,7 +90,6 @@ struct SignUpView: View {
                         }
                     }
                     .padding(.horizontal, 20)
-                    
                     
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Password")
@@ -101,6 +105,8 @@ struct SignUpView: View {
                                 }
                             }
                             .padding()
+                            .disableAutocorrection(true) // Disable autocorrection
+                            .textContentType(.none) // Disable autofill suggestions
                             
                             Button(action: {
                                 showPassword.toggle()
@@ -126,7 +132,6 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
-                   
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Confirm Password")
                             .font(.system(size: 14, weight: .medium))
@@ -141,6 +146,8 @@ struct SignUpView: View {
                                 }
                             }
                             .padding()
+                            .disableAutocorrection(true) // Disable autocorrection
+                            .textContentType(.none) // Disable autofill suggestions
                             
                             Button(action: {
                                 showConfirmPassword.toggle()
@@ -166,12 +173,11 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
-                    
                     NavigationLink(
-                        destination: OnboardingView().environmentObject(authViewModel),
+                        destination: EmailVerificationView().environmentObject(authViewModel),
                         isActive: Binding(
-                            get: { authViewModel.currentView == .onboarding },
-                            set: { if $0 { authViewModel.currentView = .onboarding } }
+                            get: { authViewModel.currentView == .emailVerification },
+                            set: { if $0 { authViewModel.currentView = .emailVerification } }
                         )
                     ) {
                         Button(action: {
@@ -245,19 +251,25 @@ struct SignUpView: View {
                                 .foregroundColor(Color(red: 0.96, green: 0.65, blue: 0.42))
                         }
                     }
-                    .padding(.bottom, 30)
+                    .padding(.bottom, 20)
                 }
                 
                 Spacer()
             }
             .padding(.bottom, 20)
         }
-        .ignoresSafeArea(.keyboard) 
+        .ignoresSafeArea(.keyboard)
         .background(Color.white.ignoresSafeArea())
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .alert(isPresented: $showingError) {
             Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+        }
+        .sheet(isPresented: $showingSuccessAlert) {
+            SuccessAlertView(customerId: customerId ?? 0, isExisting: isCustomerExisting) {
+                showingSuccessAlert = false
+                authViewModel.currentView = .emailVerification
+            }
         }
     }
     
@@ -298,27 +310,33 @@ struct SignUpView: View {
     }
     
     private func signUpWithEmail() {
+        // Reset error states before validation
         emailError = false
         usernameError = false
         passwordError = false
         confirmPasswordError = false
         showingError = false
 
+        // Track if all inputs are valid
         var isValid = true
 
+        // Validate username
         if username.isEmpty {
             usernameError = true
             isValid = false
         }
 
+        // Validate email
         if !validateEmail() {
             isValid = false
         }
 
+        // Validate password
         if !validatePassword() {
             isValid = false
         }
 
+        // Validate confirm password
         if confirmPassword.isEmpty {
             confirmPasswordError = true
             isValid = false
@@ -328,17 +346,19 @@ struct SignUpView: View {
             isValid = false
         }
 
+        // Exit if validation fails
         if !isValid {
             return
         }
 
+        // Start signup process
         isSigningUp = true
         authViewModel.beginSignUp()
 
+        // Create Firebase user with email and password
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
-                isSigningUp = false
-
+                // Handle Firebase errors
                 if let error = error as NSError? {
                     print("Firebase Error Code: \(error.code)")
                     print("Firebase Error Description: \(error.localizedDescription)")
@@ -359,26 +379,84 @@ struct SignUpView: View {
                     }
                     showingError = true
                     authViewModel.isSigningUp = false
-                } else if let user = result?.user {
-                    let changeRequest = user.createProfileChangeRequest()
-                    changeRequest.displayName = username
-                    changeRequest.commitChanges { error in
-                        DispatchQueue.main.async {
-                            if let error = error {
-                                errorMessage = "Failed to set username: \(error.localizedDescription)"
-                                showingError = true
-                                authViewModel.isSigningUp = false
-                            } else {
-                            
-                                authViewModel.sendEmailVerification { error in
-                                    if let error = error {
-                                        errorMessage = "Failed to send verification email: \(error.localizedDescription)"
-                                        showingError = true
+                    isSigningUp = false
+                    return
+                }
+
+                // Ensure user was created
+                guard let user = result?.user else {
+                    errorMessage = "Failed to create user. Please try again."
+                    showingError = true
+                    authViewModel.isSigningUp = false
+                    isSigningUp = false
+                    return
+                }
+
+                // Create or fetch Shopify customer
+                authViewModel.createShopifyCustomer(email: email, username: username) { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let newCustomerId):
+                            // Log and store new customer ID
+                            print("New Shopify Customer Created - Customer ID: \(newCustomerId)")
+                            self.customerId = newCustomerId
+                            self.isCustomerExisting = false
+                            UserDefaults.standard.set("\(username)|\(newCustomerId)", forKey: "pendingDisplayName")
+                            self.showingSuccessAlert = true
+                            // Send email verification
+                            authViewModel.sendEmailVerification { error in
+                                if let error = error {
+                                    errorMessage = "Failed to send verification email: \(error.localizedDescription)"
+                                    showingError = true
+                                    authViewModel.cancelSignUpAndDeleteAccount { _ in
                                         authViewModel.isSigningUp = false
-                                    } else {
-                                        authViewModel.isEmailVerified = user.isEmailVerified
-                                        authViewModel.currentView = .emailVerification 
+                                        isSigningUp = false
                                     }
+                                }
+                            }
+                        case .failure(let error):
+                            // Handle Shopify creation failure
+                            if let nsError = error as? NSError, nsError.code == 422 {
+                                // Fetch existing customer if creation fails due to duplicate email
+                                authViewModel.fetchShopifyCustomer(email: email) { fetchResult in
+                                    DispatchQueue.main.async {
+                                        switch fetchResult {
+                                        case .success(let existingCustomerId):
+                                            // Log and store existing customer ID
+                                            print("Existing Shopify Customer Retrieved - Customer ID: \(existingCustomerId)")
+                                            self.customerId = existingCustomerId
+                                            self.isCustomerExisting = true
+                                            UserDefaults.standard.set("\(username)|\(existingCustomerId)", forKey: "pendingDisplayName")
+                                            self.showingSuccessAlert = true
+                                            // Send email verification
+                                            authViewModel.sendEmailVerification { error in
+                                                if let error = error {
+                                                    errorMessage = "Failed to send verification email: \(error.localizedDescription)"
+                                                    showingError = true
+                                                    authViewModel.cancelSignUpAndDeleteAccount { _ in
+                                                        authViewModel.isSigningUp = false
+                                                        isSigningUp = false
+                                                    }
+                                                }
+                                            }
+                                        case .failure(let fetchError):
+                                            // Handle fetch failure
+                                            errorMessage = "Failed to fetch existing customer: \(fetchError.localizedDescription)"
+                                            showingError = true
+                                            authViewModel.cancelSignUpAndDeleteAccount { _ in
+                                                authViewModel.isSigningUp = false
+                                                isSigningUp = false
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                // Handle other Shopify errors
+                                errorMessage = "Failed to create Shopify customer: \(error.localizedDescription)"
+                                showingError = true
+                                authViewModel.cancelSignUpAndDeleteAccount { _ in
+                                    authViewModel.isSigningUp = false
+                                    isSigningUp = false
                                 }
                             }
                         }
@@ -455,6 +533,53 @@ struct SignUpView: View {
                 }
             }
         }
+    }
+}
+
+struct SuccessAlertView: View {
+    let customerId: Int64
+    let isExisting: Bool
+    let onDismiss: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "checkmark.circle.fill")
+                .resizable()
+                .frame(width: 60, height: 60)
+                .foregroundColor(.green)
+            
+            Text(isExisting ? "Welcome Back!" : "Account Created!")
+                .font(.system(size: 24, weight: .bold))
+                .foregroundColor(.black)
+            
+            Text("Your Customer ID: \(customerId)")
+                .font(.system(size: 16))
+                .foregroundColor(.gray)
+            
+            Text("Please verify your email to complete registration.")
+                .font(.system(size: 14))
+                .foregroundColor(.gray)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
+            
+            Button(action: {
+                onDismiss()
+            }) {
+                Text("OK")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color(red: 0.2, green: 0.2, blue: 0.4))
+                    .cornerRadius(10)
+            }
+            .padding(.horizontal, 40)
+        }
+        .padding()
+        .background(Color.white)
+        .cornerRadius(20)
+        .shadow(radius: 10)
+        .padding(.horizontal, 20)
     }
 }
 

@@ -1,3 +1,4 @@
+
 import SwiftUI
 import FirebaseCore
 import FirebaseAuth
@@ -47,6 +48,8 @@ struct LoginView: View {
                                 )
                                 .keyboardType(.emailAddress)
                                 .autocapitalization(.none)
+                                .disableAutocorrection(true) // منع التصحيح التلقائي
+                                .textContentType(.none) // منع اقتراحات Autofill
                             
                             if emailError {
                                 Text("This field is required")
@@ -71,6 +74,8 @@ struct LoginView: View {
                                     }
                                 }
                                 .padding()
+                                .disableAutocorrection(true) // منع التصحيح التلقائي
+                                .textContentType(.none) // منع اقتراحات Autofill
 
                                 Button(action: {
                                     showPassword.toggle()
@@ -90,8 +95,8 @@ struct LoginView: View {
                             if passwordError {
                                 Text("This field is required")
                                     .font(.system(size: 12))
-                                    .foregroundColor(.red)
-                                    .padding(.leading, 5)
+                                .foregroundColor(.red)
+                                .padding(.leading, 5)
                             }
                         }
                         .padding(.horizontal, 20)
@@ -187,6 +192,7 @@ struct LoginView: View {
         }
     }
 
+    // باقي الكود (destinationView, loginWithEmail, signInWithGoogle, signInAnonymously) يظل بدون تغيير
     @ViewBuilder
     private func destinationView() -> some View {
         if authViewModel.isNewUser {
@@ -245,7 +251,7 @@ struct LoginView: View {
                 authViewModel.isNewUser = false
                 if user.isEmailVerified {
                     authViewModel.isEmailVerified = true
-                    authViewModel.currentView = .home  
+                    authViewModel.currentView = .home
                 } else {
                     authViewModel.isEmailVerified = false
                     authViewModel.currentView = .emailVerification

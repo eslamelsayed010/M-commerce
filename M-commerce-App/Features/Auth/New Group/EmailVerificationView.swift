@@ -13,6 +13,7 @@ struct EmailVerificationView: View {
     @State private var errorMessage = ""
     @State private var showingError = false
     @State private var isSendingVerification = false
+    @State private var isCancelingSignUp = false
 
     var body: some View {
         NavigationView {
@@ -33,7 +34,7 @@ struct EmailVerificationView: View {
                         .padding(.horizontal, 20)
 
                     Button(action: {
-                        authViewModel.checkEmailVerification()
+                        checkEmailVerification()
                     }) {
                         ZStack {
                             Color(red: 0.2, green: 0.2, blue: 0.4)
@@ -79,12 +80,30 @@ struct EmailVerificationView: View {
                     .disabled(isSendingVerification)
 
                     Button(action: {
-                        authViewModel.signOut()
+                        isCancelingSignUp = true
+                        authViewModel.cancelSignUpAndDeleteAccount { error in
+                            DispatchQueue.main.async {
+                                isCancelingSignUp = false
+                                if let error = error {
+                                    errorMessage = "Failed to cancel sign-up: \(error.localizedDescription)"
+                                    showingError = true
+                                }
+                                // الانتقال إلى LoginView يتم تلقائيًا عبر cancelSignUpAndDeleteAccount
+                            }
+                        }
                     }) {
-                        Text("Sign Out")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(.red)
-                            .underline()
+                        ZStack {
+                            if isCancelingSignUp {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .red))
+                                    .frame(width: 24, height: 24)
+                            } else {
+                                Text("Sign Out")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(.red)
+                                    .underline()
+                            }
+                        }
                     }
                     .padding(.top, 10)
 
@@ -95,6 +114,42 @@ struct EmailVerificationView: View {
             .navigationBarBackButtonHidden(true)
             .alert(isPresented: $showingError) {
                 Alert(title: Text("Message"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+            }
+        }
+    }
+
+    private func checkEmailVerification() {
+        authViewModel.checkEmailVerification { isVerified, error in
+            DispatchQueue.main.async {
+                if let error = error {
+                    errorMessage = "Failed to check verification: \(error.localizedDescription)"
+                    showingError = true
+                } else if isVerified {
+                    // البريد تم التحقق منه، إكمال التسجيل
+                    if let user = Auth.auth().currentUser {
+                        if let displayName = UserDefaults.standard.string(forKey: "pendingDisplayName") {
+                            let changeRequest = user.createProfileChangeRequest()
+                            changeRequest.displayName = displayName
+                            changeRequest.commitChanges { error in
+                                DispatchQueue.main.async {
+                                    if let error = error {
+                                        errorMessage = "Failed to complete registration: \(error.localizedDescription)"
+                                        showingError = true
+                                        authViewModel.cancelSignUpAndDeleteAccount { _ in }
+                                    } else {
+                                        UserDefaults.standard.removeObject(forKey: "pendingDisplayName")
+                                        authViewModel.isEmailVerified = true
+                                        authViewModel.startOnboarding()
+                                    }
+                                }
+                            }
+                        } else {
+                            errorMessage = "Registration data missing. Please try again."
+                            showingError = true
+                            authViewModel.cancelSignUpAndDeleteAccount { _ in }
+                        }
+                    }
+                }
             }
         }
     }

@@ -60,7 +60,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
+
 class AuthViewModel: ObservableObject {
+    // Published properties to track authentication state and navigation flow
     @Published var isLoggedIn = false
     @Published var currentView: NavigationDestination = .splash
     @Published var isNewUser = false
@@ -68,11 +70,13 @@ class AuthViewModel: ObservableObject {
     @Published var isCheckingAuth = false
     @Published var isEmailVerified = false
 
+    // Store splash screen visibility state using UserDefaults
     private var hasSeenSplash: Bool {
         get { UserDefaults.standard.bool(forKey: "hasSeenSplash") }
         set { UserDefaults.standard.set(newValue, forKey: "hasSeenSplash") }
     }
 
+    // Define navigation destinations in the app
     enum NavigationDestination {
         case splash
         case login
@@ -82,10 +86,12 @@ class AuthViewModel: ObservableObject {
         case emailVerification
     }
 
+    // Initializer: Set default view to splash screen
     init() {
         currentView = .splash
     }
 
+    // Check authentication state on app launch
     func checkAuthState() {
         guard !isCheckingAuth else { return }
         isCheckingAuth = true
@@ -114,6 +120,7 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+    // Send email verification from Firebase
     func sendEmailVerification(completion: @escaping (Error?) -> Void) {
         if let user = Auth.auth().currentUser {
             user.sendEmailVerification { error in
@@ -124,43 +131,238 @@ class AuthViewModel: ObservableObject {
         }
     }
 
-    func checkEmailVerification() {
+    // Check if email is verified
+    func checkEmailVerification(completion: @escaping (Bool, Error?) -> Void) {
         if let user = Auth.auth().currentUser {
             user.reload { error in
                 DispatchQueue.main.async {
                     if let error = error {
                         print("Error reloading user: \(error.localizedDescription)")
+                        completion(false, error)
                     } else {
                         self.isEmailVerified = user.isEmailVerified
                         if self.isEmailVerified {
                             self.currentView = self.isNewUser ? .onboarding : .home
                         }
+                        completion(user.isEmailVerified, nil)
                     }
                 }
+            }
+        } else {
+            completion(false, NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No user is signed in."]))
+        }
+    }
+
+    // Create a new customer in Shopify
+    func createShopifyCustomer(email: String, username: String, completion: @escaping (Result<Int64, Error>) -> Void) {
+        let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2025-04/customers.json")!
+        
+        // Shopify API key
+        let apiKey = "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"
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(apiKey, forHTTPHeaderField: "X-Shopify-Access-Token")
+        
+        let customerData: [String: Any] = [
+            "customer": [
+                "email": email,
+                "first_name": username,
+                "last_name": "",
+                "verified_email": true,
+                "send_email_welcome": true
+            ]
+        ]
+        
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: customerData)
+        } catch {
+            completion(.failure(error))
+            return
+        }
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response from Shopify"])
+                completion(.failure(error))
+                return
+            }
+            
+            if (200...299).contains(httpResponse.statusCode) {
+                guard let data = data else {
+                    let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received from Shopify"])
+                    completion(.failure(error))
+                    return
+                }
+                
+                do {
+                    if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                       let customer = json["customer"] as? [String: Any],
+                       let customerId = customer["id"] as? Int64 {
+                        completion(.success(customerId))
+                    } else {
+                        let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid response format from Shopify"])
+                        completion(.failure(error))
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                let statusCode = httpResponse.statusCode
+                let error = NSError(domain: "", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to create Shopify customer. Status code: \(statusCode)"])
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+
+    // Fetch an existing customer from Shopify
+    func fetchShopifyCustomer(email: String, completion: @escaping (Result<Int64, Error>) -> Void) {
+        let urlString = "https://ios2-ism.myshopify.com/admin/api/2025-04/customers.json?email=\(email.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+        guard let url = URL(string: urlString) else {
+            let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])
+            completion(.failure(error))
+            return
+        }
+        
+        let apiKey = "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"
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(apiKey, forHTTPHeaderField: "X-Shopify-Access-Token")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+                let error = NSError(domain: "", code: statusCode, userInfo: [NSLocalizedDescriptionKey: "Failed to fetch Shopify customer. Status code: \(statusCode)"])
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received from Shopify"])
+                completion(.failure(error))
+                return
+            }
+            
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   let customers = json["customers"] as? [[String: Any]],
+                   let firstCustomer = customers.first,
+                   let customerId = firstCustomer["id"] as? Int64 {
+                    completion(.success(customerId))
+                } else {
+                    let error = NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No customer found with this email"])
+                    completion(.failure(error))
+                }
+            } catch {
+                completion(.failure(error))
+            }
+        }.resume()
+    }
+
+    // Delete Firebase user account
+    func deleteFirebaseUser(completion: @escaping (Error?) -> Void) {
+        if let user = Auth.auth().currentUser {
+            user.delete { error in
+                DispatchQueue.main.async {
+                    completion(error)
+                }
+            }
+        } else {
+            completion(nil) // No user to delete
+        }
+    }
+
+    // Cancel sign-up and delete temporary account
+    func cancelSignUpAndDeleteAccount(completion: @escaping (Error?) -> Void) {
+        if let user = Auth.auth().currentUser {
+            user.delete { error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        completion(error)
+                        return
+                    }
+                    // Clean up temporary data
+                    UserDefaults.standard.removeObject(forKey: "pendingDisplayName")
+                    // Reset state
+                    self.isLoggedIn = false
+                    self.isNewUser = false
+                    self.isSigningUp = false
+                    self.isEmailVerified = false
+                    self.currentView = .login
+                    // Sign out
+                    do {
+                        try Auth.auth().signOut()
+                        completion(nil)
+                    } catch {
+                        completion(error)
+                    }
+                }
+            }
+        } else {
+            // If no user exists, navigate to login
+            DispatchQueue.main.async {
+                self.isLoggedIn = false
+                self.isNewUser = false
+                self.isSigningUp = false
+                self.isEmailVerified = false
+                self.currentView = .login
+                UserDefaults.standard.removeObject(forKey: "pendingDisplayName")
+                completion(nil)
             }
         }
     }
 
+    // Extract username and customer_id from displayName (very important)
+    func getCustomerIdAndUsername() -> (username: String?, customerId: Int64?) {
+        guard let displayName = Auth.auth().currentUser?.displayName else {
+            return (nil, nil)
+        }
+        let components = displayName.split(separator: "|").map { $0.trimmingCharacters(in: .whitespaces) }
+        guard components.count == 2,
+              let customerId = Int64(components[1]) else {
+            return (displayName, nil)
+        }
+        return (components[0], customerId)
+    }
+
+    // Complete splash screen and navigate to next view
     func completeSplash() {
         hasSeenSplash = true
         currentView = isLoggedIn ? (isEmailVerified ? (isNewUser ? .onboarding : .home) : .emailVerification) : .login
     }
 
+    // Start onboarding process
     func startOnboarding() {
         isNewUser = true
         isSigningUp = false
         currentView = isEmailVerified ? .onboarding : .emailVerification
     }
 
+    // Navigate to second onboarding view
     func goToOnboarding2() {
         currentView = .onboarding2
     }
 
+    // Complete onboarding and navigate to home view
     func completeOnboarding() {
         isNewUser = false
         currentView = .home
     }
 
+    // Sign out (used in settings)
     func signOut() {
         do {
             try Auth.auth().signOut()
@@ -174,6 +376,7 @@ class AuthViewModel: ObservableObject {
         }
     }
 
+    // Begin sign-up process
     func beginSignUp() {
         isSigningUp = true
         isNewUser = true
