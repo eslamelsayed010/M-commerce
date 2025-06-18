@@ -15,7 +15,7 @@ class WomenProductViewModel: BaseProductViewModel {
 }
 
 class KidsProductViewModel: BaseProductViewModel {
-    override var categoryKeyword: String { "Kids" }
+    override var categoryKeyword: String { "Kid" }
 }
 
 class SaleProductViewModel: BaseProductViewModel {
