@@ -8,7 +8,8 @@ struct ProductDetailsView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var favoritesManager: FavoritesManager
     @EnvironmentObject var authViewModel: AuthViewModel
-    @State private var showGuestAlert = false
+    @State private var showGuestAuthentication = false
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
@@ -22,8 +23,8 @@ struct ProductDetailsView: View {
                     VStack {
                         TabView(selection: $selectedImageIndex) {
                             ForEach(Array(product.imageUrls.enumerated()), id: \.offset) { index, imageUrl in
-                                if let url = URL(string: imageUrl) {
-                                    AsyncImage(url: url) { phase in
+                                if let imageUrl = URL(string: imageUrl) {
+                                    AsyncImage(url: imageUrl) { phase in
                                         switch phase {
                                         case .empty:
                                             ProgressView()
@@ -64,9 +65,9 @@ struct ProductDetailsView: View {
                 .padding(.horizontal)
 
                 HStack {
-                    if let price = product.price, let currency = product.currencyCode {
+                    if let price = product.price, let currencyCode = product.currencyCode {
                         HStack(spacing: 2) {
-                            Text("\(currency)")
+                            Text("\(currencyCode)")
                                 .foregroundColor(Color.brown.opacity(0.7))
                                 .font(.title2)
                                 .fontWeight(.semibold)
@@ -130,9 +131,8 @@ struct ProductDetailsView: View {
         .safeAreaInset(edge: .bottom) {
             HStack(spacing: 12) {
                 Button {
-                    
                     if authViewModel.isGuest {
-                        showGuestAlert = true 
+                        showGuestAuthentication = true
                     } else {
                         print("Add to Cart pressed for product: \(product.title)")
                     }
@@ -143,23 +143,22 @@ struct ProductDetailsView: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color.brown)
-                        .cornerRadius(12)
+                        .cornerRadius(20)
                 }
 
                 Button {
-                    
                     if authViewModel.isGuest {
-                        showGuestAlert = true
+                        showGuestAuthentication = true
                     } else {
                         favoritesManager.toggleFavorite(product: product)
                     }
                 } label: {
-                    Image(systemName: favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart")
+                    Image(systemName: authViewModel.isGuest ? "heart" : (favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart"))
                         .font(.title2)
-                        .foregroundColor(favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red)
+                        .foregroundColor(authViewModel.isGuest ? .red : (favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red))
                         .padding()
                         .background(Color.white)
-                        .cornerRadius(12)
+                        .cornerRadius(20)
                         .shadow(color: .gray.opacity(0.2), radius: 2, x: 0, y: 1)
                 }
             }
@@ -180,12 +179,12 @@ struct ProductDetailsView: View {
             }
         }
         .environmentObject(favoritesManager)
-        .alert(isPresented: $showGuestAlert) {
+        .alert(isPresented: $showGuestAuthentication) {
             Alert(
                 title: Text("Sign In Required"),
-                message: Text("You need to sign in to \(authViewModel.isGuest ? "add this product to your cart or favorites" : "perform this action"). Would you like to sign in now?"),
+                message: Text("You need to sign in to add this product to your cart or favorites. Would you like to sign in now?"),
                 primaryButton: .default(Text("Login")) {
-                    authViewModel.currentView = .login 
+                    authViewModel.currentView = .login
                 },
                 secondaryButton: .cancel(Text("Cancel"))
             )
@@ -229,7 +228,7 @@ struct ProductDetailsView_Previews: PreviewProvider {
                 title: "ADIDAS | CLASSIC BACKPACK",
                 description: "This women's backpack has a glam look...",
                 imageUrls: [
-                    "https://cdn.shopify.com/s/files/1/0657/0177/3377/files/product_29_image1.jpg"
+                    "https://cdn.shopify.com/s/files/1/0657/0177/3377/files/product_29.jpg"
                 ],
                 price: 70.00,
                 currencyCode: "EGP",

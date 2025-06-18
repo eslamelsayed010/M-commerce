@@ -18,15 +18,14 @@ struct ProductCardView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
                     Button {
-                         
                         if authViewModel.isGuest {
                             showGuestAlert = true
                         } else {
                             favoritesManager.toggleFavorite(product: product)
                         }
                     } label: {
-                        Image(systemName: favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart")
-                            .foregroundColor(favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red)
+                        Image(systemName: authViewModel.isGuest ? "heart" : (favoritesManager.isFavorite(productID: product.id) ? "heart.fill" : "heart"))
+                            .foregroundColor(authViewModel.isGuest ? .red : (favoritesManager.isFavorite(productID: product.id) ? .red.opacity(0.8) : .red))
                             .padding(6)
                             .background(Color.white.opacity(0.8))
                             .clipShape(Circle())
@@ -36,11 +35,9 @@ struct ProductCardView: View {
                     Spacer()
 
                     Button {
-                        
                         if authViewModel.isGuest {
                             showGuestAlert = true
                         } else {
-                        
                             print("Add to Cart pressed for product: \(product.title)")
                         }
                     } label: {
