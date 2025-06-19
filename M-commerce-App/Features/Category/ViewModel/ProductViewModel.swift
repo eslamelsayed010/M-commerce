@@ -155,13 +155,22 @@ class ProductViewModel: ObservableObject {
                     let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
                     let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
 
+                    //MARK: Currency
+                    var currencyCode: String
+                    let currency: Double? = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+                    if let newCurrency = currency, newCurrency < 10 {
+                        currencyCode = "$"
+                    } else {
+                        currencyCode = "E£"
+                    }
+                    
                     return Product(
                         id: id,
                         title: title,
                         description: description,
                         imageUrls: imageUrls,
                         price: price,
-                        currencyCode: "$",
+                        currencyCode: currencyCode,
                         productType: productType,
                         size: size,
                         color: color
@@ -188,6 +197,21 @@ class ProductViewModel: ObservableObject {
                 if self?.hasNextPage == true {
                     self?.fetchNextPage()
                 }
+                
+                //MARK: Currency
+                let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+                let isCurrencySet = UserDefaults.standard.object(forKey: UserDefaultsKeys.Currency.currency) != nil
+                let finalCurrency = isCurrencySet ? currency : 1.0
+                
+                let updatedProducts = self?.products.map { product in
+                    var updatedProduct = product
+                    if let price = product.price {
+                        updatedProduct.price = price * finalCurrency
+                    }
+                    return updatedProduct
+                }
+
+                self?.products = updatedProducts ?? []
             }
             .store(in: &cancellables)
     }

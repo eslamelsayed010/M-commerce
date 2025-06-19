@@ -39,6 +39,7 @@ class ProductsViewModel: ObservableObject {
             } receiveValue: { [weak self] products in
                 print("Fetched products count: \(products.count)")
                 
+                //MARK: Currency
                 let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
                 let isCurrencySet = UserDefaults.standard.object(forKey: UserDefaultsKeys.Currency.currency) != nil
                 let finalCurrency = isCurrencySet ? currency : 1.0
@@ -152,13 +153,22 @@ class ProductsViewModel: ObservableObject {
                     let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
                     let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
 
+                    //MARK: Currency
+                    var currencyCode: String
+                    let currency: Double? = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+                    if let newCurrency = currency, newCurrency < 10 {
+                        currencyCode = "$"
+                    } else {
+                        currencyCode = "E£"
+                    }
+                    
                     return Product(
                         id: id,
                         title: title,
                         description: description,
                         imageUrls: imageUrls,
                         price: price,
-                        currencyCode: "$",
+                        currencyCode: currencyCode,
                         productType: productType,
                         size: size,
                         color: color

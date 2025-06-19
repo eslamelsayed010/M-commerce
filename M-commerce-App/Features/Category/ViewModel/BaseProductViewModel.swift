@@ -129,13 +129,22 @@ class BaseProductViewModel: ObservableObject {
                     let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
                     let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
 
+                    //MARK: Currency
+                    var currencyCode: String
+                    let currency: Double? = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+                    if let newCurrency = currency, newCurrency < 10 {
+                        currencyCode = "$"
+                    } else {
+                        currencyCode = "E£"
+                    }
+                    
                     return Product(
                         id: id,
                         title: title,
                         description: description,
                         imageUrls: imageUrls,
                         price: priceValue,
-                        currencyCode: "$",
+                        currencyCode: currencyCode,
                         productType: node["productType"] as? String,
                         size: size,
                         color: color
@@ -149,8 +158,23 @@ class BaseProductViewModel: ObservableObject {
                     self?.errorMessage = error.localizedDescription
                 }
             }, receiveValue: { [weak self] fetched in
-                self?.products = fetched
+                self?.products = self?.applyCurrency(to: fetched) ?? []
             })
             .store(in: &cancellables)
+    }
+    
+    //MARK: Currency
+    func applyCurrency(to products: [Product]) -> [Product] {
+        let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+        let isCurrencySet = UserDefaults.standard.object(forKey: UserDefaultsKeys.Currency.currency) != nil
+        let finalCurrency = isCurrencySet ? currency : 1.0
+
+        return products.map { product in
+            var updated = product
+            if let price = product.price {
+                updated.price = price * finalCurrency
+            }
+            return updated
+        }
     }
 }
