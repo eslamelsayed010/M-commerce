@@ -8,42 +8,134 @@
 import CoreData
 import SwiftUI
 import Combine
+import FirebaseFirestore
+import FirebaseAuth
 
 class FavoritesManager: ObservableObject {
     static let shared = FavoritesManager()
     private let persistentContainer: NSPersistentContainer
+    private let db = Firestore.firestore()
     private var cancellables = Set<AnyCancellable>()
 
     @Published var favoriteProductIDs: Set<String> = []
 
     private init() {
         persistentContainer = PersistenceController.shared.container
-        fetchFavorites()
+        fetchFavoritesFromFirestore()
     }
 
-    private func fetchFavorites() {
-        let context = persistentContainer.viewContext
-        let fetchRequest: NSFetchRequest<FavoriteProduct> = FavoriteProduct.fetchRequest()
-        do {
-            let favorites = try context.fetch(fetchRequest)
-            favoriteProductIDs = Set(favorites.map { $0.id ?? "" })
-            for favorite in favorites {
-                print("Fetched favorite: ID=\(favorite.id ?? ""), Title=\(favorite.title ?? ""), Price=\(favorite.price), ImageSize=\(favorite.image?.count ?? 0) bytes")
+    private func cleanProductID(_ productID: String) -> String {
+        if productID.contains("gid://shopify/Product/") {
+            return productID.replacingOccurrences(of: "gid://shopify/Product/", with: "")
+        }
+        return productID
+    }
+
+    func refreshFavoritesFromFirestore() {
+        fetchFavoritesFromFirestore()
+    }
+
+    private func fetchFavoritesFromFirestore() {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            DispatchQueue.main.async {
+                self.favoriteProductIDs = []
+                print("No user logged in, cleared favoriteProductIDs")
             }
-        } catch {
-            print("Failed to fetch favorites: \(error)")
+            return
+        }
+        let privateContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        privateContext.parent = persistentContainer.viewContext
+
+        db.collection("users").document(userID).collection("favorites").getDocuments { [weak self] snapshot, error in
+            guard let self = self, let documents = snapshot?.documents else {
+                print("Error fetching favorites: \(error?.localizedDescription ?? "Unknown error")")
+                return
+            }
+
+            privateContext.perform {
+                if !documents.isEmpty {
+                    let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavoriteProduct.fetchRequest()
+                    let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                    do {
+                        try privateContext.execute(deleteRequest)
+                        print("Cleared existing favorites from private context")
+                    } catch {
+                        print("Failed to clear Core Data in private context: \(error)")
+                    }
+                }
+
+                var productIDs: Set<String> = []
+                for document in documents {
+                    let data = document.data()
+                    guard let productID = data["id"] as? String,
+                          let title = data["title"] as? String,
+                          let price = data["price"] as? Double,
+                          let currencyCode = data["currencyCode"] as? String,
+                          let imageUrl = data["imageUrl"] as? String else { continue }
+
+                    let favorite = FavoriteProduct(context: privateContext)
+                    favorite.id = productID
+                    favorite.title = title
+                    favorite.price = price
+                    favorite.currencyCode = currencyCode
+
+                    if let url = URL(string: imageUrl) {
+                        
+                        if let imageData = try? Data(contentsOf: url) {
+                            favorite.image = imageData
+                        } else {
+                            favorite.image = Data()
+                        }
+                    } else {
+                        favorite.image = Data()
+                    }
+
+                    productIDs.insert(productID)
+                }
+                do {
+                    try privateContext.save()
+                    self.persistentContainer.viewContext.perform {
+                        do {
+                            try self.persistentContainer.viewContext.save()
+                            DispatchQueue.main.async {
+                                self.favoriteProductIDs = productIDs
+                                print("Fetched \(productIDs.count) favorites from Firestore and saved to Core Data")
+                            }
+                        } catch {
+                            print("Failed to save main context: \(error)")
+                        }
+                    }
+                } catch {
+                    print("Failed to save private context: \(error)")
+                }
+            }
         }
     }
 
     func isFavorite(productID: String) -> Bool {
-        favoriteProductIDs.contains(productID)
+        favoriteProductIDs.contains(cleanProductID(productID))
     }
 
     func toggleFavorite(product: Product) {
-        let context = persistentContainer.viewContext
-        let productID = product.id
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No user logged in")
+            return
+        }
 
-        if isFavorite(productID: productID) {
+        let context = persistentContainer.viewContext
+        let rawProductID = product.id
+        let productID = cleanProductID(rawProductID)
+
+        if isFavorite(productID: rawProductID) {
+            db.collection("users").document(userID).collection("favorites").document(productID).delete { error in
+                if let error = error {
+                    print("Failed to remove favorite from Firestore: \(error)")
+                    return
+                }
+                print("Removed favorite from Firestore: \(product.title)")
+            }
+
+            
             let fetchRequest: NSFetchRequest<FavoriteProduct> = FavoriteProduct.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", productID)
             do {
@@ -54,12 +146,30 @@ class FavoritesManager: ObservableObject {
                 try context.save()
                 DispatchQueue.main.async {
                     self.favoriteProductIDs.remove(productID)
-                    print("Removed favorite: \(product.title)")
+                    print("Removed favorite from Core Data: \(product.title)")
                 }
             } catch {
-                print("Failed to remove favorite: \(error)")
+                print("Failed to remove favorite from Core Data: \(error)")
             }
         } else {
+            
+            let favoriteData: [String: Any] = [
+                "id": productID,
+                "title": product.title,
+                "price": product.price ?? 0.0,
+                "currencyCode": product.currencyCode ?? "$",
+                "imageUrl": product.imageUrls.first ?? ""
+            ]
+
+            db.collection("users").document(userID).collection("favorites").document(productID).setData(favoriteData) { error in
+                if let error = error {
+                    print("Failed to add favorite to Firestore: \(error)")
+                    return
+                }
+                print("Added favorite to Firestore: \(product.title)")
+            }
+
+            
             if let firstImageUrl = product.imageUrls.first, let url = URL(string: firstImageUrl) {
                 URLSession.shared.dataTaskPublisher(for: url)
                     .map { $0.data }
@@ -77,10 +187,10 @@ class FavoritesManager: ObservableObject {
                             try context.save()
                             DispatchQueue.main.async {
                                 self.favoriteProductIDs.insert(productID)
-                                print("Added favorite: \(product.title), ImageSize=\(imageData.count) bytes")
+                                print("Added favorite to Core Data: \(product.title), ImageSize=\(imageData.count) bytes")
                             }
                         } catch {
-                            print("Failed to add favorite: \(error)")
+                            print("Failed to add favorite to Core Data: \(error)")
                         }
                     }
                     .store(in: &cancellables)
@@ -95,12 +205,27 @@ class FavoritesManager: ObservableObject {
                     try context.save()
                     DispatchQueue.main.async {
                         self.favoriteProductIDs.insert(productID)
-                        print("Added favorite without image: \(product.title)")
+                        print("Added favorite to Core Data without image: \(product.title)")
                     }
                 } catch {
-                    print("Failed to add favorite: \(error)")
+                    print("Failed to add favorite to Core Data: \(error)")
                 }
             }
+        }
+    }
+
+    func clearCoreData(context: NSManagedObjectContext) {
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavoriteProduct.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do {
+            try context.execute(deleteRequest)
+            try context.save()
+            DispatchQueue.main.async {
+                self.favoriteProductIDs.removeAll()
+                print("Cleared all favorites from Core Data")
+            }
+        } catch {
+            print("Failed to clear Core Data: \(error)")
         }
     }
 }

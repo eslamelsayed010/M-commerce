@@ -46,10 +46,8 @@ struct LoginView: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(emailError ? Color.red : Color.gray.opacity(0.3), lineWidth: 1)
                                 )
-                                .keyboardType(.emailAddress)
-                                .autocapitalization(.none)
+                                .textInputAutocapitalization(.never)
                                 .disableAutocorrection(true)
-                                .textContentType(.none)
                             
                             if emailError {
                                 Text("This field is required")
@@ -74,8 +72,8 @@ struct LoginView: View {
                                     }
                                 }
                                 .padding()
+                                .textInputAutocapitalization(.never)
                                 .disableAutocorrection(true)
-                                .textContentType(.none)
 
                                 Button(action: {
                                     showPassword.toggle()
@@ -95,8 +93,8 @@ struct LoginView: View {
                             if passwordError {
                                 Text("This field is required")
                                     .font(.system(size: 12))
-                                .foregroundColor(.red)
-                                .padding(.leading, 5)
+                                    .foregroundColor(.red)
+                                    .padding(.leading, 5)
                             }
                         }
                         .padding(.horizontal, 20)
@@ -221,8 +219,6 @@ struct LoginView: View {
         }
 
         isLoggingIn = true
-
-        // استخدام الدالة من AuthViewModel
         authViewModel.signInWithEmail(email: email, password: password) { error in
             DispatchQueue.main.async {
                 self.isLoggingIn = false

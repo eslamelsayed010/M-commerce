@@ -1,3 +1,4 @@
+
 import SwiftUI
 import FirebaseCore
 import FirebaseAuth
@@ -52,10 +53,8 @@ struct SignUpView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(emailError ? Color.red : Color.gray.opacity(0.3), lineWidth: 1)
                             )
-                            .keyboardType(.emailAddress)
-                            .autocapitalization(.none)
+                            .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
-                            .textContentType(.none)
                         
                         if emailError {
                             Text(emailErrorMessage)
@@ -80,9 +79,8 @@ struct SignUpView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(usernameError ? Color.red : Color.gray.opacity(0.3), lineWidth: 1)
                             )
-                            .autocapitalization(.none)
+                            .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
-                            .textContentType(.none)
                         
                         if usernameError {
                             Text("This field is required")
@@ -108,8 +106,8 @@ struct SignUpView: View {
                                 }
                             }
                             .padding()
+                            .textInputAutocapitalization(.never)
                             .disableAutocorrection(true)
-                            .textContentType(.none)
                             
                             Button(action: {
                                 showPassword.toggle()
@@ -150,8 +148,8 @@ struct SignUpView: View {
                                 }
                             }
                             .padding()
+                            .textInputAutocapitalization(.never) 
                             .disableAutocorrection(true)
-                            .textContentType(.none)
                             
                             Button(action: {
                                 showConfirmPassword.toggle()

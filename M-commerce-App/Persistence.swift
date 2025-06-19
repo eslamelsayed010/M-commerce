@@ -13,7 +13,6 @@ struct PersistenceController {
     static var preview: PersistenceController = {
         let result = PersistenceController(inMemory: true)
         let viewContext = result.container.viewContext
-        // إضافة بيانات وهمية لـ FavoriteProduct
         let sampleFavorite = FavoriteProduct(context: viewContext)
         sampleFavorite.id = "12345"
         sampleFavorite.title = "Sample Product"

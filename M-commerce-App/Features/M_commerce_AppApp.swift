@@ -90,47 +90,59 @@ class AuthViewModel: ObservableObject {
     // Initializer: Set default view to splash screen
     init() {
         currentView = .splash
+        Auth.auth().addStateDidChangeListener { [weak self] _, user in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                if let user = user {
+                    print("Auth state changed: User logged in with UID: \(user.uid)") // ADDED
+                    self.updateAuthStateAfterLogin(user: user)
+                } else {
+                    print("Auth state changed: No user logged in") // ADDED
+                    self.isLoggedIn = false
+                    self.isGuest = false
+                    self.isEmailVerified = false
+                    self.currentView = .login
+                    FavoritesManager.shared.clearCoreData(context: PersistenceController.shared.container.viewContext) // ADDED
+                }
+            }
+        }
     }
 
     // Check authentication state on app launch
     func checkAuthState() {
         guard !isCheckingAuth else { return }
         isCheckingAuth = true
-
-    
-        Auth.auth().addStateDidChangeListener { _, user in
+        if let user = Auth.auth().currentUser {
             DispatchQueue.main.async {
-                self.isLoggedIn = user != nil
-                self.isEmailVerified = user?.isEmailVerified ?? false
-        
-                if user != nil {
-                    self.isGuest = false
-                    if !self.isSigningUp {
-                        if self.isEmailVerified {
-                            self.currentView = self.isNewUser ? .onboarding : .home
-                        } else {
-                            self.currentView = .emailVerification
-                        }
-                    }
-                } else {
-                    
-                    self.currentView = self.isGuest ? .home : .login
-                    self.isNewUser = false
-                    self.isSigningUp = false
-                    self.isEmailVerified = false
-                }
+                self.isLoggedIn = true
+                self.isGuest = false
+                self.isEmailVerified = user.isEmailVerified
+                self.currentView = user.isEmailVerified ? (self.isNewUser ? .onboarding : .home) : .emailVerification
+                print("Checked auth state: User logged in with UID: \(user.uid)") // ADDED
+                FavoritesManager.shared.refreshFavoritesFromFirestore() // ADDED
                 self.isCheckingAuth = false
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.isLoggedIn = false
+                self.isGuest = false
+                self.isEmailVerified = false
+                self.currentView = self.isGuest ? .home : .login
+                self.isNewUser = false
+                self.isCheckingAuth = false
+                print("Checked auth state: No user logged in") // ADDED
             }
         }
     }
 
-    
     func updateAuthStateAfterLogin(user: User) {
         DispatchQueue.main.async {
             self.isLoggedIn = true
             self.isGuest = false
             self.isEmailVerified = user.isEmailVerified
             self.currentView = self.isEmailVerified ? (self.isNewUser ? .onboarding : .home) : .emailVerification
+            print("User logged in: \(user.uid), refreshing favorites") // MODIFIED
+            FavoritesManager.shared.refreshFavoritesFromFirestore() // MODIFIED
         }
     }
 
@@ -295,7 +307,7 @@ class AuthViewModel: ObservableObject {
                 }
             }
         } else {
-            completion(nil) // No user to delete
+            completion(nil)
         }
     }
 
@@ -378,7 +390,7 @@ class AuthViewModel: ObservableObject {
         isNewUser = false
         currentView = .home
     }
-
+    
     // Sign out (used in settings)
     func signOut() {
         do {
@@ -389,10 +401,12 @@ class AuthViewModel: ObservableObject {
             isEmailVerified = false
             isGuest = false
             currentView = .login
+            FavoritesManager.shared.clearCoreData(context: PersistenceController.shared.container.viewContext)
         } catch {
             print("Error signing out: \(error)")
         }
     }
+    
 
     // Begin sign-up process
     func beginSignUp() {
@@ -418,15 +432,13 @@ class AuthViewModel: ObservableObject {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 if let error = error {
+                    print("Sign-in error: \(error.localizedDescription)") // ADDED
                     completion(error)
                     return
                 }
                 if let user = result?.user {
-                    self.isLoggedIn = true
-                    self.isGuest = false
-                    self.isEmailVerified = user.isEmailVerified
-                    self.isNewUser = false
-                    self.currentView = user.isEmailVerified ? .home : .emailVerification
+                    print("Signed in with email: \(user.uid)") // ADDED
+                    self.updateAuthStateAfterLogin(user: user)
                     completion(nil)
                 }
             }
@@ -437,14 +449,13 @@ class AuthViewModel: ObservableObject {
         Auth.auth().signIn(with: credential) { result, error in
             DispatchQueue.main.async {
                 if let error = error {
+                    print("Google sign-in error: \(error.localizedDescription)") // ADDED
                     completion(error)
                     return
                 }
                 if let user = result?.user {
-                    self.isLoggedIn = true
-                    self.isGuest = false
-                    self.isEmailVerified = user.isEmailVerified
-                    self.startOnboarding()
+                    print("Signed in with Google: \(user.uid)") // ADDED
+                    self.updateAuthStateAfterLogin(user: user) 
                     completion(nil)
                 }
             }
