@@ -14,7 +14,7 @@ struct CartView: View {
         ScrollView {
             //if cartViewModel.products.count > 0 {
                 //ForEach(cartViewModel.products, id: \.id){ product in
-                    ProductRow().environmentObject(cartViewModel)
+                    ProductRow()
                 //}
                 
                 HStack{
