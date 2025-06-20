@@ -8,6 +8,7 @@ enum NavigationDestination: Hashable {
 }
 
 struct HomeView: View {
+    @EnvironmentObject var visibilityManager: TabBarVisibilityManager
     @StateObject private var viewModel = HomeViewModel()
     @State private var searchText = ""
     let rows = [

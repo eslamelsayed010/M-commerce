@@ -8,32 +8,44 @@
 import SwiftUI
 
 struct ProductRow: View {
-    @EnvironmentObject var cartViewModel: CartViewModel
-    //var product: Product
+    let item: LineItems
+    let imageUrl: String
+    let draftOrderId: Int
+    
+    @State private var showToast = false
     @State private var quantity = 1
+    @EnvironmentObject var viewModel: CartViewModel
     
     var body: some View {
         HStack(spacing: 20){
-            Image("jacket")
-                .resizable()
+            AsyncImage(url: URL(string: imageUrl)) { image in
+                      image.resizable()
+                  } placeholder: {
+                      ProgressView()
+                  }
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 70)
                 .cornerRadius(10)
             
             VStack(alignment: .leading){
                 HStack {
-                    Text("ADIDAS | CLASSIC BACKPACK")
+                    Text(item.title)
                         .bold()
                     Spacer()
                     Image(systemName: "trash")
                         .foregroundColor(.red)
                         .padding(.leading)
                         .onTapGesture {
-                            //cartViewModel.removeFromCart(product: product)
+                            showToast = true
+                            let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
+                            Task{
+                                await viewModel.removeFromCart(productID: draftOrderId)
+                                await viewModel.fetchCartsByCustomerId(customerId: customerId)
+                            }
                         }
                 }
                 
-                Text("$300")
+                Text(item.price)
                 HStack {
                     Text("Quantity:")
                     Stepper("\(quantity)", value: $quantity, in: 1...10)
@@ -44,13 +56,10 @@ struct ProductRow: View {
         }
         .padding(.horizontal)
         .frame(maxWidth: .infinity, alignment: .leading)
-        
-    }
-}
-
-struct ProductRow_Previews: PreviewProvider {
-    static var previews: some View {
-        ProductRow()
+        .onAppear{
+            quantity = item.quantity
+        }
+        .toast(successMessage: viewModel.successMessage, errorMessage: viewModel.errorMessage, isShowing: $showToast)
     }
 }
 

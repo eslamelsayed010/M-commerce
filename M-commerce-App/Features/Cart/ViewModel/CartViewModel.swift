@@ -8,10 +8,12 @@
 import Foundation
 
 class CartViewModel: ObservableObject{
-    @Published private(set) var products: [Product] = []
+    @Published private(set) var draftOrder: [GetDraftOrder] = []
     @Published private(set) var total: Double = 0
     
     @Published var isLoading = false
+   
+    @Published var productImages: [Int: String] = [:]
     @Published var errorMessage: String?
     @Published var successMessage: String?
     private var cartServices: CartServices
@@ -26,16 +28,63 @@ class CartViewModel: ObservableObject{
         do {
             try await cartServices.addToCart(cart: cart)
             successMessage = "Add to cart!"
-        } catch let error as ShopifyAPIError {
-            errorMessage = error.localizedDescription
         } catch {
-            errorMessage = "An unexpected error occurred: \(error.localizedDescription)"
+            errorMessage = error.localizedDescription
         }
         isLoading = false
     }
-    
-    func removeFromCart(product: Product){
 
+    @MainActor
+    func fetchCartsByCustomerId(customerId: Int) async {
+        isLoading = true
+        do {
+            self.draftOrder = try await cartServices.fetchCartsByCustomerId(cutomerId: customerId)
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+        isLoading = false
+    }
+
+    @MainActor
+    func fetchProductImage(productId: Int) async {
+        do {
+            let response = try await cartServices.fetchProductDetails(productId: productId)
+            
+            guard let product = response?.product else {
+                return
+            }
+                    
+            if let firstImage = product.images.first {
+                let imageUrl = firstImage.src
+                self.productImages[productId] = imageUrl
+            } else {
+                self.productImages[productId] = "placeholder_image_url"
+            }
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+    
+    @MainActor
+    func fetchAllProductImages() async {
+        let productIds = Set(draftOrder.flatMap { $0.lineItems.compactMap { Int($0.productId ?? 0) } })
+        await withTaskGroup(of: Void.self) { group in
+            for productId in productIds {
+                group.addTask {
+                    await self.fetchProductImage(productId: productId)
+                }
+            }
+        }
+    }
+    
+    @MainActor
+    func removeFromCart(productID: Int) async {
+        do {
+            try await cartServices.deleteFromCart(cartId: productID)
+            successMessage = "Remove From cart!"
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 }
 

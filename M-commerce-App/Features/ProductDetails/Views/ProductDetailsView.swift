@@ -10,6 +10,7 @@ struct ProductDetailsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showGuestAuthentication = false
 
+    let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
     @State private var showToast = false
     @StateObject var cartViewModel = CartViewModel(cartServices: CartServices())
     var body: some View {
@@ -137,21 +138,13 @@ struct ProductDetailsView: View {
                         showGuestAuthentication = true
                     } else {
                         showToast = true
-                        
-                        let gid = product.variantId
-                        var vId: Int?
-                        if let id = gid.components(separatedBy: "/").last {
-                            print("ID: \(id)")
-                            vId = Int(id) ?? 0
-                        }
-                        
-                        let customerId = AuthViewModel().getCustomerIdAndUsername().customerId
-                        let customer = Customer(id: Int(customerId ?? 0))
-                        let lineItem = LineItem(variant_id: vId ?? 0, quantity: 1)
-                        let draftOrder = DraftOrder(line_items: [lineItem], customer: customer, use_customer_default_address: true, note: "cart")
-
                         Task {
-                            await cartViewModel.addToCart(cart: DraftOrderWrapper(draft_order: draftOrder))
+                            let exist = await areProductsInCart()
+                            if !exist {
+                                await cartViewModel.addToCart(cart: createOrderToCart())
+                            }else{
+                                cartViewModel.errorMessage = "The product already in your cart!"
+                            }
                         }
                     }
                 } label: {
@@ -220,6 +213,36 @@ struct ProductDetailsView: View {
         }
         .toast(successMessage: cartViewModel.successMessage, errorMessage: cartViewModel.errorMessage, isShowing: $showToast)
     }
+    
+    func createOrderToCart() -> DraftOrderWrapper {
+        let customer = Customer(id: customerId)
+        let lineItem = LineItem(variant_id: getVariantId(), quantity: 1)
+        let draftOrder = DraftOrder(line_items: [lineItem], customer: customer, use_customer_default_address: true, note: "cart")
+        
+        return DraftOrderWrapper(draft_order: draftOrder)
+    }
+    
+    func getVariantId() -> Int {
+        let gid = product.variantId
+        guard let id = gid.components(separatedBy: "/").last else{
+            return 0
+        }
+        return Int(id) ?? 0
+    }
+    
+    func areProductsInCart() async -> Bool {
+        await cartViewModel.fetchCartsByCustomerId(customerId: customerId)
+        
+        for carts in cartViewModel.draftOrder {
+            for productCart in carts.lineItems {
+                if getVariantId() == productCart.variantId ?? 0 {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
 }
 
 struct ColorView: View {
