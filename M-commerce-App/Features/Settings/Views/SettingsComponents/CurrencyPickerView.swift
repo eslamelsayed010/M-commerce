@@ -18,7 +18,8 @@ struct CurrencyPickerView: View {
             let egp = viewModel.currency?.EGP ?? 0.0
             viewModel.setToUserDefault(field: .currency(egp))
         } else {
-            let usd = 1 / (viewModel.currency?.EGP ?? 0.0)
+            let usd: Double = 1
+            // / (viewModel.currency?.EGP ?? 0.0)
             viewModel.setToUserDefault(field: .currency(usd))
         }
     }
