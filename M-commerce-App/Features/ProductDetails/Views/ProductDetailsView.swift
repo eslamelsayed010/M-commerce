@@ -10,6 +10,8 @@ struct ProductDetailsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showGuestAuthentication = false
 
+    @State private var showToast = false
+    @StateObject var cartViewModel = CartViewModel(cartServices: CartServices())
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
@@ -134,16 +136,43 @@ struct ProductDetailsView: View {
                     if authViewModel.isGuest {
                         showGuestAuthentication = true
                     } else {
-                        print("Add to Cart pressed for product: \(product.title)")
+                        showToast = true
+                        
+                        let gid = product.variantId
+                        var vId: Int?
+                        if let id = gid.components(separatedBy: "/").last {
+                            print("ID: \(id)")
+                            vId = Int(id) ?? 0
+                        }
+                        
+                        let customerId = AuthViewModel().getCustomerIdAndUsername().customerId
+                        let customer = Customer(id: Int(customerId ?? 0))
+                        let lineItem = LineItem(variant_id: vId ?? 0, quantity: 1)
+                        let draftOrder = DraftOrder(line_items: [lineItem], customer: customer, use_customer_default_address: true, note: "cart")
+
+                        Task {
+                            await cartViewModel.addToCart(cart: DraftOrderWrapper(draft_order: draftOrder))
+                        }
                     }
                 } label: {
-                    Text("Add to Cart")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.brown)
-                        .cornerRadius(20)
+                    HStack() {
+                        if cartViewModel.isLoading {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(0.9)
+                            Spacer()
+                                .frame(width: 15)
+                            Text("Adding...")
+                        } else {
+                            Text("Add to Cart")
+                        }
+                    }
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.brown)
+                    .cornerRadius(20)
                 }
 
                 Button {
@@ -189,6 +218,7 @@ struct ProductDetailsView: View {
                 secondaryButton: .cancel(Text("Cancel"))
             )
         }
+        .toast(successMessage: cartViewModel.successMessage, errorMessage: cartViewModel.errorMessage, isShowing: $showToast)
     }
 }
 

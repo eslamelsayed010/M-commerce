@@ -36,6 +36,7 @@
 		223477632DFF1F07000FB708 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477622DFF1F07000FB708 /* UserDefaultsKeys.swift */; };
 		223477662DFF1F0D000FB708 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477652DFF1F0D000FB708 /* Toast.swift */; };
 		2234776A2DFF2059000FB708 /* TabBarVisibilityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 223477692DFF2059000FB708 /* TabBarVisibilityManager.swift */; };
+		225309D62E05AC8200E47BAD /* CartServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225309D52E05AC8200E47BAD /* CartServices.swift */; };
 		225DD6D72DFC8B69002681B3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */; };
 		225DD6D92DFC8C4D002681B3 /* FloatingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */; };
 		225DD6DB2DFC8CFE002681B3 /* ImgCouponView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225DD6DA2DFC8CFE002681B3 /* ImgCouponView.swift */; };
@@ -144,6 +145,7 @@
 		223477622DFF1F07000FB708 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		223477652DFF1F0D000FB708 /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		223477692DFF2059000FB708 /* TabBarVisibilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVisibilityManager.swift; sourceTree = "<group>"; };
+		225309D52E05AC8200E47BAD /* CartServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartServices.swift; sourceTree = "<group>"; };
 		225DD6D62DFC8B69002681B3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		225DD6D82DFC8C4D002681B3 /* FloatingTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingTabBar.swift; sourceTree = "<group>"; };
 		225DD6DA2DFC8CFE002681B3 /* ImgCouponView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImgCouponView.swift; sourceTree = "<group>"; };
@@ -439,6 +441,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		225309D42E05AC6600E47BAD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				225309D52E05AC8200E47BAD /* CartServices.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		225DD6DE2DFC8DFB002681B3 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -639,6 +649,7 @@
 		22FDE3A02E04463300A33FE1 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				225309D42E05AC6600E47BAD /* Services */,
 				22FDE3A12E04465000A33FE1 /* Cart.swift */,
 			);
 			path = Models;
@@ -840,6 +851,7 @@
 				04B477852DE3A1A400CC82F8 /* M_commerce_AppApp.swift in Sources */,
 				22F696362DFF41C500D2E247 /* CountryRow.swift in Sources */,
 				22F696382DFF41C500D2E247 /* CitySelectionButton.swift in Sources */,
+				225309D62E05AC8200E47BAD /* CartServices.swift in Sources */,
 				227EAC5C2DFDDA6D00F0D300 /* WomenView.swift in Sources */,
 				22F696272DFF41C500D2E247 /* ShopifyLocationService.swift in Sources */,
 				0474056C2DF11BAD0047C6C2 /* SignUpView.swift in Sources */,
