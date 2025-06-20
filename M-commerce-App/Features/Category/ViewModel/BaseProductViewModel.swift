@@ -71,6 +71,7 @@ class BaseProductViewModel: ObservableObject {
                 variants(first: 1) {
                   edges {
                     node {
+                      id   
                       price
                       selectedOptions {
                         name
@@ -84,6 +85,7 @@ class BaseProductViewModel: ObservableObject {
           }
         }
         """
+
 
         let variables: [String: Any] = [
             "first": 50,
@@ -124,20 +126,20 @@ class BaseProductViewModel: ObservableObject {
                     let variant = variantEdges.first?["node"] as? [String: Any]
                     let priceString = variant?["price"] as? String
                     let priceValue = Double(priceString ?? "")
+                    let variantId = variant?["id"] as? String ?? ""
 
                     let options = (variant?["selectedOptions"] as? [[String: Any]]) ?? []
                     let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
                     let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
 
-                    //MARK: Currency
+                    // MARK: Currency
                     var currencyCode: String
-                    let currency: Double? = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
-                    if let newCurrency = currency, newCurrency < 10 {
-                        currencyCode = "$"
-                    } else {
-                        currencyCode = "E£"
-                    }
+                    let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+                    currencyCode = currency < 10 ? "$" : "E£"
+
                     
+                    print("variantId: \(variantId)")
+
                     return Product(
                         id: id,
                         title: title,
@@ -147,9 +149,11 @@ class BaseProductViewModel: ObservableObject {
                         currencyCode: currencyCode,
                         productType: node["productType"] as? String,
                         size: size,
-                        color: color
+                        color: color,
+                        variantId: variantId
                     )
                 }
+
             }
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in

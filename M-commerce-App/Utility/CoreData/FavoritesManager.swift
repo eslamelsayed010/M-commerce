@@ -159,6 +159,7 @@ class FavoritesManager: ObservableObject {
                 "price": product.price ?? 0.0,
                 "currencyCode": product.currencyCode ?? "$",
                 "imageUrl": product.imageUrls.first ?? ""
+                ,"variantId":product.variantId 
             ]
 
             db.collection("users").document(userID).collection("favorites").document(productID).setData(favoriteData) { error in
@@ -182,6 +183,7 @@ class FavoritesManager: ObservableObject {
                         favorite.title = product.title
                         favorite.price = product.price ?? 0.0
                         favorite.currencyCode = product.currencyCode ?? "$"
+                    
                         favorite.image = imageData
                         do {
                             try context.save()

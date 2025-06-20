@@ -246,6 +246,7 @@ struct FavoriteView: View {
                 let options = (variant?["selectedOptions"] as? [[String: Any]]) ?? []
                 let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
                 let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
+                let variantId = variant?["id"] as? String ?? ""
 
                 return Product(
                     id: id,
@@ -256,7 +257,8 @@ struct FavoriteView: View {
                     currencyCode: "$",
                     productType: productType,
                     size: size,
-                    color: color
+                    color: color,
+                    variantId: variantId
                 )
             }
             .receive(on: DispatchQueue.main)
@@ -283,7 +285,8 @@ struct FavoriteView: View {
             currencyCode: productCurrencyCode(favorite),
             productType: nil,
             size: nil,
-            color: nil
+            color: nil,
+            variantId: favorite.variantId ?? ""
         )
     }
 

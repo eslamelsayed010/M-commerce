@@ -84,6 +84,7 @@ class ProductViewModel: ObservableObject {
                 variants(first: 1) {
                   edges {
                     node {
+                      id
                       price
                       selectedOptions {
                         name
@@ -100,6 +101,7 @@ class ProductViewModel: ObservableObject {
           }
         }
         """
+
 
         var variables: [String: Any] = ["first": pageSize]
         if let cursor = lastCursor {
@@ -151,6 +153,8 @@ class ProductViewModel: ObservableObject {
                     let priceString = variant?["price"] as? String
                     let price = Double(priceString ?? "")
 
+                    let variantId = variant?["id"] as? String ?? ""
+
                     let options = (variant?["selectedOptions"] as? [[String: Any]]) ?? []
                     let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
                     let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
@@ -163,6 +167,7 @@ class ProductViewModel: ObservableObject {
                     } else {
                         currencyCode = "E£"
                     }
+                    print("variantId: \(variantId)")
                     
                     return Product(
                         id: id,
@@ -173,9 +178,11 @@ class ProductViewModel: ObservableObject {
                         currencyCode: currencyCode,
                         productType: productType,
                         size: size,
-                        color: color
+                        color: color,
+                        variantId: variantId
                     )
                 }
+
 
                 let lastCursor = edges.last?["cursor"] as? String
                 return (products, lastCursor, hasNextPage)

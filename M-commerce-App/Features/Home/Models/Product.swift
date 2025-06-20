@@ -15,5 +15,6 @@ struct Product: Identifiable {
     let currencyCode: String?
     let productType: String?
     let size: String?
-    let color: String? 
+    let color: String?
+    let variantId: String
 }

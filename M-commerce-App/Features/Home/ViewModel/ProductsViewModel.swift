@@ -95,6 +95,7 @@ class ProductsViewModel: ObservableObject {
                 variants(first: 1) {
                   edges {
                     node {
+                      id
                       price
                       selectedOptions {
                         name
@@ -132,27 +133,30 @@ class ProductsViewModel: ObservableObject {
 
                 return edges.compactMap { edge in
                     guard let node = edge["node"] as? [String: Any],
-                          let title = node["title"] as? String,
-                          let productType = node["productType"] as? String,
                           let id = node["id"] as? String,
-                          let description = node["descriptionHtml"] as? String else {
+                          let title = node["title"] as? String,
+                          let description = node["descriptionHtml"] as? String,
+                          let productType = node["productType"] as? String else {
                         return nil
                     }
 
                     let imageEdges = ((node["images"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
-                    let imageUrls = imageEdges.compactMap { edge in
-                        (edge["node"] as? [String: Any])?["url"] as? String
+                    let imageUrls = imageEdges.compactMap {
+                        ($0["node"] as? [String: Any])?["url"] as? String
                     }
 
                     let variantEdges = ((node["variants"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
-                    let variant = variantEdges.first?["node"] as? [String: Any]
-                    let priceString = variant?["price"] as? String
-                    let price = Double(priceString ?? "")
+                    guard let variant = variantEdges.first?["node"] as? [String: Any],
+                          let variantId = variant["id"] as? String,
+                          let priceString = variant["price"] as? String else {
+                        return nil
+                    }
 
-                    let options = (variant?["selectedOptions"] as? [[String: Any]]) ?? []
-                    let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
-                    let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
+                    let price = Double(priceString)
 
+                    let options = (variant["selectedOptions"] as? [[String: Any]]) ?? []
+                    let size = options.first(where: { ($0["name"] as? String)?.lowercased() == "size" })?["value"] as? String
+                    let color = options.first(where: { ($0["name"] as? String)?.lowercased() == "color" })?["value"] as? String
                     //MARK: Currency
                     var currencyCode: String
                     let currency: Double? = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
@@ -161,20 +165,24 @@ class ProductsViewModel: ObservableObject {
                     } else {
                         currencyCode = "E£"
                     }
-                    
+                    print("variantId: \(variantId)")
+
                     return Product(
                         id: id,
                         title: title,
                         description: description,
                         imageUrls: imageUrls,
                         price: price,
-                        currencyCode: currencyCode,
+                        currencyCode: nil,
                         productType: productType,
                         size: size,
-                        color: color
+                        color: color,
+                        variantId: variantId
                     )
                 }
             }
+            .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
+
 }

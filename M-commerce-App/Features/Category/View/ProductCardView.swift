@@ -126,7 +126,8 @@ struct ProductCardView_Previews: PreviewProvider {
                     currencyCode: "EGP",
                     productType: "ACCESSORIES",
                     size: "OS",
-                    color: "black"
+                    color: "black",
+                    variantId: " "
                 )
             )
             .environmentObject(FavoritesManager.shared)
