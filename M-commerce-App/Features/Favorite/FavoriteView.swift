@@ -20,6 +20,7 @@ struct FavoriteView: View {
     @State private var isLoading = false
     @State private var navigateToDetails = false
     @State private var cancellables = Set<AnyCancellable>()
+    @State private var refreshID = UUID()
 
     @FetchRequest(
         entity: FavoriteProduct.entity(),
@@ -64,7 +65,6 @@ struct FavoriteView: View {
                                         Spacer()
 
                                         Button {
-                                           
                                         } label: {
                                             Image(systemName: "cart")
                                                 .foregroundColor(.black)
@@ -120,6 +120,7 @@ struct FavoriteView: View {
                             }
                         }
                         .padding()
+                        .id(refreshID)
                     }
                 }
             }
@@ -129,6 +130,7 @@ struct FavoriteView: View {
                     if let productToDelete = productToDelete {
                         favoritesManager.toggleFavorite(product: mapFavoriteToProduct(productToDelete))
                         self.productToDelete = nil
+                        refreshID = UUID()
                     }
                 }
                 Button("Cancel", role: .cancel) {
@@ -151,6 +153,10 @@ struct FavoriteView: View {
                 }
                 .hidden()
             )
+            
+            .onReceive(NotificationCenter.default.publisher(for: .NSManagedObjectContextObjectsDidChange)) { _ in
+                refreshID = UUID()
+            }
         }
     }
 
@@ -267,7 +273,7 @@ struct FavoriteView: View {
                 if case .failure(let error) = completion {
                     print("Failed to fetch product: \(error)")
                 }
-            } receiveValue: {  product in
+            } receiveValue: { product in
                 self.selectedProduct = product
                 self.navigateToDetails = true
                 print("Fetched product: \(product.title)")

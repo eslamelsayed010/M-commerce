@@ -43,70 +43,97 @@ class FavoritesManager: ObservableObject {
             }
             return
         }
+
         let privateContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         privateContext.parent = persistentContainer.viewContext
 
-        db.collection("users").document(userID).collection("favorites").getDocuments { [weak self] snapshot, error in
-            guard let self = self, let documents = snapshot?.documents else {
-                print("Error fetching favorites: \(error?.localizedDescription ?? "Unknown error")")
-                return
+    
+        privateContext.perform {
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavoriteProduct.fetchRequest()
+            let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            do {
+                try privateContext.execute(deleteRequest)
+                try privateContext.save()
+                print("Cleared all favorites from Core Data at app launch")
+            } catch {
+                print("Failed to clear Core Data at app launch: \(error)")
             }
-
-            privateContext.perform {
-                if !documents.isEmpty {
-                    let fetchRequest: NSFetchRequest<NSFetchRequestResult> = FavoriteProduct.fetchRequest()
-                    let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-                    do {
-                        try privateContext.execute(deleteRequest)
-                        print("Cleared existing favorites from private context")
-                    } catch {
-                        print("Failed to clear Core Data in private context: \(error)")
-                    }
+            self.db.collection("users").document(userID).collection("favorites").getDocuments { [weak self] snapshot, error in
+                guard let self = self, let documents = snapshot?.documents else {
+                    print("Error fetching favorites: \(error?.localizedDescription ?? "Unknown error")")
+                    return
                 }
 
-                var productIDs: Set<String> = []
-                for document in documents {
-                    let data = document.data()
-                    guard let productID = data["id"] as? String,
-                          let title = data["title"] as? String,
-                          let price = data["price"] as? Double,
-                          let currencyCode = data["currencyCode"] as? String,
-                          let imageUrl = data["imageUrl"] as? String else { continue }
+                privateContext.perform {
+                    var productIDs: Set<String> = []
+                    for document in documents {
+                        let data = document.data()
+                        guard let productID = data["id"] as? String,
+                              let title = data["title"] as? String,
+                              let price = data["price"] as? Double,
+                              let currencyCode = data["currencyCode"] as? String,
+                              let imageUrl = data["imageUrl"] as? String else { continue }
 
-                    let favorite = FavoriteProduct(context: privateContext)
-                    favorite.id = productID
-                    favorite.title = title
-                    favorite.price = price
-                    favorite.currencyCode = currencyCode
-
-                    if let url = URL(string: imageUrl) {
                         
-                        if let imageData = try? Data(contentsOf: url) {
-                            favorite.image = imageData
+                        let fetchRequest: NSFetchRequest<FavoriteProduct> = FavoriteProduct.fetchRequest()
+                        fetchRequest.predicate = NSPredicate(format: "id == %@", productID)
+                        fetchRequest.fetchLimit = 1
+                        if let existing = try? privateContext.fetch(fetchRequest).first {
+                    
+                            existing.title = title
+                            existing.price = price
+                            existing.currencyCode = currencyCode
+                            if let url = URL(string: imageUrl) {
+                                if let imageData = try? Data(contentsOf: url) {
+                                    existing.image = imageData
+                                } else {
+                                    existing.image = Data()
+                                }
+                            } else {
+                                existing.image = Data()
+                            }
+                            productIDs.insert(productID)
+                            continue
+                        }
+
+                    
+                        let favorite = FavoriteProduct(context: privateContext)
+                        favorite.id = productID
+                        favorite.title = title
+                        favorite.price = price
+                        favorite.currencyCode = currencyCode
+
+                        if let url = URL(string: imageUrl) {
+                            if let imageData = try? Data(contentsOf: url) {
+                                favorite.image = imageData
+                            } else {
+                                favorite.image = Data()
+                            }
                         } else {
                             favorite.image = Data()
                         }
-                    } else {
-                        favorite.image = Data()
+
+                        productIDs.insert(productID)
                     }
 
-                    productIDs.insert(productID)
-                }
-                do {
-                    try privateContext.save()
-                    self.persistentContainer.viewContext.perform {
-                        do {
-                            try self.persistentContainer.viewContext.save()
-                            DispatchQueue.main.async {
-                                self.favoriteProductIDs = productIDs
-                                print("Fetched \(productIDs.count) favorites from Firestore and saved to Core Data")
+                    do {
+                        try privateContext.save()
+                        self.persistentContainer.viewContext.perform {
+                            do {
+                                try self.persistentContainer.viewContext.save()
+                                DispatchQueue.main.async {
+                                    self.favoriteProductIDs = productIDs
+                                    print("Fetched \(productIDs.count) favorites from Firestore and saved to Core Data")
+                                
+                                    NotificationCenter.default.post(name: .NSManagedObjectContextObjectsDidChange, object: self.persistentContainer.viewContext)
+                                }
+                            } catch {
+                                print("Failed to save main context: \(error)")
                             }
-                        } catch {
-                            print("Failed to save main context: \(error)")
                         }
+                    } catch {
+                        print("Failed to save private context: \(error)")
                     }
-                } catch {
-                    print("Failed to save private context: \(error)")
                 }
             }
         }
@@ -135,7 +162,6 @@ class FavoritesManager: ObservableObject {
                 print("Removed favorite from Firestore: \(product.title)")
             }
 
-            
             let fetchRequest: NSFetchRequest<FavoriteProduct> = FavoriteProduct.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %@", productID)
             do {
@@ -144,6 +170,8 @@ class FavoritesManager: ObservableObject {
                     context.delete(favorite)
                 }
                 try context.save()
+                context.processPendingChanges()
+                NotificationCenter.default.post(name: .NSManagedObjectContextObjectsDidChange, object: context)
                 DispatchQueue.main.async {
                     self.favoriteProductIDs.remove(productID)
                     print("Removed favorite from Core Data: \(product.title)")
@@ -159,7 +187,7 @@ class FavoritesManager: ObservableObject {
                 "price": product.price ?? 0.0,
                 "currencyCode": product.currencyCode ?? "$",
                 "imageUrl": product.imageUrls.first ?? ""
-                ,"variantId":product.variantId 
+                ,"variantId":product.variantId
             ]
 
             db.collection("users").document(userID).collection("favorites").document(productID).setData(favoriteData) { error in
