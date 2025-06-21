@@ -11,6 +11,7 @@ import Foundation
 
 protocol CartServicesProtocol{
     func addToCart(cart: DraftOrderWrapper) async throws
+    func updateCart(cart: UpdateDraftOrderRequest, orderId: Int) async throws
     func deleteFromCart(cartId: Int) async throws
     func fetchProductDetails(productId: Int) async throws  -> ProductImagesResponse?
     func fetchCartsByCustomerId(cutomerId: Int) async throws -> [GetDraftOrder]
@@ -66,6 +67,27 @@ class CartServices: CartServicesProtocol{
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        request.httpBody = try JSONEncoder().encode(cart)
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ShopifyAPIError.invalidResponse
+        }
+
+        if httpResponse.statusCode != 201 {
+            throw ShopifyAPIError.httpError(statusCode: httpResponse.statusCode, data: data)
+        }
+    }
+
+    func updateCart(cart: UpdateDraftOrderRequest, orderId: Int) async throws {
+        let strUrl = baseURL + "/draft_orders/\(orderId).json"
+        guard let url = URL(string: strUrl) else { return }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         request.httpBody = try JSONEncoder().encode(cart)

@@ -33,9 +33,8 @@ struct CartView: View {
                             
                             let productId = Int(item.productId ?? 0)
                             let imageUrl = cartViewModel.productImages[productId] ?? ""
-                            let draftOrderId = Int(draftOrder.id )
                             
-                            ProductRow(item: item, imageUrl: imageUrl, draftOrderId: draftOrderId)
+                            ProductRow(item: item, imageUrl: imageUrl, draftOrder: draftOrder)
                                 .environmentObject(cartViewModel)
                         }
                     }
@@ -43,7 +42,7 @@ struct CartView: View {
                     HStack {
                         Text("Your cart total is")
                         Spacer()
-                        Text("$300.00")
+                        Text("$\(String(format: "%.2f", cartViewModel.totalPrice))")
                             .bold()
                     }
                     .padding()
@@ -61,7 +60,9 @@ struct CartView: View {
         .onAppear {
             let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
             Task {
+                cartViewModel.isLoading = true
                 await cartViewModel.fetchCartsByCustomerId(customerId: customerId)
+                cartViewModel.isLoading = false
                 await cartViewModel.fetchAllProductImages()
             }
         }

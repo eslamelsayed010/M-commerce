@@ -10,7 +10,8 @@ import SwiftUI
 struct ProductRow: View {
     let item: LineItems
     let imageUrl: String
-    let draftOrderId: Int
+    let draftOrder: GetDraftOrder
+    let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
     
     @State private var showToast = false
     @State private var quantity = 1
@@ -42,11 +43,36 @@ struct ProductRow: View {
                         }
                 }
                 
-                Text(item.price)
+                Text("$\(draftOrder.totalPrice)")
                 HStack {
                     Text("Quantity:")
-                    Stepper("\(quantity)", value: $quantity, in: 1...10)
+                    Spacer()
+                    Button(action: {
+                        if quantity > 1 {
+                            quantity -= 1
+                            updateCartQuantity(quantity)
+                        }
+                    }) {
+                        Image(systemName: "minus.circle.fill")
+                            .foregroundColor(.orange)
+                            .font(.title2)
+                    }
+
+                    Text("\(quantity)")
+                        .frame(width: 20)
+
+                    Button(action: {
+                        if quantity < 10 {
+                            quantity += 1
+                            updateCartQuantity(quantity)
+                        }
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .foregroundColor(.orange)
+                            .font(.title2)
+                    }
                 }
+
                 Divider()
             }
         }
@@ -59,13 +85,23 @@ struct ProductRow: View {
             Button("Cancel", role: .cancel) { }
             Button("Delete", role: .destructive) {
                 showToast = true
-                let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
                 Task {
-                    await viewModel.removeFromCart(productID: draftOrderId)
+                    await viewModel.removeFromCart(productID: Int(draftOrder.id))
                     await viewModel.fetchCartsByCustomerId(customerId: customerId)
                 }
             }
         }
         .toast(successMessage: viewModel.successMessage, errorMessage: viewModel.errorMessage, isShowing: $showToast)
     }
+    
+    func updateCartQuantity(_ quantity: Int) {
+        let item = PutLineItem(id: Int(item.id), variant_id: Int(item.variantId!), product_id: Int(item.productId!), quantity: quantity)
+        let darft = PutDraftOrder(id: Int(draftOrder.id), line_items: [item])
+        let updateDraft = UpdateDraftOrderRequest(draft_order: darft)
+        Task{
+            await viewModel.updateCart(cart:updateDraft, orderId:Int(draftOrder.id))
+            await viewModel.fetchCartsByCustomerId(customerId: customerId)
+        }
+    }
+    
 }

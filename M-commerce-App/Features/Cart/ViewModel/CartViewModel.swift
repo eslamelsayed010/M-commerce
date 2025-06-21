@@ -9,15 +9,14 @@ import Foundation
 
 class CartViewModel: ObservableObject{
     @Published private(set) var draftOrder: [GetDraftOrder] = []
-    @Published private(set) var total: Double = 0
     
     @Published var isLoading = false
-   
     @Published var productImages: [Int: String] = [:]
     @Published var errorMessage: String?
     @Published var successMessage: String?
-    private var cartServices: CartServices
+    @Published var totalPrice: Double = 0.0
     
+    private var cartServices: CartServices
     init(cartServices: CartServices) {
         self.cartServices = cartServices
     }
@@ -35,14 +34,28 @@ class CartViewModel: ObservableObject{
     }
 
     @MainActor
-    func fetchCartsByCustomerId(customerId: Int) async {
-        isLoading = true
+    func updateCart(cart: UpdateDraftOrderRequest, orderId: Int) async {
         do {
-            self.draftOrder = try await cartServices.fetchCartsByCustomerId(cutomerId: customerId)
+            try await cartServices.updateCart(cart: cart, orderId: orderId)
         } catch {
             errorMessage = error.localizedDescription
         }
-        isLoading = false
+    }
+
+    @MainActor
+    func fetchCartsByCustomerId(customerId: Int) async {
+        do {
+            self.draftOrder = try await cartServices.fetchCartsByCustomerId(cutomerId: customerId)
+            self.totalPrice = 0.0
+            for order in draftOrder {
+                if let price = Double(order.totalPrice) {
+                    self.totalPrice += price
+                }
+            }
+
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 
     @MainActor
@@ -83,7 +96,7 @@ class CartViewModel: ObservableObject{
             try await cartServices.deleteFromCart(cartId: productID)
             successMessage = "Remove From cart!"
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = "Remove From cart!"
         }
     }
 }

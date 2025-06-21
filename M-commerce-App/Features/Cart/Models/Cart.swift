@@ -27,4 +27,21 @@ struct Customer: Encodable {
     let id: Int
 }
 
+struct UpdateDraftOrderRequest: Encodable {
+    var draft_order: PutDraftOrder
+}
+
+struct PutDraftOrder: Encodable {
+    var id: Int
+    var line_items: [PutLineItem]
+}
+
+struct PutLineItem: Encodable {
+    var id: Int
+    var variant_id: Int
+    var product_id: Int
+    var quantity: Int
+}
+
+
 
