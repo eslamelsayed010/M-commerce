@@ -14,7 +14,7 @@ struct ProductGridView<T: BaseProductViewModel>: View {
     @State private var hasNavigated = false
     @State private var selectedProduct: Product?
     
-    let subcategories = ["Shirts", "Shoes", "Accessories", "All"]
+   // let subcategories = ["Shirts", "Shoes", "Accessories", "All"]
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
     
     var body: some View {
@@ -74,42 +74,42 @@ struct ProductGridView<T: BaseProductViewModel>: View {
                     HStack {
                         Spacer()
                         
-                        if showFilters {
-                            VStack(spacing: 8) {
-                                ForEach(subcategories, id: \.self) { sub in
-                                    Button(action: {
-                                        withAnimation {
-                                            viewModel.filterProducts(by: sub == "All" ? nil : sub)
-                                            showFilters = false
-                                        }
-                                    }) {
-                                        Text(sub)
-                                            .padding(.horizontal)
-                                            .padding(.vertical, 8)
-                                            .background(Color.white)
-                                            .foregroundColor(.black)
-                                            .cornerRadius(10)
-                                            .shadow(radius: 2)
-                                    }
-                                }
-                            }
-                            .padding(.bottom, 70)
-                            .transition(.scale)
-                        }
+//                        if showFilters {
+//                            VStack(spacing: 8) {
+//                                ForEach(subcategories, id: \.self) { sub in
+//                                    Button(action: {
+//                                        withAnimation {
+//                                            viewModel.filterProducts(by: sub == "All" ? nil : sub)
+//                                            showFilters = false
+//                                        }
+//                                    }) {
+//                                        Text(sub)
+//                                            .padding(.horizontal)
+//                                            .padding(.vertical, 8)
+//                                            .background(Color.white)
+//                                            .foregroundColor(.black)
+//                                            .cornerRadius(10)
+//                                            .shadow(radius: 2)
+//                                    }
+//                                }
+//                            }
+//                            .padding(.bottom, 70)
+//                            .transition(.scale)
+//                        }
                         
-                        Button(action: {
-                            withAnimation {
-                                showFilters.toggle()
-                            }
-                        }) {
-                            Image(systemName: "slider.horizontal.3")
-                                .font(.title)
-                                .padding()
-                                .background(Color.black)
-                                .foregroundColor(.white)
-                                .clipShape(Circle())
-                                .shadow(radius: 4)
-                        }
+//                        Button(action: {
+//                            withAnimation {
+//                                showFilters.toggle()
+//                            }
+//                        }) {
+//                            Image(systemName: "slider.horizontal.3")
+//                                .font(.title)
+//                                .padding()
+//                                .background(Color.black)
+//                                .foregroundColor(.white)
+//                                .clipShape(Circle())
+//                                .shadow(radius: 4)
+//                        }
                         .padding(.bottom, 40)
                         .padding(.trailing, 16)
                     }
