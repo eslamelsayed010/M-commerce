@@ -26,7 +26,14 @@ struct ProductsView: View {
 
     var body: some View {
         VStack {
-            ToolBar(searchText: $searchText)
+            ToolBar(
+                searchText: $searchText,
+                filteredProducts: $viewModel.filteredProducts,
+                isHomeView: false,
+                onPriceFilterChanged: { viewModel.filteredProducts = $0 },
+                isFilterActive: .constant(nil),
+                showFilterButton: true
+            )
             ScrollView {
                 if viewModel.isLoading {
                     ProgressView("Loading products…")

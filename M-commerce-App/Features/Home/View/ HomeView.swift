@@ -25,7 +25,14 @@ struct HomeView: View {
         NavigationStack(path: $navigationPath) {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 10) {
-                    ToolBar(searchText: $searchText)
+                    ToolBar(
+                        searchText: $searchText,
+                        filteredProducts: .constant([]),
+                        isHomeView: true,
+                        onPriceFilterChanged: nil,
+                        isFilterActive: .constant(nil),
+                        showFilterButton: true
+                    )
                     ImgCouponView()
                     
                     VStack {

@@ -29,7 +29,14 @@ struct CategoryView: View {
             ZStack {
                 ScrollView {
                     VStack {
-                        ToolBar(searchText: $searchText)
+                        ToolBar(
+                            searchText: $searchText,
+                            filteredProducts: .constant(viewModel.filteredProducts),
+                            isHomeView: false,
+                            onPriceFilterChanged: { viewModel.products = $0 },
+                            isFilterActive: .constant(nil),
+                            showFilterButton: true
+                        )
                     }
                     if viewModel.isLoading {
                         ProgressView().padding()

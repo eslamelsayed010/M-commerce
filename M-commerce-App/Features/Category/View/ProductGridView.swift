@@ -19,7 +19,14 @@ struct ProductGridView<T: BaseProductViewModel>: View {
     
     var body: some View {
         VStack {
-            ToolBar(searchText: $searchText)
+            ToolBar(
+                searchText: $searchText,
+                filteredProducts: .constant(viewModel.filteredProducts),
+                isHomeView: false,
+                onPriceFilterChanged: { viewModel.products = $0 },
+                isFilterActive: .constant(nil),
+                showFilterButton: true
+            )
             ZStack {
                 ScrollView {
                     if viewModel.isLoading {

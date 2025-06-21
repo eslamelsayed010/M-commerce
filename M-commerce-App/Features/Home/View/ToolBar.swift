@@ -1,39 +1,142 @@
+// ToolBar.swift
+// M-commerce-App
 //
-//  ToolBar.swift
-//  M-commerce-App
-//
-//  Created by Macos on 05/06/2025.
+// Created by Macos on 05/06/2025.
 //
 
 import SwiftUI
 
 struct ToolBar: View {
     @Binding var searchText: String
-    
+    @Binding var filteredProducts: [Product]
+    var isHomeView: Bool
+    var onPriceFilterChanged: (([Product]) -> Void)?
+    @Binding var isFilterActive: Bool?
+    var showFilterButton: Bool?
+
+    @State private var showPriceFilter = false
+    @State private var priceFilter: Double = 0
+    @State private var originalProducts: [Product] = []
+
     var body: some View {
-        HStack(spacing: 10) {
-            TextField("Search ...", text: $searchText)
-                .frame(maxWidth: .infinity)
+        VStack {
+            HStack(spacing: 10) {
+                TextField("Search ...", text: $searchText)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, 15)
+                    .background(Color(.systemGray6))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(Color.black, lineWidth: 1)
+                    )
+                if !isHomeView && (showFilterButton ?? !filteredProducts.isEmpty) {
+                    Button(action: {
+                        withAnimation {
+                            showPriceFilter.toggle()
+                            if showPriceFilter {
+                                originalProducts = filteredProducts
+                                priceFilter = maxPrice
+                                if isFilterActive != nil {
+                                    isFilterActive = true
+                                }
+                            } else {
+
+                                onPriceFilterChanged?(originalProducts)
+                                priceFilter = maxPrice
+                                if isFilterActive != nil {
+                                    isFilterActive = false
+                                }
+                            }
+                        }
+                    }) {
+                        Image(systemName: "slider.horizontal.3")
+                            .foregroundColor(.black)
+                            .padding(10)
+                            .background(Color(.systemGray6))
+                            .clipShape(Circle())
+                    }
+                    .padding(.trailing, 5)
+                }
+
+
+                Button(action: { print("App logo tapped") }) {
+                    Image("online-shop")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
+                        .padding(5)
+                        .background(Color(.systemGray6))
+                        .clipShape(Circle())
+                }
+            }
+            .padding(.horizontal)
+            if showPriceFilter && !filteredProducts.isEmpty {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Filter by Price: \(currencySymbol)\(priceFilter, specifier: "%.2f")")
+                        .font(.subheadline)
+                        .padding(.horizontal)
+
+                    Slider(value: $priceFilter, in: 0...maxPrice, step: 1) {
+                        Text("Price Filter")
+                    } onEditingChanged: { _ in
+                        filterProductsByPrice()
+                    }
+                    .padding(.horizontal)
+                }
+                .padding(.vertical, 10)
+                .background(Color(.systemBackground))
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(Color.black, lineWidth: 1)
                 )
-                .padding()
-            Button(action: { print("let's navigate to favorites ") }) {
-                Image(systemName: "heart")
-                    .foregroundColor(.black)
+                .padding(.horizontal)
             }
-            Button(action: { print("let's navigate to cart ") }) {
-                Image(systemName: "cart")
-                    .foregroundColor(.black)
-            }
-            .padding()
+        }
+    }
+    private var maxPrice: Double {
+        originalProducts.compactMap { $0.price }.max() ?? 100.0
+    }
+    private var currencySymbol: String {
+        let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+        return currency < 10 ? "$" : "E£"
+    }
+    private func filterProductsByPrice() {
+        let filtered = originalProducts.filter { product in
+            guard let price = product.price else { return false }
+            return price <= priceFilter
+        }
+        onPriceFilterChanged?(filtered)
+        if isFilterActive != nil {
+            isFilterActive = true
         }
     }
 }
 
 struct ToolBar_Previews: PreviewProvider {
     static var previews: some View {
-        ToolBar(searchText: .constant("")) 
+        ToolBar(
+            searchText: .constant(""),
+            filteredProducts: .constant([
+                Product(
+                    id: "1",
+                    title: "Sample Product",
+                    description: "Description",
+                    imageUrls: [],
+                    price: 50.0,
+                    currencyCode: "$",
+                    productType: "Sample",
+                    size: nil,
+                    color: nil,
+                    variantId: "1"
+                )
+            ]),
+            isHomeView: false,
+            onPriceFilterChanged: { _ in },
+            isFilterActive: .constant(nil),
+            showFilterButton: true
+        )
     }
 }
