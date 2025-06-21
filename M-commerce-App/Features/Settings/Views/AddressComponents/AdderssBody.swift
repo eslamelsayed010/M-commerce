@@ -58,7 +58,6 @@ struct AdderssBody: View {
                 }else if viewModel.selectedAction == .updateDefault{
                     viewModel.defaultAddress()
                 }
-                
             }
         }
 
