@@ -9,6 +9,7 @@ struct ProductDetailsView: View {
     @EnvironmentObject var favoritesManager: FavoritesManager
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showGuestAuthentication = false
+    @State private var randomRating: Double = 0.0
 
     let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
     @State private var showToast = false
@@ -17,7 +18,6 @@ struct ProductDetailsView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 Spacer(minLength: 20)
-
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(Color.white)
@@ -87,7 +87,7 @@ struct ProductDetailsView: View {
                     HStack(spacing: 4) {
                         Image(systemName: "star.fill")
                             .foregroundColor(.yellow)
-                        Text("4.3 (440)")
+                        Text(String(format: "%.1f", randomRating))
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
@@ -212,6 +212,9 @@ struct ProductDetailsView: View {
             )
         }
         .toast(successMessage: cartViewModel.successMessage, errorMessage: cartViewModel.errorMessage, isShowing: $showToast)
+        .onAppear {
+                randomRating = Double.random(in: 4.0...5.0)
+            }
     }
     
     func createOrderToCart() -> DraftOrderWrapper {
