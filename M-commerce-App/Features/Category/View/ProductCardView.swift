@@ -34,20 +34,20 @@ struct ProductCardView: View {
 
                     Spacer()
 
-//                    Button {
-//                        if authViewModel.isGuest {
-//                            showGuestAlert = true
-//                        } else {
-//                            print("Add to Cart pressed for product: \(product.title)")
-//                        }
-//                    } label: {
-//                        Image(systemName: "cart")
-//                            .foregroundColor(.black)
-//                            .padding(6)
-//                            .background(Color.white.opacity(0.8))
-//                            .clipShape(Circle())
-//                    }
-//                    .buttonStyle(.plain)
+                    Button {
+                        if authViewModel.isGuest {
+                            showGuestAlert = true
+                        } else {
+                            print("Add to Cart pressed for product: \(product.title)")
+                        }
+                    } label: {
+                        Image(systemName: "cart")
+                            .foregroundColor(.black)
+                            .padding(6)
+                            .background(Color.white.opacity(0.8))
+                            .clipShape(Circle())
+                    }
+                    .buttonStyle(.plain)
                 }
 
                 if let urlString = product.imageUrls.first, let url = URL(string: urlString) {

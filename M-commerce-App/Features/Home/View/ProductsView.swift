@@ -69,19 +69,19 @@ struct ProductsView: View {
 
                                         Spacer()
 
-//                                        Button {
-//                                            if authViewModel.isGuest {
-//                                                showGuestAlert = true
-//                                            } else {
-//                                                print("Add to Cart pressed for product: \(product.title)")
-//                                            }
-//                                        } label: {
-//                                            Image(systemName: "cart")
-//                                                .foregroundColor(.black)
-//                                                .padding(6)
-//                                                .background(Color.white.opacity(0.8))
-//                                                .clipShape(Circle())
-//                                        }
+                                        Button {
+                                            if authViewModel.isGuest {
+                                                showGuestAlert = true
+                                            } else {
+                                                print("Add to Cart pressed for product: \(product.title)")
+                                            }
+                                        } label: {
+                                            Image(systemName: "cart")
+                                                .foregroundColor(.black)
+                                                .padding(6)
+                                                .background(Color.white.opacity(0.8))
+                                                .clipShape(Circle())
+                                        }
                                     }
                                     .padding(.horizontal, 2)
 
