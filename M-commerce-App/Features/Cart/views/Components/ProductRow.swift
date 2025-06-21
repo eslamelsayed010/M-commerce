@@ -14,20 +14,22 @@ struct ProductRow: View {
     
     @State private var showToast = false
     @State private var quantity = 1
+    @State private var showDeleteAlert = false
+    
     @EnvironmentObject var viewModel: CartViewModel
     
     var body: some View {
-        HStack(spacing: 20){
+        HStack(spacing: 20) {
             AsyncImage(url: URL(string: imageUrl)) { image in
-                      image.resizable()
-                  } placeholder: {
-                      ProgressView()
-                  }
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 70)
-                .cornerRadius(10)
+                image.resizable()
+            } placeholder: {
+                ProgressView()
+            }
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 70)
+            .cornerRadius(10)
             
-            VStack(alignment: .leading){
+            VStack(alignment: .leading) {
                 HStack {
                     Text(item.title)
                         .bold()
@@ -36,12 +38,7 @@ struct ProductRow: View {
                         .foregroundColor(.red)
                         .padding(.leading)
                         .onTapGesture {
-                            showToast = true
-                            let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
-                            Task{
-                                await viewModel.removeFromCart(productID: draftOrderId)
-                                await viewModel.fetchCartsByCustomerId(customerId: customerId)
-                            }
+                            showDeleteAlert = true
                         }
                 }
                 
@@ -52,14 +49,23 @@ struct ProductRow: View {
                 }
                 Divider()
             }
-            
         }
         .padding(.horizontal)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .onAppear{
+        .onAppear {
             quantity = item.quantity
+        }
+        .alert("Are you sure you want to delete this item?", isPresented: $showDeleteAlert) {
+            Button("Cancel", role: .cancel) { }
+            Button("Delete", role: .destructive) {
+                showToast = true
+                let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
+                Task {
+                    await viewModel.removeFromCart(productID: draftOrderId)
+                    await viewModel.fetchCartsByCustomerId(customerId: customerId)
+                }
+            }
         }
         .toast(successMessage: viewModel.successMessage, errorMessage: viewModel.errorMessage, isShowing: $showToast)
     }
 }
-
