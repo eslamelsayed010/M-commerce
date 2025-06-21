@@ -7,7 +7,7 @@
 		<key>M-commerce-App.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<key>Promises (Playground) 1.xcscheme</key>
 		<dict>
@@ -29,6 +29,24 @@
 			<false/>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>04B477802DE3A1A400CC82F8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>04B477952DE3A1A700CC82F8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>04B4779F2DE3A1A700CC82F8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>

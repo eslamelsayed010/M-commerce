@@ -72,6 +72,7 @@
 		22E01BC62E0761E20094D800 /* ProductsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC52E0761E20094D800 /* ProductsViewModelTest.swift */; };
 		22E01BC82E0763E20094D800 /* ProductViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC72E0763E20094D800 /* ProductViewModelTest.swift */; };
 		22E01BCA2E0764FA0094D800 /* BaseProductViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC92E0764FA0094D800 /* BaseProductViewModelTest.swift */; };
+		22E01BCC2E0767790094D800 /* CategoryViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BCB2E0767790094D800 /* CategoryViewModelTest.swift */; };
 		22F696222DFF41C500D2E247 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F695FB2DFF41C400D2E247 /* SettingsViewModel.swift */; };
 		22F696232DFF41C500D2E247 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F695FC2DFF41C400D2E247 /* LocationViewModel.swift */; };
 		22F696242DFF41C500D2E247 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22F695FE2DFF41C400D2E247 /* Address.swift */; };
@@ -188,6 +189,7 @@
 		22E01BC52E0761E20094D800 /* ProductsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModelTest.swift; sourceTree = "<group>"; };
 		22E01BC72E0763E20094D800 /* ProductViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModelTest.swift; sourceTree = "<group>"; };
 		22E01BC92E0764FA0094D800 /* BaseProductViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProductViewModelTest.swift; sourceTree = "<group>"; };
+		22E01BCB2E0767790094D800 /* CategoryViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModelTest.swift; sourceTree = "<group>"; };
 		22F695FB2DFF41C400D2E247 /* SettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		22F695FC2DFF41C400D2E247 /* LocationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationViewModel.swift; sourceTree = "<group>"; };
 		22F695FE2DFF41C400D2E247 /* Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				22E01BC52E0761E20094D800 /* ProductsViewModelTest.swift */,
 				22E01BC72E0763E20094D800 /* ProductViewModelTest.swift */,
 				22E01BC92E0764FA0094D800 /* BaseProductViewModelTest.swift */,
+				22E01BCB2E0767790094D800 /* CategoryViewModelTest.swift */,
 			);
 			path = "M-commerce-AppTests";
 			sourceTree = "<group>";
@@ -944,6 +947,7 @@
 			files = (
 				22E01BC62E0761E20094D800 /* ProductsViewModelTest.swift in Sources */,
 				04B4779B2DE3A1A700CC82F8 /* M_commerce_AppTests.swift in Sources */,
+				22E01BCC2E0767790094D800 /* CategoryViewModelTest.swift in Sources */,
 				22E01BC82E0763E20094D800 /* ProductViewModelTest.swift in Sources */,
 				22E01BC42E075E780094D800 /* HomeViewModelTest.swift in Sources */,
 				22E01BCA2E0764FA0094D800 /* BaseProductViewModelTest.swift in Sources */,
