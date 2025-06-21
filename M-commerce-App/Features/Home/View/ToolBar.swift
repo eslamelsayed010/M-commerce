@@ -17,6 +17,7 @@ struct ToolBar: View {
     @State private var showPriceFilter = false
     @State private var priceFilter: Double = 0
     @State private var originalProducts: [Product] = []
+    @State private var currentFilteredProducts: [Product] = []
 
     var body: some View {
         VStack {
@@ -31,35 +32,42 @@ struct ToolBar: View {
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(Color.black, lineWidth: 1)
                     )
+                    .onChange(of: searchText) { newValue in
+                        performSearch(newValue)
+                    }
+
                 if !isHomeView && (showFilterButton ?? !filteredProducts.isEmpty) {
                     Button(action: {
                         withAnimation {
                             showPriceFilter.toggle()
                             if showPriceFilter {
                                 originalProducts = filteredProducts
+                                currentFilteredProducts = filteredProducts
                                 priceFilter = maxPrice
                                 if isFilterActive != nil {
                                     isFilterActive = true
                                 }
                             } else {
-
                                 onPriceFilterChanged?(originalProducts)
+                                currentFilteredProducts = originalProducts
                                 priceFilter = maxPrice
                                 if isFilterActive != nil {
                                     isFilterActive = false
+                                }
+                                if !searchText.isEmpty {
+                                    performSearch(searchText)
                                 }
                             }
                         }
                     }) {
                         Image(systemName: "slider.horizontal.3")
-                            .foregroundColor(.black)
+                            .foregroundColor(showPriceFilter ? .orange : .black)
                             .padding(10)
                             .background(Color(.systemGray6))
                             .clipShape(Circle())
                     }
                     .padding(.trailing, 5)
                 }
-
 
                 Button(action: { print("App logo tapped") }) {
                     Image("online-shop")
@@ -72,7 +80,7 @@ struct ToolBar: View {
                 }
             }
             .padding(.horizontal)
-            if showPriceFilter && !filteredProducts.isEmpty {
+            if showPriceFilter {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Filter by Price: \(currencySymbol)\(priceFilter, specifier: "%.2f")")
                         .font(.subheadline)
@@ -95,6 +103,10 @@ struct ToolBar: View {
                 .padding(.horizontal)
             }
         }
+        .onAppear {
+            originalProducts = filteredProducts
+            currentFilteredProducts = filteredProducts
+        }
     }
     private var maxPrice: Double {
         originalProducts.compactMap { $0.price }.max() ?? 100.0
@@ -104,12 +116,29 @@ struct ToolBar: View {
         return currency < 10 ? "$" : "E£"
     }
     private func filterProductsByPrice() {
-        let filtered = originalProducts.filter { product in
+        var filtered = originalProducts
+        filtered = filtered.filter { product in
             guard let price = product.price else { return false }
             return price <= priceFilter
         }
+        currentFilteredProducts = filtered
+        if !searchText.isEmpty {
+            filtered = filtered.filter { product in
+                product.title.lowercased().contains(searchText.lowercased())
+            }
+        }
         onPriceFilterChanged?(filtered)
         if isFilterActive != nil {
+            isFilterActive = true
+        }
+    }
+    private func performSearch(_ searchText: String) {
+        let productsToSearch = showPriceFilter ? currentFilteredProducts : originalProducts
+        let filtered = productsToSearch.filter { product in
+            searchText.isEmpty || product.title.lowercased().contains(searchText.lowercased())
+        }
+        onPriceFilterChanged?(filtered)
+        if isFilterActive != nil && !searchText.isEmpty {
             isFilterActive = true
         }
     }
@@ -140,3 +169,4 @@ struct ToolBar_Previews: PreviewProvider {
         )
     }
 }
+
