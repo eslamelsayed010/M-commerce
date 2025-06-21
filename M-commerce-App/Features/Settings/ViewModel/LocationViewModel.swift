@@ -15,8 +15,8 @@ class LocationUpdateViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var successMessage: String?
     
-    @Published var customerId: String = "7615556911169"
-    @Published var addressId: String = "8758959079489"
+    @Published var customerId: String = String(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
+    @Published var addressId: String = ""
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var address1: String = ""

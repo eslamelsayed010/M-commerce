@@ -19,6 +19,7 @@ struct AddressFormField: View {
     @Binding var country: String
     
     @StateObject var settingsViewModel = SettingsViewModel(networkManager: SettingsNetworkManager())
+    @EnvironmentObject var locationViewModel: LocationUpdateViewModel
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -48,6 +49,9 @@ struct AddressFormField: View {
                     icon: "tram.fill",
                     validationType: .address
                 )
+                .onChange(of: city) { newValue in
+                    settingsViewModel.setToUserDefault(field: .city(newValue))
+                }
                 CustomSettingField(
                     addressName: $province,
                     title: "Province",
@@ -71,6 +75,7 @@ struct AddressFormField: View {
         }
         .onAppear{
             settingsViewModel.fetchUserInfo()
+            locationViewModel.country = country
             country = settingsViewModel.user?.country ?? ""
         }
     }

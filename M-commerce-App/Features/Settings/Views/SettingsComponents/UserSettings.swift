@@ -65,14 +65,14 @@ struct UserSettings: View {
             .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
         }
         .onAppear {
-            
             let userCity = UserDefaults.standard.string(forKey: UserDefaultsKeys.Location.city)
             if let userCity = userCity, !userCity.isEmpty {
                 city = userCity
             }else{
                 city =  "N/A"
             }
-
+            
+            
             
             let currency: Double? = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
             let price = 5.0

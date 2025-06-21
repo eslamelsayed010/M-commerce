@@ -29,12 +29,13 @@ struct AdderssBody: View {
                 phone: $viewModel.phone,
                 country: $viewModel.country
             )
+            .environmentObject(viewModel)
             
             SubmitAddrressButton(
                 isLoading: viewModel.isLoading,
                 isFormValid: viewModel.isFormValid,
                 selectedAction: viewModel.selectedAction,
-                action: {
+                action: {
                     showToast = true
                     settingsViewModel.setToUserDefault(field: .city(viewModel.customer?.default_address?.city ?? ""))
                     viewModel.submitLocationUpdate()
@@ -44,11 +45,14 @@ struct AdderssBody: View {
         }
         .onAppear{
             settingsViewModel.fetchUserInfo()
+            Task{
+                await viewModel.fetchCustomer(customerId: Int(viewModel.customerId) ?? 0)
+                viewModel.addressId = String(viewModel.customer?.addresses?.first?.id ?? 0)
+            }
         }
         .onChange(of: viewModel.selectedAction) { newValue in
-            viewModel.customerId = "7614499029057"
             Task {
-                await viewModel.fetchCustomer(customerId: 7615556911169)
+                await viewModel.fetchCustomer(customerId: Int(viewModel.customerId) ?? 0)
                 if viewModel.selectedAction == .updateExisting {
                     viewModel.existingAddress()
                 }else if viewModel.selectedAction == .updateDefault{
