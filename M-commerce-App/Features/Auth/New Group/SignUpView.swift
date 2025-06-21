@@ -211,7 +211,7 @@ struct SignUpView: View {
                         Rectangle()
                             .frame(height: 1)
                             .foregroundColor(Color.gray.opacity(0.3))
-                        Text("Or sign up with")
+                        Text("Or continue with")
                             .font(.system(size: 14))
                             .foregroundColor(.gray)
                         Rectangle()
@@ -220,16 +220,16 @@ struct SignUpView: View {
                     }
                     .padding(.horizontal, 20)
                     
-                    // Google Sign-In Button
-                    Button(action: {
-                        signInWithGoogle()
-                    }) {
-                        Image("google")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 45, height: 45)
-                    }
-                    .padding(.horizontal, 20)
+//                    // Google Sign-In Button
+//                    Button(action: {
+//                        signInWithGoogle()
+//                    }) {
+//                        Image("google")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 45, height: 45)
+//                    }
+                   // .padding(.horizontal, 20)
                     
                     // Guest Sign-In Button
                     Button(action: {

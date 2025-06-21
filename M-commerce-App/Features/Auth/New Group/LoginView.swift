@@ -134,7 +134,7 @@ struct LoginView: View {
                                 .frame(height: 1)
                                 .foregroundColor(Color.gray.opacity(0.3))
                                 .frame(maxWidth: .infinity / 2)
-                            Text("Or login with")
+                            Text("Or continue with")
                                 .font(.system(size: 14))
                                 .foregroundColor(.gray)
                             Rectangle()
@@ -142,16 +142,16 @@ struct LoginView: View {
                                 .foregroundColor(Color.gray.opacity(0.3))
                                 .frame(maxWidth: .infinity / 2)
                         }
-                        .padding(.horizontal, 20)
-
-                        Button(action: {
-                            signInWithGoogle()
-                        }) {
-                            Image("google")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 70, height: 70)
-                        }
+//                        .padding(.horizontal, 20)
+//
+//                        Button(action: {
+//                            signInWithGoogle()
+//                        }) {
+//                            Image("google")
+//                                .resizable()
+//                                .scaledToFit()
+//                                .frame(width: 70, height: 70)
+//                        }
                         .padding(.horizontal, 20)
 
                         Button(action: {
