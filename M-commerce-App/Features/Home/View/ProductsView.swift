@@ -162,7 +162,9 @@ struct ProductsView: View {
                 searchText = ""
                 hasNavigated = false
             }
+                
         }
+        
         .onChange(of: searchText) { newValue in
             viewModel.filterProducts(bySearch: newValue)
         }

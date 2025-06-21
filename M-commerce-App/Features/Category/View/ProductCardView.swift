@@ -12,6 +12,8 @@ struct ProductCardView: View {
     @EnvironmentObject var favoritesManager: FavoritesManager
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showGuestAlert = false
+    @EnvironmentObject var visibilityManager: TabBarVisibilityManager
+
 
     var body: some View {
         NavigationLink(destination: ProductDetailsView(product: product)) {

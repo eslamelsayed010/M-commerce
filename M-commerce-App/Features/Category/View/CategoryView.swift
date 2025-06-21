@@ -10,7 +10,8 @@ import Combine
 import Foundation
 
 struct CategoryView: View {
-    @ObservedObject var viewModel = ProductViewModel()
+    @StateObject var viewModel = ProductViewModel()
+
     @EnvironmentObject var favoritesManager: FavoritesManager
     @State private var searchText = ""
     @State private var showFilters = false
@@ -115,12 +116,16 @@ struct CategoryView: View {
                 }
             }
             .onAppear {
-                viewModel.loadAllProducts()
+                if viewModel.products.isEmpty {
+                    viewModel.loadAllProducts()
+                }
                 if hasNavigated {
                     searchText = ""
                     hasNavigated = false
+                    selectedProduct = nil
                 }
             }
+
             .onChange(of: searchText) { newValue in
                 viewModel.filterProducts(bySearch: newValue)
             }

@@ -8,6 +8,8 @@ struct M_commerce_AppApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject private var authViewModel = AuthViewModel()
     private let persistenceController = PersistenceController.shared
+    
+
 
     var body: some Scene {
         WindowGroup {

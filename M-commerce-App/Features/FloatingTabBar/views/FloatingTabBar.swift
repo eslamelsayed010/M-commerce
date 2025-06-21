@@ -31,6 +31,7 @@ struct FloatingTabBar: View {
                 FavoriteView()
                     .tag("heart")
             }
+            .environmentObject(visibilityManager)
 
             if !visibilityManager.isTabBarHidden {
                 tabBarView

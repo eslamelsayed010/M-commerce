@@ -10,6 +10,8 @@ struct ProductDetailsView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showGuestAuthentication = false
     @State private var randomRating: Double = 0.0
+    @EnvironmentObject var visibilityManager: TabBarVisibilityManager
+
 
     let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
     @State private var showToast = false
@@ -213,8 +215,14 @@ struct ProductDetailsView: View {
         }
         .toast(successMessage: cartViewModel.successMessage, errorMessage: cartViewModel.errorMessage, isShowing: $showToast)
         .onAppear {
-                randomRating = Double.random(in: 4.0...5.0)
-            }
+            randomRating = Double.random(in: 4.0...5.0)
+            visibilityManager.isTabBarHidden = true
+        }
+        .onDisappear {
+            visibilityManager.isTabBarHidden = false
+        }
+        
+
     }
     
     func createOrderToCart() -> DraftOrderWrapper {
