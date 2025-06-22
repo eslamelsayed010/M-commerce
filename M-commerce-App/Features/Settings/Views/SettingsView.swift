@@ -18,7 +18,7 @@ struct SettingsView: View {
                         .environmentObject(visibilityManager)
                     SupportSettings()
                     AccountSettings()
-                    Spacer(minLength: 50)
+                    Spacer(minLength: 80)
                 }
                 .padding(.horizontal, 20)
             }
