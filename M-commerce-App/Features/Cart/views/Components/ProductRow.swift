@@ -91,7 +91,7 @@ struct ProductRow: View {
                 }
             }
         }
-        .toast(successMessage: viewModel.successMessage, errorMessage: viewModel.errorMessage, isShowing: $showToast)
+        //.toast(successMessage: viewModel.successMessage, errorMessage: viewModel.errorMessage, isShowing: $showToast)
     }
     
     func updateCartQuantity(_ quantity: Int) {

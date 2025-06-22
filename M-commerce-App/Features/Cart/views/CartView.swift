@@ -66,7 +66,7 @@ struct CartView: View {
                 await cartViewModel.fetchAllProductImages()
             }
         }
-        .toast(successMessage: cartViewModel.successMessage, errorMessage: cartViewModel.errorMessage, isShowing: $showToast)
+        //.toast(successMessage: cartViewModel.successMessage, errorMessage: cartViewModel.errorMessage, isShowing: $showToast)
     }
 }
 
