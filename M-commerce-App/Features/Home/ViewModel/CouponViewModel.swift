@@ -16,10 +16,12 @@ class CouponViewModel: ObservableObject{
         self.apiService = apiService
     }
     
+    @MainActor
     func getCoupons() async {
         do {
-            self.coupons = try await apiService.fetchCoupons().price_rules
-        } catch{
+            let coupons = try await apiService.fetchCoupons().price_rules
+            self.coupons = coupons
+        } catch {
             print(error.localizedDescription)
         }
     }
