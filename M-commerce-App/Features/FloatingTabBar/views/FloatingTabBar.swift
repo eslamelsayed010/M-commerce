@@ -4,7 +4,7 @@ struct FloatingTabBar: View {
     @StateObject var visibilityManager = TabBarVisibilityManager()
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showGuestAlert = false
-
+    
     var tabs = ["house", "book", "person", "cart", "heart"]
     @State var selectedTab = "house"
     @State var xAxis: CGFloat = 0
@@ -30,25 +30,7 @@ struct FloatingTabBar: View {
                     .tag("cart")
                 FavoriteView()
                     .tag("heart")
-            }
-            .environmentObject(visibilityManager)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    updateXAxisForSelectedTab()
-                }
-            }
-            .onChange(of: visibilityManager.isTabBarHidden) { isHidden in
-                if !isHidden {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                        updateXAxisForSelectedTab()
-                    }
-                }
-            }
-            .onChange(of: selectedTab) { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-                    updateXAxisForSelectedTab()
-                }
-            }
+            }.environmentObject(visibilityManager)
 
             if !visibilityManager.isTabBarHidden {
                 tabBarView
@@ -72,12 +54,13 @@ struct FloatingTabBar: View {
             ForEach(tabs, id: \.self) { image in
                 GeometryReader { reader in
                     Button(action: {
+                        
                         if authViewModel.isGuest && image != "house" && image != "book" {
                             showGuestAlert = true
                         } else {
                             withAnimation {
                                 selectedTab = image
-                                xAxis = reader.frame(in: .global).midX
+                                xAxis = reader.frame(in: .global).minX
                             }
                         }
                     }) {
@@ -90,8 +73,8 @@ struct FloatingTabBar: View {
                             .offset(x: selectedTab == image ? -10 : 0, y: selectedTab == image ? -50 : 0)
                     }
                     .onAppear {
-                        if image == selectedTab {
-                            xAxis = reader.frame(in: .global).midX
+                        if image == tabs.first {
+                            xAxis = reader.frame(in: .global).minX
                         }
                     }
                 }
@@ -112,15 +95,6 @@ struct FloatingTabBar: View {
         )
         .padding(.horizontal)
         .padding(.bottom, 4)
-    }
-
-    private func updateXAxisForSelectedTab() {
-        guard let index = tabs.firstIndex(of: selectedTab) else { return }
-        let screenWidth = UIScreen.main.bounds.width - 60 
-        let tabSpacing = screenWidth / CGFloat(tabs.count)
-        withAnimation {
-            xAxis = (tabSpacing * CGFloat(index)) + (tabSpacing / 2) + 30
-        }
     }
 }
 
@@ -157,7 +131,6 @@ struct CustomShape: Shape {
         return path
     }
 }
-
 
 struct FloatingTabBar_Previews: PreviewProvider {
     static var previews: some View {

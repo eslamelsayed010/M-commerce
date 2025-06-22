@@ -17,6 +17,8 @@ struct CategoryView: View {
     @State private var showFilters = false
     @State private var hasNavigated = false
     @State private var selectedProduct: Product?
+    @Environment(\.dismiss) var dismiss
+
 
     let subcategories = ["Shirts", "Shoes", "Accessories", "All"]
 
@@ -115,6 +117,7 @@ struct CategoryView: View {
                     }
                 }
             }
+
             .onAppear {
                 if viewModel.products.isEmpty {
                     viewModel.loadAllProducts()
