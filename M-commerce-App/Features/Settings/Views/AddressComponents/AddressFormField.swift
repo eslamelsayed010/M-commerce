@@ -72,6 +72,7 @@ struct AddressFormField: View {
             
             CountryPicker()
                 .environmentObject(settingsViewModel)
+                .environmentObject(locationViewModel)
         }
         .onAppear{
             settingsViewModel.fetchUserInfo()

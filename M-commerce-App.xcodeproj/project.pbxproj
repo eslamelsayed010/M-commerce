@@ -71,6 +71,10 @@
 		22A707062E08328000CE9574 /* coupone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707052E08328000CE9574 /* coupone.swift */; };
 		22A707082E08336100CE9574 /* CouponServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707072E08336100CE9574 /* CouponServices.swift */; };
 		22A7070A2E08356900CE9574 /* CouponViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707092E08356900CE9574 /* CouponViewModel.swift */; };
+		22A7070C2E085F0400CE9574 /* CustomProceedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A7070B2E085F0400CE9574 /* CustomProceedButton.swift */; };
+		22A7070E2E085FD500CE9574 /* ChooseAddressSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A7070D2E085FD500CE9574 /* ChooseAddressSheet.swift */; };
+		22A707142E08749900CE9574 /* ChooseAddressRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707132E08749900CE9574 /* ChooseAddressRow.swift */; };
+		22A707162E087A9700CE9574 /* PlaceOrderSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707152E087A9700CE9574 /* PlaceOrderSheet.swift */; };
 		22E01BC42E075E780094D800 /* HomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC32E075E780094D800 /* HomeViewModelTest.swift */; };
 		22E01BC62E0761E20094D800 /* ProductsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC52E0761E20094D800 /* ProductsViewModelTest.swift */; };
 		22E01BC82E0763E20094D800 /* ProductViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC72E0763E20094D800 /* ProductViewModelTest.swift */; };
@@ -191,6 +195,10 @@
 		22A707052E08328000CE9574 /* coupone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coupone.swift; sourceTree = "<group>"; };
 		22A707072E08336100CE9574 /* CouponServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponServices.swift; sourceTree = "<group>"; };
 		22A707092E08356900CE9574 /* CouponViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponViewModel.swift; sourceTree = "<group>"; };
+		22A7070B2E085F0400CE9574 /* CustomProceedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProceedButton.swift; sourceTree = "<group>"; };
+		22A7070D2E085FD500CE9574 /* ChooseAddressSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseAddressSheet.swift; sourceTree = "<group>"; };
+		22A707132E08749900CE9574 /* ChooseAddressRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseAddressRow.swift; sourceTree = "<group>"; };
+		22A707152E087A9700CE9574 /* PlaceOrderSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceOrderSheet.swift; sourceTree = "<group>"; };
 		22E01BC32E075E780094D800 /* HomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTest.swift; sourceTree = "<group>"; };
 		22E01BC52E0761E20094D800 /* ProductsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModelTest.swift; sourceTree = "<group>"; };
 		22E01BC72E0763E20094D800 /* ProductViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModelTest.swift; sourceTree = "<group>"; };
@@ -691,6 +699,10 @@
 			children = (
 				22FDE39C2E043F7200A33FE1 /* ProductRow.swift */,
 				22FDE39E2E04417600A33FE1 /* PaymentButton.swift */,
+				22A7070B2E085F0400CE9574 /* CustomProceedButton.swift */,
+				22A7070D2E085FD500CE9574 /* ChooseAddressSheet.swift */,
+				22A707132E08749900CE9574 /* ChooseAddressRow.swift */,
+				22A707152E087A9700CE9574 /* PlaceOrderSheet.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -889,7 +901,9 @@
 				22F696262DFF41C500D2E247 /* Currency.swift in Sources */,
 				22F696282DFF41C500D2E247 /* SettingsNetworkManager.swift in Sources */,
 				225DD6F32DFC9024002681B3 /* CustomCollection.swift in Sources */,
+				22A7070E2E085FD500CE9574 /* ChooseAddressSheet.swift in Sources */,
 				22FDE39F2E04417600A33FE1 /* PaymentButton.swift in Sources */,
+				22A707162E087A9700CE9574 /* PlaceOrderSheet.swift in Sources */,
 				227EAC562DFDD94400F0D300 /* CategeoryViemModels.swift in Sources */,
 				22F696242DFF41C500D2E247 /* Address.swift in Sources */,
 				223477662DFF1F0D000FB708 /* Toast.swift in Sources */,
@@ -928,6 +942,7 @@
 				0474056C2DF11BAD0047C6C2 /* SignUpView.swift in Sources */,
 				225309DD2E05E3E500E47BAD /* ShopifyAPIError.swift in Sources */,
 				22FDE3A22E04465000A33FE1 /* Cart.swift in Sources */,
+				22A707142E08749900CE9574 /* ChooseAddressRow.swift in Sources */,
 				22F696422DFF41C500D2E247 /* SectionHeader.swift in Sources */,
 				22F696352DFF41C500D2E247 /* CountrySelectionButton.swift in Sources */,
 				22FDE39D2E043F7200A33FE1 /* ProductRow.swift in Sources */,
@@ -944,6 +959,7 @@
 				22FDE3992E043EF100A33FE1 /* CartViewModel.swift in Sources */,
 				22F696292DFF41C500D2E247 /* UserIfon.swift in Sources */,
 				227EAC602DFDDAFD00F0D300 /* SaleView.swift in Sources */,
+				22A7070C2E085F0400CE9574 /* CustomProceedButton.swift in Sources */,
 				22F6963E2DFF41C500D2E247 /* CurrencyPickerView.swift in Sources */,
 				22F6963D2DFF41C500D2E247 /* HeaderSettings.swift in Sources */,
 				22F696322DFF41C500D2E247 /* AdderssBody.swift in Sources */,

@@ -15,6 +15,8 @@ protocol CartServicesProtocol{
     func deleteFromCart(cartId: Int) async throws
     func fetchProductDetails(productId: Int) async throws  -> ProductImagesResponse?
     func fetchCartsByCustomerId(cutomerId: Int) async throws -> [GetDraftOrder]
+    
+    func fetchUserAddresses(customerId: Int) async throws -> AddressResponse
 }
 
 class CartServices: CartServicesProtocol{
@@ -124,5 +126,12 @@ class CartServices: CartServicesProtocol{
         if httpResponse.statusCode != 201 {
             throw ShopifyAPIError.httpError(statusCode: httpResponse.statusCode, data: data)
         }
+    }
+    
+    func fetchUserAddresses(customerId: Int) async throws -> AddressResponse{
+        let url = URL(string: "\(baseURL)/customers/\(customerId)/addresses.json")!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        let response = try JSONDecoder().decode(AddressResponse.self, from: data)
+        return response
     }
 }

@@ -39,7 +39,7 @@ struct CustomerResponse: Codable {
 }
 
 struct AddressResponse: Codable {
-    let address: ShopifyAddress
+    let addresses: [ShopifyAddress]
 }
 
 struct AddressRequest: Codable {

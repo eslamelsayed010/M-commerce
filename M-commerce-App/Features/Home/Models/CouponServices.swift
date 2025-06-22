@@ -21,5 +21,4 @@ class CouponServices :CouponServicesProtocol{
         let response = try JSONDecoder().decode(PriceRules.self, from: data)
         return response
     }
-    
 }

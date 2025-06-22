@@ -9,12 +9,16 @@ import Foundation
 
 class CartViewModel: ObservableObject{
     @Published private(set) var draftOrder: [GetDraftOrder] = []
+    @Published private(set) var address: [ShopifyAddress] = []
     
     @Published var isLoading = false
     @Published var productImages: [Int: String] = [:]
     @Published var errorMessage: String?
     @Published var successMessage: String?
     @Published var totalPrice: Double = 0.0
+    
+    
+    private let customerId: Int = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
     
     private var cartServices: CartServices
     init(cartServices: CartServices) {
@@ -97,6 +101,16 @@ class CartViewModel: ObservableObject{
             successMessage = "Remove From cart!"
         } catch {
             errorMessage = "Remove From cart!"
+        }
+    }
+    
+    @MainActor
+    func fetchCustomerAddress() async {
+        do {
+            let response = try await cartServices.fetchUserAddresses(customerId: customerId)
+            self.address = response.addresses
+        }catch {
+            print(error.localizedDescription)
         }
     }
 }

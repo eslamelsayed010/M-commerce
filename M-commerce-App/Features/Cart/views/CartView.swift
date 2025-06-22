@@ -10,6 +10,7 @@ import SwiftUI
 struct CartView: View {
     @StateObject var cartViewModel: CartViewModel = CartViewModel(cartServices: CartServices())
     @State private var showToast = false
+    @State private var showPlaceOrder = false
 
     var body: some View {
         ScrollView {
@@ -47,10 +48,17 @@ struct CartView: View {
                     }
                     .padding()
                     
-                    PaymentButton(action: {})
-                        .padding()
-                        .padding(.bottom, 50)
-                } else {
+                    CustomProceedButton(text: "Proceed to checkout"){
+                        showPlaceOrder = true
+                    }
+                    .sheet(isPresented: $showPlaceOrder) {
+                        PlaceOrderSheet()
+                            .environmentObject(cartViewModel)
+                        .presentationDragIndicator(.visible)
+                    }
+                }
+                
+                else {
                     Text("Your cart is empty!")
                         .padding(.top, 50)
                 }
@@ -66,7 +74,6 @@ struct CartView: View {
                 await cartViewModel.fetchAllProductImages()
             }
         }
-        //.toast(successMessage: cartViewModel.successMessage, errorMessage: cartViewModel.errorMessage, isShowing: $showToast)
     }
 }
 

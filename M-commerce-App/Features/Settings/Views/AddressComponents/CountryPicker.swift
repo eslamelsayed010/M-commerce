@@ -11,6 +11,7 @@ struct CountryPicker: View {
     @State private var selectedCountry: Country = Countries.all[5]
     @State private var isPickerPresented = false
     @EnvironmentObject var viewModel: SettingsViewModel
+    @EnvironmentObject var locationViewModel: LocationUpdateViewModel
     
     var body: some View {
 
@@ -33,12 +34,14 @@ struct CountryPicker: View {
                     isPresented: $isPickerPresented
                 )
                 .environmentObject(viewModel)
+                .environmentObject(locationViewModel)
             }
         }
         .padding(.horizontal)
         .onAppear{
             viewModel.fetchUserInfo()
-            print(viewModel.user?.country ?? "nil")
+            locationViewModel.country = selectedCountry.name
+            
             selectedCountry = Countries.all.first{
                 $0.name.contains(viewModel.user?.country ?? "nil")
             } ?? Country(name: "Your country", code: "00", flag: "🇺🇳", dialCode: "COU")
