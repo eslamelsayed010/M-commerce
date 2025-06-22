@@ -191,17 +191,7 @@ struct ProductDetailsView: View {
         }
         .navigationTitle("Product Details")
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    presentationMode.wrappedValue.dismiss()
-                } label: {
-                    Image(systemName: "chevron.left")
-                        .foregroundColor(.primary)
-                }
-            }
-        }
+       // .navigationBarBackButtonHidden(true)
         .environmentObject(favoritesManager)
         .alert(isPresented: $showGuestAuthentication) {
             Alert(

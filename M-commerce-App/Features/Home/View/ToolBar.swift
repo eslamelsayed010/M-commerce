@@ -9,6 +9,7 @@ import SwiftUI
 struct ToolBar: View {
     @Binding var searchText: String
     @Binding var filteredProducts: [Product]
+    @Binding var resetFilterTrigger: Bool
     var isHomeView: Bool
     var onPriceFilterChanged: (([Product]) -> Void)?
     @Binding var isFilterActive: Bool?
@@ -61,7 +62,7 @@ struct ToolBar: View {
                         }
                     }) {
                         Image(systemName: "slider.horizontal.3")
-                            .foregroundColor(showPriceFilter ? .orange : .black)
+                            .foregroundColor(showPriceFilter ? .orange : .gray)
                             .padding(10)
                             .background(Color(.systemGray6))
                             .clipShape(Circle())
@@ -80,6 +81,8 @@ struct ToolBar: View {
                 }
             }
             .padding(.horizontal)
+
+            // Show price Slider if filter is active
             if showPriceFilter {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Filter by Price: \(currencySymbol)\(priceFilter, specifier: "%.2f")")
@@ -104,24 +107,42 @@ struct ToolBar: View {
             }
         }
         .onAppear {
-            originalProducts = filteredProducts
-            currentFilteredProducts = filteredProducts
+            // Reset filter and search state when view appears
+            resetFilterAndSearchState()
+        }
+        .onChange(of: resetFilterTrigger) { _ in
+            // Reset filter and search when resetFilterTrigger changes (e.g., on product tap)
+            resetFilterAndSearchState()
         }
     }
+
+    // Calculate maximum price based on original products
     private var maxPrice: Double {
         originalProducts.compactMap { $0.price }.max() ?? 100.0
     }
+
+    // Currency symbol based on UserDefaults
     private var currencySymbol: String {
         let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
         return currency < 10 ? "$" : "E£"
     }
+
+    // Filter products based on price and notify parent via callback
     private func filterProductsByPrice() {
+        guard !originalProducts.isEmpty else {
+            onPriceFilterChanged?([])
+            currentFilteredProducts = []
+            return
+        }
         var filtered = originalProducts
+        // Apply price filter
         filtered = filtered.filter { product in
             guard let price = product.price else { return false }
             return price <= priceFilter
         }
+        // Update currentFilteredProducts
         currentFilteredProducts = filtered
+        // Apply search filter if search text exists
         if !searchText.isEmpty {
             filtered = filtered.filter { product in
                 product.title.lowercased().contains(searchText.lowercased())
@@ -132,7 +153,12 @@ struct ToolBar: View {
             isFilterActive = true
         }
     }
+
+    // Perform search based on filter state
     private func performSearch(_ searchText: String) {
+        guard !originalProducts.isEmpty else {
+            return // Do not update filteredProducts until data is available
+        }
         let productsToSearch = showPriceFilter ? currentFilteredProducts : originalProducts
         let filtered = productsToSearch.filter { product in
             searchText.isEmpty || product.title.lowercased().contains(searchText.lowercased())
@@ -141,6 +167,21 @@ struct ToolBar: View {
         if isFilterActive != nil && !searchText.isEmpty {
             isFilterActive = true
         }
+    }
+
+    // Reset filter and search state
+    private func resetFilterAndSearchState() {
+        showPriceFilter = false
+        priceFilter = maxPrice
+        // Update originalProducts and currentFilteredProducts with latest filteredProducts
+        originalProducts = filteredProducts
+        currentFilteredProducts = filteredProducts
+        searchText = "" // Clear search text
+        if isFilterActive != nil {
+            isFilterActive = false
+        }
+        // Reset products to original state
+        onPriceFilterChanged?(originalProducts)
     }
 }
 
@@ -162,6 +203,7 @@ struct ToolBar_Previews: PreviewProvider {
                     variantId: "1"
                 )
             ]),
+            resetFilterTrigger: .constant(false),
             isHomeView: false,
             onPriceFilterChanged: { _ in },
             isFilterActive: .constant(nil),
@@ -169,4 +211,3 @@ struct ToolBar_Previews: PreviewProvider {
         )
     }
 }
-

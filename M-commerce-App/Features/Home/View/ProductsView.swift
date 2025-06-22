@@ -14,6 +14,7 @@ struct ProductsView: View {
     @State private var hasNavigated = false
     @State private var selectedProduct: Product?
     @State private var showGuestAlert = false
+    @State private var resetFilterTrigger = false
 
     private let columns = [
         GridItem(.fixed(160), spacing: 12),
@@ -29,6 +30,7 @@ struct ProductsView: View {
             ToolBar(
                 searchText: $searchText,
                 filteredProducts: $viewModel.filteredProducts,
+                resetFilterTrigger: $resetFilterTrigger,
                 isHomeView: false,
                 onPriceFilterChanged: { viewModel.filteredProducts = $0 },
                 isFilterActive: .constant(nil),
@@ -189,3 +191,4 @@ struct ProductsView_Previews: PreviewProvider {
             .environmentObject(AuthViewModel())
     }
 }
+

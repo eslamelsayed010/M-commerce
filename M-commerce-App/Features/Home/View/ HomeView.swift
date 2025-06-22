@@ -11,6 +11,7 @@ struct HomeView: View {
     @EnvironmentObject var visibilityManager: TabBarVisibilityManager
     @StateObject private var viewModel = HomeViewModel()
     @State private var searchText = ""
+    @State private var resetFilterTrigger = false
     let rows = [
         GridItem(.fixed(150)),
         GridItem(.fixed(150))
@@ -28,6 +29,7 @@ struct HomeView: View {
                     ToolBar(
                         searchText: $searchText,
                         filteredProducts: .constant([]),
+                        resetFilterTrigger: $resetFilterTrigger,
                         isHomeView: true,
                         onPriceFilterChanged: nil,
                         isFilterActive: .constant(nil),
@@ -156,3 +158,4 @@ struct HomeView_Previews: PreviewProvider {
         HomeView()
     }
 }
+

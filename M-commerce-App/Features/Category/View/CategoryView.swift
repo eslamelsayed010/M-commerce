@@ -18,7 +18,7 @@ struct CategoryView: View {
     @State private var hasNavigated = false
     @State private var selectedProduct: Product?
     @Environment(\.dismiss) var dismiss
-
+    @State private var resetFilterTrigger = false
 
     let subcategories = ["Shirts", "Shoes", "Accessories", "All"]
 
@@ -34,11 +34,11 @@ struct CategoryView: View {
                     VStack {
                         ToolBar(
                             searchText: $searchText,
-                            filteredProducts: .constant(viewModel.filteredProducts),
+                            filteredProducts: .constant([]), resetFilterTrigger: $resetFilterTrigger,
                             isHomeView: false,
-                            onPriceFilterChanged: { viewModel.products = $0 },
+                            onPriceFilterChanged: nil,
                             isFilterActive: .constant(nil),
-                            showFilterButton: true
+                            showFilterButton: false
                         )
                     }
                     if viewModel.isLoading {
@@ -143,3 +143,4 @@ struct CategoryView_Previews: PreviewProvider {
             .environmentObject(FavoritesManager.shared)
     }
 }
+

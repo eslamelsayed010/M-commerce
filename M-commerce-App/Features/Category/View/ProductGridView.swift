@@ -13,15 +13,16 @@ struct ProductGridView<T: BaseProductViewModel>: View {
     @State private var showFilters = false
     @State private var hasNavigated = false
     @State private var selectedProduct: Product?
-    
-   // let subcategories = ["Shirts", "Shoes", "Accessories", "All"]
+    @State private var resetFilterTrigger = false // Add this state
+
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
-    
+
     var body: some View {
         VStack {
             ToolBar(
                 searchText: $searchText,
                 filteredProducts: .constant(viewModel.filteredProducts),
+                resetFilterTrigger: $resetFilterTrigger, // Pass the binding
                 isHomeView: false,
                 onPriceFilterChanged: { viewModel.products = $0 },
                 isFilterActive: .constant(nil),
@@ -61,57 +62,12 @@ struct ProductGridView<T: BaseProductViewModel>: View {
                                             viewModel.selectProduct(product)
                                             selectedProduct = product
                                             hasNavigated = true
+                                            resetFilterTrigger.toggle() // Trigger filter reset
                                         }
                                 }
                             }
                         }
                         .padding()
-                    }
-                }
-                
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        
-//                        if showFilters {
-//                            VStack(spacing: 8) {
-//                                ForEach(subcategories, id: \.self) { sub in
-//                                    Button(action: {
-//                                        withAnimation {
-//                                            viewModel.filterProducts(by: sub == "All" ? nil : sub)
-//                                            showFilters = false
-//                                        }
-//                                    }) {
-//                                        Text(sub)
-//                                            .padding(.horizontal)
-//                                            .padding(.vertical, 8)
-//                                            .background(Color.white)
-//                                            .foregroundColor(.black)
-//                                            .cornerRadius(10)
-//                                            .shadow(radius: 2)
-//                                    }
-//                                }
-//                            }
-//                            .padding(.bottom, 70)
-//                            .transition(.scale)
-//                        }
-                        
-//                        Button(action: {
-//                            withAnimation {
-//                                showFilters.toggle()
-//                            }
-//                        }) {
-//                            Image(systemName: "slider.horizontal.3")
-//                                .font(.title)
-//                                .padding()
-//                                .background(Color.black)
-//                                .foregroundColor(.white)
-//                                .clipShape(Circle())
-//                                .shadow(radius: 4)
-//                        }
-                        .padding(.bottom, 40)
-                        .padding(.trailing, 16)
                     }
                 }
             }
@@ -123,6 +79,7 @@ struct ProductGridView<T: BaseProductViewModel>: View {
                 searchText = ""
                 viewModel.filterProducts(bySearch: "")
                 hasNavigated = false
+                resetFilterTrigger.toggle() // Reset filter on appear
             }
         }
         .onChange(of: searchText) { newValue in
@@ -130,3 +87,4 @@ struct ProductGridView<T: BaseProductViewModel>: View {
         }
     }
 }
+

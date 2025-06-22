@@ -14,8 +14,7 @@ class ProductViewModel: ObservableObject {
     @Published var errorMessage: String?
     @Published var selectedSubcategory: String? = nil
     @Published private var searchText: String = ""
-    @Published var selectedProductId: String? = nil 
-
+    @Published var selectedProductId: String? = nil
     private var cancellables = Set<AnyCancellable>()
     private let pageSize = 50
     private var lastCursor: String? = nil
@@ -223,3 +222,4 @@ class ProductViewModel: ObservableObject {
             .store(in: &cancellables)
     }
 }
+
