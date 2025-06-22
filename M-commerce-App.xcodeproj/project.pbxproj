@@ -70,6 +70,7 @@
 		227EAC602DFDDAFD00F0D300 /* SaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */; };
 		22A707062E08328000CE9574 /* coupone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707052E08328000CE9574 /* coupone.swift */; };
 		22A707082E08336100CE9574 /* CouponServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707072E08336100CE9574 /* CouponServices.swift */; };
+		22A7070A2E08356900CE9574 /* CouponViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707092E08356900CE9574 /* CouponViewModel.swift */; };
 		22E01BC42E075E780094D800 /* HomeViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC32E075E780094D800 /* HomeViewModelTest.swift */; };
 		22E01BC62E0761E20094D800 /* ProductsViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC52E0761E20094D800 /* ProductsViewModelTest.swift */; };
 		22E01BC82E0763E20094D800 /* ProductViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E01BC72E0763E20094D800 /* ProductViewModelTest.swift */; };
@@ -189,6 +190,7 @@
 		227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleView.swift; sourceTree = "<group>"; };
 		22A707052E08328000CE9574 /* coupone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coupone.swift; sourceTree = "<group>"; };
 		22A707072E08336100CE9574 /* CouponServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponServices.swift; sourceTree = "<group>"; };
+		22A707092E08356900CE9574 /* CouponViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponViewModel.swift; sourceTree = "<group>"; };
 		22E01BC32E075E780094D800 /* HomeViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTest.swift; sourceTree = "<group>"; };
 		22E01BC52E0761E20094D800 /* ProductsViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewModelTest.swift; sourceTree = "<group>"; };
 		22E01BC72E0763E20094D800 /* ProductViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductViewModelTest.swift; sourceTree = "<group>"; };
@@ -539,6 +541,7 @@
 			children = (
 				225DD6EA2DFC8F4B002681B3 /* HomeViewModel.swift */,
 				225DD6EC2DFC8F99002681B3 /* ProductsViewModel.swift */,
+				22A707092E08356900CE9574 /* CouponViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -912,6 +915,7 @@
 				225309D82E05BB6700E47BAD /* DraftOrders.swift in Sources */,
 				22F696402DFF41C500D2E247 /* SettingItem.swift in Sources */,
 				225DD6DD2DFC8DB6002681B3 /* ToolBar.swift in Sources */,
+				22A7070A2E08356900CE9574 /* CouponViewModel.swift in Sources */,
 				22F6963F2DFF41C500D2E247 /* UserSettings.swift in Sources */,
 				04B477912DE3A1A600CC82F8 /* M_commerce_App.xcdatamodeld in Sources */,
 				22F6962A2DFF41C500D2E247 /* Country.swift in Sources */,
