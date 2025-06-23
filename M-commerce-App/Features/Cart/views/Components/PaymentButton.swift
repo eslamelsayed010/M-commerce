@@ -11,6 +11,7 @@ import PassKit
 struct PaymentButton: View {
     var action: () -> Void
     
+    
     var body: some View {
         Representable(action: action)
             .frame(minWidth: 100, maxWidth: 400)
@@ -51,6 +52,9 @@ extension PaymentButton{
             super.init()
             
             button.addTarget(self, action: #selector(callback(_:)), for: .touchUpInside)
+            
+            button.layer.cornerRadius = 12
+            button.clipsToBounds = true
         }
         
         @objc func callback(_ sender: Any){
@@ -58,4 +62,3 @@ extension PaymentButton{
         }
     }
 }
-

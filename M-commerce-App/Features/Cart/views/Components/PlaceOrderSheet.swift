@@ -15,9 +15,10 @@ struct PlaceOrderSheet: View {
     @State private var showAlert = false
     @State private var discountAmount: Double = 0
     
-    @State private var showAddressSheet = false
-
+    @State private var goToChooseAddress = false
+    
     var body: some View {
+        
         ScrollView {
             VStack(alignment: .leading, spacing: 20){
                 HStack {
@@ -28,18 +29,9 @@ struct PlaceOrderSheet: View {
                         .font(.title2)
                         .foregroundColor(.secondary)
                 }
-
+                
                 HStack {
-                    Text("Shipping Fees")
-                        .font(.title2)
-                    Spacer()
-                    Text("30$")
-                        .font(.title2)
-                        .foregroundColor(.secondary)
-                }
-
-                HStack {
-                    TextField("Discount code and press validate", text: $discount)
+                    TextField("Discount code", text: $discount)
                         .padding(.horizontal)
                         .frame(height: 50)
                         .overlay(
@@ -48,9 +40,9 @@ struct PlaceOrderSheet: View {
                         )
                         .cornerRadius(12)
                         .padding(.trailing)
-
+                    
                     Spacer()
-
+                    
                     Button("Validate") {
                         if isDiscountApplied {
                             showAlert = true
@@ -63,8 +55,9 @@ struct PlaceOrderSheet: View {
                             }
                         }
                     }
+                    .buttonStyle(.borderedProminent)
                 }
-
+                
                 HStack {
                     Text("Discount")
                         .font(.title2)
@@ -73,25 +66,34 @@ struct PlaceOrderSheet: View {
                         .font(.title2)
                         .foregroundColor(.red)
                 }
-
-                Text("Grand Total")
-                    .font(.title2)
-
-                Divider()
-
-                Text("$\(String(format: "%.2f", totalPrice))")
-                    .font(.title2)
-                    .foregroundColor(.green)
-
-                Spacer()
-
-                CustomProceedButton(text: "Place Order") {
-                    showAddressSheet = true
+                
+                HStack{
+                    Spacer()
+                    Text("Grand Total")
+                        .font(.title2)
+                    Spacer()
                 }
-                .sheet(isPresented: $showAddressSheet) {
-                    ChooseAddressSheet()
-                        .environmentObject(viewModel)
-                    .presentationDragIndicator(.visible)
+                
+                Divider()
+                
+                HStack{
+                    Spacer()
+                    Text("$\(String(format: "%.2f", totalPrice))")
+                        .font(.title2)
+                        .foregroundColor(.green)
+                    Spacer()
+                }
+                
+                Spacer()
+                
+                CustomProceedButton(text: "Place Order") {
+                    goToChooseAddress = true
+                }
+                
+                NavigationLink(destination: ChooseAddressSheet(totalPrice: totalPrice)
+                    .environmentObject(viewModel)
+                               , isActive: $goToChooseAddress) {
+                    EmptyView()
                 }
             }
             .padding()
@@ -103,7 +105,8 @@ struct PlaceOrderSheet: View {
             } message: {
                 Text("You have already used a discount code.")
             }
-        }
+        }.navigationTitle("Review Your Order")
+        
     }
 }
 

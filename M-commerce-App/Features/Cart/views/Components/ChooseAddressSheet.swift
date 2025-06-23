@@ -9,51 +9,67 @@ import SwiftUI
 
 struct ChooseAddressSheet: View {
     @EnvironmentObject var viewModel: CartViewModel
+    @State var totalPrice: Double = 0
+    
     @State private var selectedAddressId: Int?
-    @State var slectedAddress: ShopifyAddress?
-
+    @State var selectedAddress: ShopifyAddress?
+    
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(spacing: 16) {
-                    if !viewModel.address.isEmpty{
-                        
-                        VStack { ForEach(viewModel.address, id: \.id) { address in
+        
+        ScrollView {
+            VStack(spacing: 16) {
+                if !viewModel.address.isEmpty {
+                    VStack {
+                        ForEach(viewModel.address, id: \.id) { address in
                             ChooseAddressRow(
                                 address: address,
                                 isSelected: selectedAddressId == address.id,
                                 onTap: {
                                     selectedAddressId = address.id
-                                    slectedAddress = address
-                                 }
-                              )
-                           }
-                            
-                            Spacer()
-
-                            PaymentButton(){}
-                                .padding()
+                                    selectedAddress = address
+                                }
+                            )
                         }
-                    }else{
-                        Text("Choose Address to complete checkout!")
+                        
+                        Spacer()
+                        
+                        CustomProceedButton(text: "Cash on delivery(COD)", Icon: "creditcard") {
+                            
+                        }
+                            .padding(.top, 50)
+                            .padding(.bottom, 10)
+                        
+                        PaymentButton {
+                            viewModel.pay(selectedAddress: selectedAddress, total: totalPrice)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 50)
                     }
+                } else {
+                    Text("Choose Address to complete checkout!")
                 }
-                .padding(.vertical)
+                
             }
-            .navigationTitle("Choose Address")
+            .padding(.vertical)
         }
+        .navigationTitle("Choose Address")
         .onAppear {
             Task {
                 await viewModel.fetchCustomerAddress()
                 if let defaultAddress = viewModel.address.first(where: { $0.isDefault == true }) {
                     selectedAddressId = defaultAddress.id
+                    selectedAddress = defaultAddress
                 }
             }
         }
-        .background(Color(.systemGroupedBackground))
+        //        .onDisappear {
+        //            if viewModel.paymentSuccess {
+        //                viewModel.paymentSuccess = false
+        //            }
+        //        }
+        //.background(Color(.systemGroupedBackground))
     }
 }
-
 
 struct ChooseAddressSheet_Previews: PreviewProvider {
     static var previews: some View {

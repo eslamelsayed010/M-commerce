@@ -17,6 +17,9 @@ class CartViewModel: ObservableObject{
     @Published var successMessage: String?
     @Published var totalPrice: Double = 0.0
     
+    let paymentHandler = PaymentHandler()
+    @Published var paymentSuccess = false
+    
     
     private let customerId: Int = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
     
@@ -111,6 +114,14 @@ class CartViewModel: ObservableObject{
             self.address = response.addresses
         }catch {
             print(error.localizedDescription)
+        }
+    }
+    
+    func pay(selectedAddress: ShopifyAddress? = nil, total: Double){
+        paymentHandler.startPayment(products: draftOrder, total: total, selectedAddress: selectedAddress) { success in
+            self.paymentSuccess = success
+//            self.draftOrder = []
+//            self.totalPrice = 0
         }
     }
 }

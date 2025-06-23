@@ -26,7 +26,7 @@ struct ImgCouponView: View {
                         
                         VStack {
                             Spacer()
-                            Text("Click to get coupon")
+                            Text("get coupon")
                                 .font(.system(size: 15, weight: .bold, design: .rounded))
                                 .foregroundColor(.white)
                                 .padding(.horizontal, 18)

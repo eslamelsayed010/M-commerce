@@ -9,12 +9,13 @@ import SwiftUI
 
 struct CustomProceedButton: View {
     var text: String
+    var Icon: String = "cart.badge.plus"
     var action: ()-> Void
     
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
-                Image(systemName: "cart.badge.plus")
+                Image(systemName: Icon)
                     .font(.system(size: 16, weight: .medium))
                     .foregroundColor(.white)
                 
@@ -62,7 +63,6 @@ struct CustomProceedButton: View {
             .scaleEffect(0.98)
         }
         .padding(.horizontal)
-        .padding(.bottom, 50)
     }
 }
 

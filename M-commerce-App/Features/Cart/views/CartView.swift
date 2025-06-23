@@ -10,15 +10,16 @@ import SwiftUI
 struct CartView: View {
     @StateObject var cartViewModel: CartViewModel = CartViewModel(cartServices: CartServices())
     @State private var showToast = false
-    @State private var showPlaceOrder = false
+    @State private var goToPlaceOrder = false
 
     var body: some View {
+        NavigationView{
         ScrollView {
             Text("My Cart")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
-                
+            
             if cartViewModel.isLoading {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
@@ -49,21 +50,23 @@ struct CartView: View {
                     .padding()
                     
                     CustomProceedButton(text: "Proceed to checkout"){
-                        showPlaceOrder = true
+                        goToPlaceOrder = true
                     }
-                    .sheet(isPresented: $showPlaceOrder) {
-                        PlaceOrderSheet()
-                            .environmentObject(cartViewModel)
-                        .presentationDragIndicator(.visible)
+                    .padding(.bottom, 50)
+                    
+                    NavigationLink(destination: PlaceOrderSheet()
+                        .environmentObject(cartViewModel)
+                                   , isActive: $goToPlaceOrder) {
+                        EmptyView()
                     }
                 }
-                
                 else {
                     Text("Your cart is empty!")
                         .padding(.top, 50)
                 }
             }
         }
+    }
         .padding(.top)
         .onAppear {
             let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
