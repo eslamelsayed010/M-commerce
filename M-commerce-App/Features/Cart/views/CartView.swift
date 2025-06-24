@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CartView: View {
     @StateObject var cartViewModel: CartViewModel = CartViewModel(cartServices: CartServices())
+    @EnvironmentObject var visibilityManager: TabBarVisibilityManager
     @State private var showToast = false
     @State private var goToPlaceOrder = false
 
@@ -56,6 +57,7 @@ struct CartView: View {
                     
                     NavigationLink(destination: PlaceOrderSheet()
                         .environmentObject(cartViewModel)
+                        .environmentObject(visibilityManager)
                                    , isActive: $goToPlaceOrder) {
                         EmptyView()
                     }
@@ -69,6 +71,7 @@ struct CartView: View {
     }
         .padding(.top)
         .onAppear {
+            //visibilityManager.isTabBarHidden = false
             let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
             Task {
                 cartViewModel.isLoading = true

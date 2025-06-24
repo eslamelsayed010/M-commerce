@@ -20,7 +20,7 @@ class LocationUpdateViewModel: ObservableObject {
     @Published var firstName: String = ""
     @Published var lastName: String = ""
     @Published var address1: String = ""
-    @Published var address2: String = ""
+    @Published var address2: String = "Work"
     @Published var city: String = ""
     @Published var province: String = ""
     @Published var zip: String = ""

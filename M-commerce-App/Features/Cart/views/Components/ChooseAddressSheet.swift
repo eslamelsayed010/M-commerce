@@ -10,7 +10,7 @@ import SwiftUI
 struct ChooseAddressSheet: View {
     @EnvironmentObject var viewModel: CartViewModel
     @State var totalPrice: Double = 0
-    
+    @EnvironmentObject var visibilityManager: TabBarVisibilityManager
     @State private var selectedAddressId: Int?
     @State var selectedAddress: ShopifyAddress?
     
@@ -36,8 +36,8 @@ struct ChooseAddressSheet: View {
                         CustomProceedButton(text: "Cash on delivery(COD)", Icon: "creditcard") {
                             
                         }
-                            .padding(.top, 50)
-                            .padding(.bottom, 10)
+                        .padding(.top, 50)
+                        .padding(.bottom, 10)
                         
                         PaymentButton {
                             viewModel.pay(selectedAddress: selectedAddress, total: totalPrice)
@@ -54,6 +54,7 @@ struct ChooseAddressSheet: View {
         }
         .navigationTitle("Choose Address")
         .onAppear {
+            //visibilityManager.isTabBarHidden = true
             Task {
                 await viewModel.fetchCustomerAddress()
                 if let defaultAddress = viewModel.address.first(where: { $0.isDefault == true }) {
@@ -62,11 +63,12 @@ struct ChooseAddressSheet: View {
                 }
             }
         }
-        //        .onDisappear {
-        //            if viewModel.paymentSuccess {
-        //                viewModel.paymentSuccess = false
-        //            }
-        //        }
+        .onDisappear {
+            //visibilityManager.isTabBarHidden = false
+            //if viewModel.paymentSuccess {
+            //    viewModel.paymentSuccess = false
+            //}
+        }
         //.background(Color(.systemGroupedBackground))
     }
 }

@@ -10,6 +10,7 @@ import SwiftUI
 struct PlaceOrderSheet: View {
     @State private var discount: String = ""
     @EnvironmentObject var viewModel: CartViewModel
+    @EnvironmentObject var visibilityManager: TabBarVisibilityManager
     @State var totalPrice: Double = 0
     @State private var isDiscountApplied = false
     @State private var showAlert = false
@@ -67,22 +68,21 @@ struct PlaceOrderSheet: View {
                         .foregroundColor(.red)
                 }
                 
-                HStack{
-                    Spacer()
-                    Text("Grand Total")
-                        .font(.title2)
-                    Spacer()
-                }
-                
                 Divider()
                 
                 HStack{
+                    
+                    Text("Grand Total")
+                        .font(.title2)
+                    
                     Spacer()
+                    
                     Text("$\(String(format: "%.2f", totalPrice))")
                         .font(.title2)
                         .foregroundColor(.green)
-                    Spacer()
                 }
+                
+                
                 
                 Spacer()
                 
@@ -92,12 +92,14 @@ struct PlaceOrderSheet: View {
                 
                 NavigationLink(destination: ChooseAddressSheet(totalPrice: totalPrice)
                     .environmentObject(viewModel)
+                    .environmentObject(visibilityManager)
                                , isActive: $goToChooseAddress) {
                     EmptyView()
                 }
             }
             .padding()
             .onAppear {
+                //visibilityManager.isTabBarHidden = true
                 totalPrice = viewModel.totalPrice
             }
             .alert("Discount Already Applied", isPresented: $showAlert) {

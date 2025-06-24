@@ -27,6 +27,7 @@ struct FloatingTabBar: View {
                     .environmentObject(visibilityManager)
                     .tag("person")
                 CartView()
+                    .environmentObject(visibilityManager)
                     .tag("cart")
                 FavoriteView()
                     .tag("heart")

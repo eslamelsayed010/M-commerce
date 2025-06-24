@@ -17,6 +17,7 @@ struct AddressFormField: View {
     @Binding var zip: String
     @Binding var phone: String
     @Binding var country: String
+    let options = ["Work", "Home"]
     
     @StateObject var settingsViewModel = SettingsViewModel(networkManager: SettingsNetworkManager())
     @EnvironmentObject var locationViewModel: LocationUpdateViewModel
@@ -73,6 +74,26 @@ struct AddressFormField: View {
             CountryPicker()
                 .environmentObject(settingsViewModel)
                 .environmentObject(locationViewModel)
+            
+            HStack{
+                Spacer()
+                ForEach(options, id: \.self) { option in
+                    HStack {
+                        Image(systemName: locationViewModel.address2 == option ? "largecircle.fill.circle" : "circle")
+                            .foregroundColor(.orange)
+                        Text(option)
+                            .font(.body)
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        locationViewModel.address2 = option
+                        print(locationViewModel.address2)
+                    }
+                }
+                Spacer()
+            }
+            .padding()
+            
         }
         .onAppear{
             settingsViewModel.fetchUserInfo()
