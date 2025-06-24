@@ -17,7 +17,7 @@ struct AddressFormField: View {
     @Binding var zip: String
     @Binding var phone: String
     @Binding var country: String
-    let options = ["Work", "Home"]
+    let options = ["Home", "Work"]
     
     @StateObject var settingsViewModel = SettingsViewModel(networkManager: SettingsNetworkManager())
     @EnvironmentObject var locationViewModel: LocationUpdateViewModel

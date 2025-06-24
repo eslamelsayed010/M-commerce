@@ -19,8 +19,15 @@ struct ChooseAddressRow: View {
                 .foregroundColor(.orange)
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(address.country)
-                    .font(.title3)
+                HStack{
+                    Text(address.country)
+                        .font(.title3)
+                    Spacer()
+                    Text(address.address2 ?? "")
+                        .font(.footnote)
+                        .foregroundColor(.orange)
+                        .shadow(color: .black.opacity(0.3), radius: 1, x: 1, y: 1)
+                }
                 
                 Text("\(address.address1), \(address.city)")
                     .font(.body)
