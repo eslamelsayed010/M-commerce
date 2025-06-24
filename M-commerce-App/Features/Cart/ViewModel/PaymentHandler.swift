@@ -23,13 +23,11 @@ class PaymentHandler: NSObject {
         .masterCard,
     ]
     
-    // This applePayStatus function is not used in this app. Use it to check for the ability to make payments using canMakePayments(), and check for available payment cards using canMakePayments(usingNetworks:). You can also display a custom PaymentButton according to the result. See https://developer.apple.com/documentation/passkit/apple_pay/offering_apple_pay_in_your_app under "Add the Apple Pay Button" section
     class func applePayStatus() -> (canMakePayments: Bool, canSetupCards: Bool) {
         return (PKPaymentAuthorizationController.canMakePayments(),
                 PKPaymentAuthorizationController.canMakePayments(usingNetworks: supportedNetworks))
     }
     
-    // Define the shipping methods (this app only offers delivery) and the delivery dates
     func shippingMethodCalculator() -> [PKShippingMethod] {
         
         let today = Date()
@@ -52,11 +50,9 @@ class PaymentHandler: NSObject {
         return []
     }
     
-    // Helper function to convert ShopifyAddress to PKContact
     func createPKContact(from address: ShopifyAddress) -> PKContact {
         let contact = PKContact()
         
-        // Set name
         if !address.firstName.isEmpty || !address.lastName.isEmpty {
             let personName = PersonNameComponents()
             var nameComponents = personName
@@ -65,18 +61,16 @@ class PaymentHandler: NSObject {
             contact.name = nameComponents
         }
         
-        // Set postal address
         let postalAddress = CNMutablePostalAddress()
         postalAddress.street = "\(address.address1) \(address.address2 ?? "")".trimmingCharacters(in: .whitespaces)
         postalAddress.city = address.city
-        postalAddress.state = address.province ?? ""
+        postalAddress.state = address.province
         postalAddress.postalCode = address.zip
         postalAddress.country = address.country
         //postalAddress.isoCountryCode = address.countryCode
         
         contact.postalAddress = postalAddress
         
-        // Set phone number if available
         if let phone = address.phone, !phone.isEmpty {
             contact.phoneNumber = CNPhoneNumber(stringValue: phone)
         }
@@ -87,10 +81,8 @@ class PaymentHandler: NSObject {
     func startPayment(products: [GetDraftOrder], total: Double, selectedAddress: ShopifyAddress?, completion: @escaping PaymentCompletionHandler) {
         completionHandler = completion
         
-        // Reset the paymentSummaryItems array before adding to it
         paymentSummaryItems = []
         
-        // Iterate over the products array, create a PKPaymentSummaryItem for each and append to the paymentSummaryItems array
         products.forEach { darftOrder in
             darftOrder.lineItems.forEach { product in
                 let item = PKPaymentSummaryItem(label: product.title, amount: NSDecimalNumber(string: "\(product.price).00"), type: .final)
@@ -98,28 +90,24 @@ class PaymentHandler: NSObject {
             }
         }
         
-        // Add a PKPaymentSummaryItem for the total to the paymentSummaryItems array
         let total = PKPaymentSummaryItem(label: "Total", amount: NSDecimalNumber(string: "\(total).00"), type: .final)
         paymentSummaryItems.append(total)
         
-        // Create a payment request and add all data to it
         let paymentRequest = PKPaymentRequest()
-        paymentRequest.paymentSummaryItems = paymentSummaryItems // Set paymentSummaryItems to the paymentRequest
+        paymentRequest.paymentSummaryItems = paymentSummaryItems
         paymentRequest.merchantIdentifier = "merchant.io.designcode.sweatershopapp"
-        paymentRequest.merchantCapabilities = .capability3DS // A security protocol used to authenticate users
+        paymentRequest.merchantCapabilities = .capability3DS
         paymentRequest.countryCode = "US"
         paymentRequest.currencyCode = "USD"
-        paymentRequest.supportedNetworks = PaymentHandler.supportedNetworks // Types of cards supported
+        paymentRequest.supportedNetworks = PaymentHandler.supportedNetworks
         paymentRequest.shippingType = .delivery
         paymentRequest.shippingMethods = shippingMethodCalculator()
         paymentRequest.requiredShippingContactFields = [.name, .postalAddress]
         
-        // Pre-fill the shipping contact with selected address
         if let selectedAddress = selectedAddress {
             paymentRequest.shippingContact = createPKContact(from: selectedAddress)
         }
         
-        // Display the payment request in a sheet presentation
         paymentController = PKPaymentAuthorizationController(paymentRequest: paymentRequest)
         paymentController?.delegate = self
         paymentController?.present(completion: { (presented: Bool) in
@@ -132,10 +120,8 @@ class PaymentHandler: NSObject {
     }
 }
 
-// Set up PKPaymentAuthorizationControllerDelegate conformance
 extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
 
-    // Handle success and errors related to the payment
     func paymentAuthorizationController(_ controller: PKPaymentAuthorizationController, didAuthorizePayment payment: PKPayment, handler completion: @escaping (PKPaymentAuthorizationResult) -> Void) {
 
         let errors = [Error]()
@@ -147,7 +133,6 @@ extension PaymentHandler: PKPaymentAuthorizationControllerDelegate {
 
     func paymentAuthorizationControllerDidFinish(_ controller: PKPaymentAuthorizationController) {
         controller.dismiss {
-            // The payment sheet doesn't automatically dismiss once it has finished, so dismiss the payment sheet
             DispatchQueue.main.async {
                 if self.paymentStatus == .success {
                     if let completionHandler = self.completionHandler {
