@@ -57,6 +57,9 @@ struct ProductRow: View {
                             .foregroundColor(.orange)
                             .font(.title2)
                     }
+                    .opacity(quantity == 1 ? 0.6 : 1.0)
+                    .disabled(quantity == 1)
+                    
 
                     Text("\(quantity)")
                         .frame(width: 20)
