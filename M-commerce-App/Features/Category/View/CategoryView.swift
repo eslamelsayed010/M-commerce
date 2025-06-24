@@ -38,8 +38,9 @@ struct CategoryView: View {
                             isHomeView: false,
                             onPriceFilterChanged: nil,
                             isFilterActive: .constant(nil),
-                            showFilterButton: false
-                        )
+                            showFilterButton: false,
+                            searchPlaceholder: "Search For Products"
+                        );
                     }
                     if viewModel.isLoading {
                         ProgressView().padding()

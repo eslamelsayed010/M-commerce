@@ -19,11 +19,12 @@ struct ToolBar: View {
     @State private var priceFilter: Double = 0
     @State private var originalProducts: [Product] = []
     @State private var currentFilteredProducts: [Product] = []
+    var searchPlaceholder: String
 
     var body: some View {
         VStack {
             HStack(spacing: 10) {
-                TextField("Search ...", text: $searchText)
+                TextField(searchPlaceholder, text: $searchText)
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 15)
@@ -68,16 +69,6 @@ struct ToolBar: View {
                             .clipShape(Circle())
                     }
                     .padding(.trailing, 5)
-                }
-
-                Button(action: { print("App logo tapped") }) {
-                    Image("online-shop")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .padding(5)
-                        .background(Color(.systemGray6))
-                        .clipShape(Circle())
                 }
             }
             .padding(.horizontal)
@@ -185,29 +176,30 @@ struct ToolBar: View {
     }
 }
 
-struct ToolBar_Previews: PreviewProvider {
-    static var previews: some View {
-        ToolBar(
-            searchText: .constant(""),
-            filteredProducts: .constant([
-                Product(
-                    id: "1",
-                    title: "Sample Product",
-                    description: "Description",
-                    imageUrls: [],
-                    price: 50.0,
-                    currencyCode: "$",
-                    productType: "Sample",
-                    size: nil,
-                    color: nil,
-                    variantId: "1"
-                )
-            ]),
-            resetFilterTrigger: .constant(false),
-            isHomeView: false,
-            onPriceFilterChanged: { _ in },
-            isFilterActive: .constant(nil),
-            showFilterButton: true
-        )
-    }
-}
+//struct ToolBar_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ToolBar(
+//            searchText: .constant(""),
+//            filteredProducts: .constant([
+//                Product(
+//                    id: "1",
+//                    title: "Sample Product",
+//                    description: "Description",
+//                    imageUrls: [],
+//                    price: 50.0,
+//                    currencyCode: "$",
+//                    productType: "Sample",
+//                    size: nil,
+//                    color: nil,
+//                    variantId: "1"
+//                )
+//            ]),
+//            resetFilterTrigger: .constant(false),
+//            isHomeView: false,
+//            onPriceFilterChanged: { _ in },
+//            isFilterActive: .constant(nil),
+//            showFilterButton: true
+//            searchPlaceholder: "Search For Products",
+//        )
+//    }
+//}

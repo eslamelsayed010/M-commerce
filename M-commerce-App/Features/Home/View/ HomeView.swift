@@ -33,8 +33,7 @@ struct HomeView: View {
                         isHomeView: true,
                         onPriceFilterChanged: nil,
                         isFilterActive: .constant(nil),
-                        showFilterButton: true
-                    )
+                        showFilterButton: true,searchPlaceholder: "Search For Brand" );
                     ImgCouponView()
                     
                     VStack {

@@ -13,7 +13,7 @@ struct ProductGridView<T: BaseProductViewModel>: View {
     @State private var showFilters = false
     @State private var hasNavigated = false
     @State private var selectedProduct: Product?
-    @State private var resetFilterTrigger = false // Add this state
+    @State private var resetFilterTrigger = false
 
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
@@ -26,8 +26,9 @@ struct ProductGridView<T: BaseProductViewModel>: View {
                 isHomeView: false,
                 onPriceFilterChanged: { viewModel.products = $0 },
                 isFilterActive: .constant(nil),
-                showFilterButton: true
-            )
+                showFilterButton: true,
+                searchPlaceholder: "Search For Products"
+            );
             ZStack {
                 ScrollView {
                     if viewModel.isLoading {

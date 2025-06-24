@@ -34,8 +34,9 @@ struct ProductsView: View {
                 isHomeView: false,
                 onPriceFilterChanged: { viewModel.filteredProducts = $0 },
                 isFilterActive: .constant(nil),
-                showFilterButton: true
-            )
+                showFilterButton: true,
+                searchPlaceholder: "Search For Products"
+            );
             ScrollView {
                 if viewModel.isLoading {
                     ProgressView("Loading products…")
