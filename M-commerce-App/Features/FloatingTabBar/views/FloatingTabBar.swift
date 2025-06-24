@@ -5,7 +5,7 @@ struct FloatingTabBar: View {
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var showGuestAlert = false
     
-    var tabs = ["house", "book", "person", "cart", "heart"]
+    var tabs = ["house", "book","cart", "heart","person"]
     @State var selectedTab = "house"
     @State var xAxis: CGFloat = 0
     @Namespace var animation
@@ -23,14 +23,14 @@ struct FloatingTabBar: View {
                     .tag("house")
                 CategoryView()
                     .tag("book")
-                SettingsView()
-                    .environmentObject(visibilityManager)
-                    .tag("person")
+                
                 CartView()
-                    .environmentObject(visibilityManager)
                     .tag("cart")
                 FavoriteView()
                     .tag("heart")
+                SettingsView()
+                    .environmentObject(visibilityManager)
+                    .tag("person")
             }.environmentObject(visibilityManager)
 
             if !visibilityManager.isTabBarHidden {
