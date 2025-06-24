@@ -19,7 +19,7 @@ struct UserSettings: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            SectionHeader(title: "User")
+            SectionHeader(title: "Hi, Eslam")
             
             VStack(spacing: 5) {
                 SettingItem(

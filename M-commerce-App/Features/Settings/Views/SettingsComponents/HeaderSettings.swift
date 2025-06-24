@@ -22,6 +22,10 @@ struct HeaderSettings: View {
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
+
+            Text("eslimelseyd@gmail.com")
+                .font(.title3)
+                .foregroundColor(.secondary)
         }
         .padding(.top, 20)
         .padding(.bottom, 10)
