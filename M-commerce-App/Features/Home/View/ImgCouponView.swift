@@ -65,7 +65,7 @@ struct ImgCouponView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(height: 200)
             .onAppear {
-                startTimer()
+                //startTimer()
             }
             
             HStack(spacing: 6) {

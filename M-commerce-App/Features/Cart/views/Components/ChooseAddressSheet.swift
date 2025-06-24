@@ -40,11 +40,19 @@ struct ChooseAddressSheet: View {
                         .padding(.bottom, 10)
                         
                         PaymentButton {
-                            viewModel.pay(selectedAddress: selectedAddress, total: totalPrice)
+                             Task{
+                                 await viewModel.pay(selectedAddress: selectedAddress, total: totalPrice)
+                            }
                         }
                         .padding(.horizontal)
                         .padding(.bottom, 50)
                     }
+                    
+                    NavigationLink(destination: CartView()
+                                   , isActive: $viewModel.paymentSuccess) {
+                        EmptyView()
+                    }
+                    
                 } else {
                     Text("Choose Address to complete checkout!")
                 }
@@ -54,7 +62,6 @@ struct ChooseAddressSheet: View {
         }
         .navigationTitle("Choose Address")
         .onAppear {
-            //visibilityManager.isTabBarHidden = true
             Task {
                 await viewModel.fetchCustomerAddress()
                 if let defaultAddress = viewModel.address.first(where: { $0.isDefault == true }) {
@@ -63,13 +70,6 @@ struct ChooseAddressSheet: View {
                 }
             }
         }
-        .onDisappear {
-            //visibilityManager.isTabBarHidden = false
-            //if viewModel.paymentSuccess {
-            //    viewModel.paymentSuccess = false
-            //}
-        }
-        //.background(Color(.systemGroupedBackground))
     }
 }
 
