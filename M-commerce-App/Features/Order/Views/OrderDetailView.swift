@@ -8,13 +8,37 @@
 import SwiftUI
 
 struct OrderDetailView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    let order: ShopifyOrder
 
-struct OrderDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        OrderDetailView()
+    var body: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("Order #: \(order.name)")
+                    .font(.title2)
+                    .bold()
+
+                Text("Email: \(order.email)")
+                Text("Total: \(order.totalPrice) \(order.currency)")
+                Text("Created: \(order.createdAt)")
+
+                Divider().padding(.vertical)
+
+                Text("Items:")
+                    .font(.headline)
+
+                ForEach(order.lineItems) { item in
+                    VStack(alignment: .leading) {
+                        Text("\(item.title)")
+                        Text("Qty: \(item.quantity) • $ \(item.price)")
+                            .foregroundColor(.gray)
+                    }
+                    .padding(.vertical, 4)
+                }
+
+                Spacer()
+            }
+            .padding()
+        }
+        .navigationTitle("Order Details")
     }
 }

@@ -130,6 +130,7 @@ struct HomeView: View {
             }
             .onAppear {
                 viewModel.loadBrands()
+                
             }
             .onChange(of: searchText) { newValue in
                 viewModel.filterBrands(with: newValue)

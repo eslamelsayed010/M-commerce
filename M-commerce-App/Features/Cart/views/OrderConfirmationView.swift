@@ -7,55 +7,59 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct OrderConfirmationView: View {
     let order: GetDraftOrder
     let email: String
+
     @EnvironmentObject var cartViewModel: CartViewModel
-    @Environment(\.dismiss) var dismiss
+    @State private var navigateToHome = false
 
     var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: "checkmark.circle.fill")
-                .resizable()
-                .frame(width: 80, height: 80)
-                .foregroundColor(.green)
+        NavigationStack {
+            VStack(spacing: 20) {
+                Image(systemName: "checkmark.circle.fill")
+                    .resizable()
+                    .frame(width: 80, height: 80)
+                    .foregroundColor(.green)
 
-            Text("Thank you for your order!")
-                .font(.title)
-                .bold()
+                Text("Thank you for your order!")
+                    .font(.title)
+                    .bold()
 
-            Text("A confirmation email has been sent to:")
-            Text(email)
-                .bold()
-                .foregroundColor(.blue)
+                Text("A confirmation email has been sent to:")
+                Text(email)
+                    .bold()
+                    .foregroundColor(.blue)
 
-            Divider()
+                Divider()
 
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Order Number: \(order.id)")
-                Text("Total Price: $\(order.totalPrice)")
-                Text("Items:")
-                ForEach(order.lineItems, id: \.id) { item in
-                    Text("- \(item.title) x\(item.quantity)")
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Order Number: \(order.id)")
+                    Text("Total Price: $\(order.totalPrice)")
+                    Text("Items:")
+                    ForEach(order.lineItems, id: \.id) { item in
+                        Text("- \(item.title) x\(item.quantity)")
+                    }
                 }
+                .padding()
+
+                Button("Back to Home") {
+                    cartViewModel.clearCart()
+                    navigateToHome = true
+                }
+                .buttonStyle(.borderedProminent)
+
+                NavigationLink(
+                    destination: HomeView()
+                        .navigationBarBackButtonHidden(true),
+                    isActive: $navigateToHome
+                ) {
+                    EmptyView()
+                }
+                .hidden()
             }
             .padding()
-
-            Button("Back to Home") {
-                cartViewModel.clearCart()
-                dismiss()
-            }
-            .buttonStyle(.borderedProminent)
-        }
-        .padding()
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            // Optional: clear after a delay if needed
-            // DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            //     cartViewModel.clearCart()
-            // }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
