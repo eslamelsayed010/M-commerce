@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CartView: View {
-    @StateObject var cartViewModel: CartViewModel = CartViewModel(cartServices: CartServices())
+    @EnvironmentObject var cartViewModel: CartViewModel
     @EnvironmentObject var visibilityManager: TabBarVisibilityManager
     @State private var showToast = false
     @State private var goToPlaceOrder = false
@@ -71,12 +71,8 @@ struct CartView: View {
     }
         .padding(.top)
         .onAppear {
-            //visibilityManager.isTabBarHidden = false
-            let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
+            visibilityManager.isTabBarHidden = false
             Task {
-                cartViewModel.isLoading = true
-                await cartViewModel.fetchCartsByCustomerId(customerId: customerId)
-                cartViewModel.isLoading = false
                 await cartViewModel.fetchAllProductImages()
             }
         }

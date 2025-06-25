@@ -3,21 +3,23 @@ import SwiftUI
 struct FloatingTabBar: View {
     @StateObject var visibilityManager = TabBarVisibilityManager()
     @EnvironmentObject var authViewModel: AuthViewModel
+    @StateObject var cartViewModel = CartViewModel(cartServices: CartServices())
+    
     @State private var showGuestAlert = false
     
     var tabs = ["house", "book","cart", "heart","person"]
     @State var selectedTab = "house"
     @State var xAxis: CGFloat = 0
     @Namespace var animation
-
+    
     init() {
         UITabBar.appearance().isHidden = true
     }
-
+    
     var body: some View {
         ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
             Color.black.ignoresSafeArea()
-
+            
             TabView(selection: $selectedTab) {
                 HomeView()
                     .tag("house")
@@ -25,6 +27,7 @@ struct FloatingTabBar: View {
                     .tag("book")
                 
                 CartView()
+                    .environmentObject(cartViewModel)
                     .tag("cart")
                 FavoriteView()
                     .tag("heart")
@@ -32,7 +35,7 @@ struct FloatingTabBar: View {
                     .environmentObject(visibilityManager)
                     .tag("person")
             }.environmentObject(visibilityManager)
-
+            
             if !visibilityManager.isTabBarHidden {
                 tabBarView
             }
@@ -49,29 +52,43 @@ struct FloatingTabBar: View {
             )
         }
     }
-
+    
     var tabBarView: some View {
         HStack(spacing: 0) {
             ForEach(tabs, id: \.self) { image in
                 GeometryReader { reader in
                     Button(action: {
-                        
                         if authViewModel.isGuest && image != "house" && image != "book" {
                             showGuestAlert = true
                         } else {
-                            withAnimation {
-                                selectedTab = image
-                                xAxis = reader.frame(in: .global).minX
+                            if selectedTab != image {
+                                withAnimation {
+                                    selectedTab = image
+                                    xAxis = reader.frame(in: .global).minX
+                                }
                             }
                         }
                     }) {
-                        Image(systemName: image)
-                            .font(.system(size: 22, weight: .regular))
-                            .foregroundColor(selectedTab == image ? .black : .gray)
-                            .padding(selectedTab == image ? 15 : 0)
-                            .background(Color.yellow.opacity(selectedTab == image ? 1 : 0).clipShape(Circle()))
-                            .matchedGeometryEffect(id: image, in: animation)
-                            .offset(x: selectedTab == image ? -10 : 0, y: selectedTab == image ? -50 : 0)
+                        ZStack(alignment: .topTrailing) {
+                            Image(systemName: image)
+                                .font(.system(size: 22, weight: .regular))
+                                .foregroundColor(selectedTab == image ? .black : .gray)
+                                .padding(selectedTab == image ? 15 : 0)
+                                .background(Color.yellow.opacity(selectedTab == image ? 1 : 0).clipShape(Circle()))
+                                .matchedGeometryEffect(id: image, in: animation)
+                                .offset(x: selectedTab == image ? -10 : 0, y: selectedTab == image ? -50 : 0)
+                            
+                            if image == "cart", cartViewModel.draftOrder.count > 0 {
+                                Text("\(cartViewModel.draftOrder.count)")
+                                    .font(.caption2)
+                                    .foregroundColor(.white)
+                                    .padding(5)
+                                    .background(Color.red)
+                                    .clipShape(Circle())
+                                    .offset(x: selectedTab == image ? -15 : 0, y: selectedTab == image ? -40 : 0)
+                                    .offset(x: 10, y: -10)
+                            }
+                        }
                     }
                     .onAppear {
                         if image == tabs.first {
@@ -80,10 +97,18 @@ struct FloatingTabBar: View {
                     }
                 }
                 .frame(width: 20.0, height: 25.0)
-
+                
                 if image != tabs.last {
                     Spacer()
                 }
+            }
+        }
+        .onAppear{
+            let customerId = Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0)
+            Task{
+                cartViewModel.isLoading = true
+                await cartViewModel.fetchCartsByCustomerId(customerId: customerId)
+                cartViewModel.isLoading = false
             }
         }
         .padding(.horizontal, 30)
@@ -101,34 +126,34 @@ struct FloatingTabBar: View {
 
 struct CustomShape: Shape {
     var xAxis: CGFloat
-
+    
     var animatableData: CGFloat {
         get { xAxis }
         set { xAxis = newValue }
     }
-
+    
     func path(in rect: CGRect) -> Path {
         var path = Path()
-
+        
         path.move(to: .zero)
         path.addLine(to: CGPoint(x: rect.width, y: 0))
         path.addLine(to: CGPoint(x: rect.width, y: rect.height))
         path.addLine(to: CGPoint(x: 0, y: rect.height))
-
+        
         let center = xAxis
         path.move(to: CGPoint(x: center - 50, y: 0))
-
+        
         let to1 = CGPoint(x: center, y: 35)
         let control1 = CGPoint(x: center - 25, y: 0)
         let control2 = CGPoint(x: center - 25, y: 35)
-
+        
         let to2 = CGPoint(x: center + 50, y: 0)
         let control3 = CGPoint(x: center + 25, y: 35)
         let control4 = CGPoint(x: center + 25, y: 0)
-
+        
         path.addCurve(to: to1, control1: control1, control2: control2)
         path.addCurve(to: to2, control1: control3, control2: control4)
-
+        
         return path
     }
 }

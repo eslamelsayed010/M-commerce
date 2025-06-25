@@ -120,9 +120,9 @@ class CartViewModel: ObservableObject{
     func pay(selectedAddress: ShopifyAddress? = nil, total: Double) async {
         paymentHandler.startPayment(products: draftOrder, total: total, selectedAddress: selectedAddress) { success in
             self.paymentSuccess = success
-            Task{
-                await self.removeAllProductInCart()
-            }
+//            Task{
+//                await self.removeAllProductInCart()
+//            }
         }
     }
     
