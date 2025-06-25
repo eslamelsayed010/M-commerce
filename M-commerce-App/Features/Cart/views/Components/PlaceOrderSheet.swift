@@ -99,6 +99,7 @@ struct PlaceOrderSheet: View {
             }
             .padding()
             .onAppear {
+                //visibilityManager.isTabBarHidden = true
                 totalPrice = viewModel.totalPrice
             }
             .alert("Discount Already Applied", isPresented: $showAlert) {

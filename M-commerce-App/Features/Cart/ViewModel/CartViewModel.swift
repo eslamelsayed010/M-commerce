@@ -132,7 +132,7 @@ class CartViewModel: ObservableObject{
                         order: order,
                         email: order.customer?.email ?? "guest@example.com",
                         onSuccess: { confirmed, email in
-                            onSuccess(confirmed, email) t
+                            onSuccess(confirmed, email)
                         },
                         onFailure: { error in
                             onFailure(error)

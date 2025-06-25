@@ -69,6 +69,7 @@
 		227EAC5E2DFDDABE00F0D300 /* KidsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5D2DFDDABE00F0D300 /* KidsView.swift */; };
 		227EAC602DFDDAFD00F0D300 /* SaleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */; };
 		22880AB82E09C51600E97176 /* PaymentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22880AB72E09C51600E97176 /* PaymentHandler.swift */; };
+		2291A8282E0C8889004C8267 /* OrderConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2291A8272E0C8889004C8267 /* OrderConfirmationView.swift */; };
 		22A707062E08328000CE9574 /* coupone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707052E08328000CE9574 /* coupone.swift */; };
 		22A707082E08336100CE9574 /* CouponServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707072E08336100CE9574 /* CouponServices.swift */; };
 		22A7070A2E08356900CE9574 /* CouponViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22A707092E08356900CE9574 /* CouponViewModel.swift */; };
@@ -195,6 +196,7 @@
 		227EAC5F2DFDDAFD00F0D300 /* SaleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleView.swift; sourceTree = "<group>"; };
 		22880AB62E09949000E97176 /* M-commerce-App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "M-commerce-App.entitlements"; sourceTree = "<group>"; };
 		22880AB72E09C51600E97176 /* PaymentHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentHandler.swift; sourceTree = "<group>"; };
+		2291A8272E0C8889004C8267 /* OrderConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderConfirmationView.swift; sourceTree = "<group>"; };
 		22A707052E08328000CE9574 /* coupone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coupone.swift; sourceTree = "<group>"; };
 		22A707072E08336100CE9574 /* CouponServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponServices.swift; sourceTree = "<group>"; };
 		22A707092E08356900CE9574 /* CouponViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CouponViewModel.swift; sourceTree = "<group>"; };
@@ -694,6 +696,7 @@
 			children = (
 				22FDE3962E043EA800A33FE1 /* Components */,
 				227EAC4F2DFDD5A300F0D300 /* CartView.swift */,
+				2291A8272E0C8889004C8267 /* OrderConfirmationView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -891,6 +894,7 @@
 				227EAC502DFDD5A300F0D300 /* CartView.swift in Sources */,
 				04F6AE0A2E007ED200BBC2FA /* FavoritesManager.swift in Sources */,
 				225DD6D92DFC8C4D002681B3 /* FloatingTabBar.swift in Sources */,
+				2291A8282E0C8889004C8267 /* OrderConfirmationView.swift in Sources */,
 				223477152DFF1DF9000FB708 /* HomeView.swift in Sources */,
 				225DD6ED2DFC8F99002681B3 /* ProductsViewModel.swift in Sources */,
 				22F696222DFF41C500D2E247 /* SettingsViewModel.swift in Sources */,
