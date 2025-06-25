@@ -116,21 +116,74 @@ class CartViewModel: ObservableObject{
             print(error.localizedDescription)
         }
     }
-    
-    func pay(selectedAddress: ShopifyAddress? = nil, total: Double) async {
+    func pay(selectedAddress: ShopifyAddress? = nil, total: Double,
+             onSuccess: @escaping (GetDraftOrder, String) -> Void,
+             onFailure: @escaping (String) -> Void) {
+
         paymentHandler.startPayment(products: draftOrder, total: total, selectedAddress: selectedAddress) { success in
-            self.paymentSuccess = success
-//            Task{
-//                await self.removeAllProductInCart()
-//            }
+            Task {
+                await MainActor.run {
+                    self.paymentSuccess = success
+                }
+
+                if success, let order = self.draftOrder.first {
+                    await self.completeOrder(
+                        orderId: Int(order.id),
+                        order: order,
+                        email: order.customer?.email ?? "guest@example.com",
+                        onSuccess: { confirmed, email in
+                            onSuccess(confirmed, email) t
+                        },
+                        onFailure: { error in
+                            onFailure(error)
+                        }
+                    )
+                }
+            }
         }
     }
-    
+
+
+
+    @MainActor
+    func clearCart() {
+        draftOrder = []
+        totalPrice = 0.0
+        productImages = [:]
+    }
+
+    @MainActor
+    func completeOrder(
+        orderId: Int,
+        order: GetDraftOrder,
+        email: String,
+        onSuccess: @escaping (GetDraftOrder, String) -> Void,
+        onFailure: @escaping (String) -> Void
+    ) async {
+        do {
+            try await cartServices.completeDraftOrder(draftOrderId: orderId)
+
+            let confirmed = order
+            let confirmedEmail = email
+
+            onSuccess(confirmed, confirmedEmail)
+
+        } catch {
+            errorMessage = "Failed to place order: \(error.localizedDescription)"
+            onFailure(error.localizedDescription)
+        }
+    }
     func removeAllProductInCart() async {
         for item in self.draftOrder{
             await removeFromCart(productID: Int(item.id))
         }
     }
-    
+
 }
+
+
+    
+   
+    
+
 
