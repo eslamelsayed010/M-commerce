@@ -93,7 +93,6 @@ struct ProductsView: View {
                                                 .clipShape(Circle())
                                         }
                                     }
-                                    .disabled(true)
                                     .padding(.horizontal, 2)
 
                                     if let urlString = product.imageUrls.first, let url = URL(string: urlString) {
