@@ -6,19 +6,29 @@
 //
 
 import SwiftUI
+import FirebaseFirestore
 
 struct ChooseAddressSheet: View {
     @EnvironmentObject var viewModel: CartViewModel
     @EnvironmentObject var visibilityManager: TabBarVisibilityManager
     var totalPrice: Double
-    
+
     @State private var selectedAddressId: Int?
     @State private var selectedAddress: ShopifyAddress?
-    
+
     @State private var confirmedOrder: GetDraftOrder?
     @State private var confirmedEmail: String = ""
     @State private var selectedOrderID: Int? = nil
-    
+
+    @State private var showSuccessAlert = false  
+
+    func saveOrderTotalToFirestore(orderId: Int, total: Double) {
+        let db = Firestore.firestore()
+        db.collection("orders").document("\(orderId)").setData([
+            "total": total
+        ], merge: true)
+    }
+
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -35,9 +45,9 @@ struct ChooseAddressSheet: View {
                                     }
                                 )
                             }
-                            
+
                             Spacer()
-                            
+
                             CustomProceedButton(text: "Cash on delivery(COD)", Icon: "creditcard") {
                                 guard let order = viewModel.draftOrder.first else { return }
                                 Task {
@@ -49,7 +59,8 @@ struct ChooseAddressSheet: View {
                                             DispatchQueue.main.async {
                                                 confirmedOrder = confirmed
                                                 confirmedEmail = email
-                                                selectedOrderID = Int(confirmed.id)
+                                                saveOrderTotalToFirestore(orderId: Int(confirmed.id), total: totalPrice)
+                                                showSuccessAlert = true
                                             }
                                         },
                                         onFailure: { error in
@@ -60,13 +71,10 @@ struct ChooseAddressSheet: View {
                                     )
                                 }
                             }
-                            
-                            
                             .padding(.top, 50)
                             .padding(.bottom, 10)
-                            
+
                             PaymentButton {
-                                
                                 viewModel.pay(
                                     selectedAddress: selectedAddress,
                                     total: totalPrice,
@@ -83,7 +91,6 @@ struct ChooseAddressSheet: View {
                                         }
                                     }
                                 )
-                                
                             }
                             .padding(.horizontal)
                             .padding(.bottom, 50)
@@ -95,6 +102,15 @@ struct ChooseAddressSheet: View {
                 .padding(.vertical)
             }
             .navigationTitle("Choose Address")
+
+            .alert("Order Placed Successfully", isPresented: $showSuccessAlert) {
+                Button("OK") {
+                    selectedOrderID = Int(confirmedOrder?.id ?? -1)
+                }
+            } message: {
+                Text("Thank you for using Cash on Delivery.")
+            }
+
             .onAppear {
                 Task {
                     await viewModel.fetchCustomerAddress()
@@ -104,14 +120,17 @@ struct ChooseAddressSheet: View {
                     }
                 }
             }
-            
-            
+
             NavigationLink(
                 tag: Int(confirmedOrder?.id ?? -1),
                 selection: $selectedOrderID,
                 destination: {
                     if let order = confirmedOrder {
-                        OrderConfirmationView(order: order, email: confirmedEmail)
+                        OrderConfirmationView(
+                            order: order,
+                            email: confirmedEmail,
+                            finalTotal: totalPrice
+                        )
                     }
                 },
                 label: {
@@ -122,4 +141,3 @@ struct ChooseAddressSheet: View {
         }
     }
 }
-

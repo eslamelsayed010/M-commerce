@@ -10,6 +10,7 @@ import SwiftUI
 struct OrderConfirmationView: View {
     let order: GetDraftOrder
     let email: String
+    let finalTotal : Double
 
     @EnvironmentObject var cartViewModel: CartViewModel
     @State private var navigateToHome = false
@@ -35,7 +36,7 @@ struct OrderConfirmationView: View {
 
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Order Number: \(order.id)")
-                    Text("Total Price: $\(order.totalPrice)")
+                    Text("Total Price: $\(String(format: "%.2f", finalTotal))")
                     Text("Items:")
                     ForEach(order.lineItems, id: \.id) { item in
                         Text("- \(item.title) x\(item.quantity)")

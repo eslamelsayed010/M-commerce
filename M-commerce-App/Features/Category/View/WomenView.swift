@@ -11,7 +11,17 @@ struct WomenView: View {
     @StateObject var viewModel = WomenProductViewModel()
 
     var body: some View {
-        ProductGridView(viewModel: viewModel)
-            .onAppear { viewModel.loadCategoryProducts() }
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Women Products")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding(.horizontal)
+                .padding(.top)
+
+            ProductGridView(viewModel: viewModel)
+        }
+        .onAppear {
+            viewModel.loadCategoryProducts()
+        }
     }
 }

@@ -26,6 +26,26 @@ struct HomeView: View {
         NavigationStack(path: $navigationPath) {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 10) {
+                    HStack(spacing: 10) {
+                        Image("online-shop")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 36, height: 36)
+                            .padding(6)
+                            .background(Color.white)
+                            .clipShape(Circle())
+                            .overlay(Circle().stroke(Color.black.opacity(0.1), lineWidth: 1))
+                            .shadow(color: .black.opacity(0.1), radius: 3, x: 0, y: 2)
+
+                        Text("ShopTrend")
+                            .font(.system(size: 26, weight: .heavy, design: .rounded))
+                            .foregroundColor(.primary)
+
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 16)
+                    
                     ToolBar(
                         searchText: $searchText,
                         filteredProducts: .constant([]),
