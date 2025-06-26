@@ -16,6 +16,7 @@ protocol CartServicesProtocol{
     func fetchCartsByCustomerId(cutomerId: Int) async throws -> [GetDraftOrder]
     
     func fetchUserAddresses(customerId: Int) async throws -> AddressResponse
+    func deleteAddress(customerId: Int, addressId: Int) async throws
 }
 
 class CartServices: CartServicesProtocol{
@@ -133,6 +134,27 @@ class CartServices: CartServicesProtocol{
         let response = try JSONDecoder().decode(AddressResponse.self, from: data)
         return response
     }
+
+    func deleteAddress(customerId: Int, addressId: Int) async throws{
+        let url = URL(string: "\(baseURL)/customers/\(customerId)/addresses/\(addressId).json")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ShopifyAPIError.invalidResponse
+        }
+        
+        if httpResponse.statusCode != 201 {
+            throw ShopifyAPIError.httpError(statusCode: httpResponse.statusCode, data: data)
+        }
+    }
+    
+    
+    
     func completeDraftOrder(draftOrderId: Int) async throws {
         let urlStr = "\(baseURL)/draft_orders/\(draftOrderId)/complete.json"
         guard let url = URL(string: urlStr) else {

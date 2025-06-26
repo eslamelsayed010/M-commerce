@@ -149,6 +149,7 @@ struct HomeView: View {
                 .padding(.top, 8)
             }
             .onAppear {
+                print("Customer ID => ",AuthViewModel().getCustomerIdAndUsername().customerId ?? "")
                 viewModel.loadBrands()
                 
             }

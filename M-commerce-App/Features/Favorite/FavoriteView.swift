@@ -73,7 +73,7 @@ struct FavoriteView: View {
                                                 .clipShape(Circle())
                                         }
                                     }
-                                    .disabled(true)
+                                    //.disabled(true)
                                     .padding(.horizontal, 2)
                                     
                                     if let imageData = favorite.image, let uiImage = UIImage(data: imageData) {

@@ -21,7 +21,7 @@ struct UserSettings: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            SectionHeader(title: "Hi, Ahmed")
+            SectionHeader(title: "User")
             VStack(spacing: 5) {
                 SettingItem(
                     icon: "location.fill",

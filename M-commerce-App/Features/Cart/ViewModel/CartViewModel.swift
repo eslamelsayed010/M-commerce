@@ -143,15 +143,6 @@ class CartViewModel: ObservableObject{
         }
     }
     
-    
-    
-//    @MainActor
-//    func clearCart() {
-//        draftOrder = []
-//        totalPrice = 0.0
-//        productImages = [:]
-//    }
-    
     @MainActor
     func completeOrder(
         orderId: Int,
@@ -179,6 +170,14 @@ class CartViewModel: ObservableObject{
     func removeAllProductInCart() async {
         for item in self.draftOrder{
             await removeFromCart(productID: Int(item.id))
+        }
+    }
+    
+    func deleteAddress(addressId: Int) async {
+        do{
+            try await cartServices.deleteAddress(customerId: customerId, addressId: addressId)
+        }catch{
+            errorMessage = error.localizedDescription
         }
     }
     
