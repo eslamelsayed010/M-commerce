@@ -62,7 +62,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-
 class AuthViewModel: ObservableObject {
     // Published properties to track authentication state and navigation flow
     @Published var isLoggedIn = false
@@ -72,6 +71,7 @@ class AuthViewModel: ObservableObject {
     @Published var isCheckingAuth = false
     @Published var isEmailVerified = false
     @Published var isGuest = false
+    @Published var isSigningOut = false // State to track sign-out
 
     // Store splash screen visibility state using UserDefaults
     private var hasSeenSplash: Bool {
@@ -96,15 +96,23 @@ class AuthViewModel: ObservableObject {
             guard let self = self else { return }
             DispatchQueue.main.async {
                 if let user = user {
-                    print("Auth state changed: User logged in with UID: \(user.uid)") // ADDED
+                    print("Auth state changed: User logged in with UID: \(user.uid)")
                     self.updateAuthStateAfterLogin(user: user)
+                    self.isSigningOut = false // Reset sign-out state if user is logged in
                 } else {
-                    print("Auth state changed: No user logged in") // ADDED
+                    print("Auth state changed: No user logged in")
                     self.isLoggedIn = false
                     self.isGuest = false
                     self.isEmailVerified = false
-                    self.currentView = .login
-                    FavoritesManager.shared.clearCoreData(context: PersistenceController.shared.container.viewContext) // ADDED
+                    if self.isSigningOut {
+                        self.currentView = .login // Respect login destination after sign-out
+                        print("Navigating to login due to sign-out")
+                        self.isSigningOut = false // Reset sign-out state after navigation
+                    } else {
+                        self.currentView = .splash // Default to splash for other cases
+                        print("Navigating to splash")
+                    }
+                    FavoritesManager.shared.clearCoreData(context: PersistenceController.shared.container.viewContext)
                 }
             }
         }
@@ -120,19 +128,27 @@ class AuthViewModel: ObservableObject {
                 self.isGuest = false
                 self.isEmailVerified = user.isEmailVerified
                 self.currentView = user.isEmailVerified ? (self.isNewUser ? .onboarding : .home) : .emailVerification
-                print("Checked auth state: User logged in with UID: \(user.uid)") // ADDED
-                FavoritesManager.shared.refreshFavoritesFromFirestore() // ADDED
+                print("Checked auth state: User logged in with UID: \(user.uid)")
+                FavoritesManager.shared.refreshFavoritesFromFirestore()
                 self.isCheckingAuth = false
+                self.isSigningOut = false // Reset sign-out state if user is logged in
             }
         } else {
             DispatchQueue.main.async {
                 self.isLoggedIn = false
-                self.isGuest = false
+                self.isGuest = true
                 self.isEmailVerified = false
-                self.currentView = self.isGuest ? .home : .login
+                // Respect currentView if signing out
+                if self.isSigningOut {
+                    self.currentView = .login
+                    print("Checked auth state: No user logged in, staying on login due to sign-out")
+                    self.isSigningOut = false // Reset sign-out state after navigation
+                } else {
+                    self.currentView = .splash
+                    print("Checked auth state: No user logged in, navigating to splash")
+                }
                 self.isNewUser = false
                 self.isCheckingAuth = false
-                print("Checked auth state: No user logged in") // ADDED
             }
         }
     }
@@ -143,8 +159,8 @@ class AuthViewModel: ObservableObject {
             self.isGuest = false
             self.isEmailVerified = user.isEmailVerified
             self.currentView = self.isEmailVerified ? (self.isNewUser ? .onboarding : .home) : .emailVerification
-            print("User logged in: \(user.uid), refreshing favorites") // MODIFIED
-            FavoritesManager.shared.refreshFavoritesFromFirestore() // MODIFIED
+            print("User logged in: \(user.uid), refreshing favorites")
+            FavoritesManager.shared.refreshFavoritesFromFirestore()
         }
     }
 
@@ -371,7 +387,12 @@ class AuthViewModel: ObservableObject {
     // Complete splash screen and navigate to next view
     func completeSplash() {
         hasSeenSplash = true
-        currentView = isGuest ? .home : (isLoggedIn ? (isEmailVerified ? (isNewUser ? .onboarding : .home) : .emailVerification) : .login)
+        if isLoggedIn {
+            currentView = isEmailVerified ? (isNewUser ? .onboarding : .home) : .emailVerification
+        } else {
+            isGuest = true
+            currentView = .onboarding
+        }
     }
 
     // Start onboarding process
@@ -396,19 +417,30 @@ class AuthViewModel: ObservableObject {
     // Sign out (used in settings)
     func signOut() {
         do {
+            isSigningOut = true // Set signing out state
             try Auth.auth().signOut()
-            isLoggedIn = false
-            isNewUser = false
-            isSigningUp = false
-            isEmailVerified = false
-            isGuest = false
-            currentView = .login
-            FavoritesManager.shared.clearCoreData(context: PersistenceController.shared.container.viewContext)
+            DispatchQueue.main.async {
+                self.isLoggedIn = false
+                self.isNewUser = false
+                self.isSigningUp = false
+                self.isEmailVerified = false
+                self.isGuest = false
+                self.currentView = .login
+                FavoritesManager.shared.clearCoreData(context: PersistenceController.shared.container.viewContext)
+            }
         } catch {
             print("Error signing out: \(error)")
+            DispatchQueue.main.async {
+                self.isLoggedIn = false
+                self.isNewUser = false
+                self.isSigningUp = false
+                self.isEmailVerified = false
+                self.isGuest = false
+                self.currentView = .login
+                self.isSigningOut = false // Reset in case of error
+            }
         }
     }
-    
 
     // Begin sign-up process
     func beginSignUp() {
@@ -416,7 +448,6 @@ class AuthViewModel: ObservableObject {
         isNewUser = true
         isGuest = false
     }
-
 
     func signInAsGuest() {
         DispatchQueue.main.async {
@@ -429,17 +460,16 @@ class AuthViewModel: ObservableObject {
         }
     }
 
-
     func signInWithEmail(email: String, password: String, completion: @escaping (Error?) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             DispatchQueue.main.async {
                 if let error = error {
-                    print("Sign-in error: \(error.localizedDescription)") // ADDED
+                    print("Sign-in error: \(error.localizedDescription)")
                     completion(error)
                     return
                 }
                 if let user = result?.user {
-                    print("Signed in with email: \(user.uid)") // ADDED
+                    print("Signed in with email: \(user.uid)")
                     self.updateAuthStateAfterLogin(user: user)
                     completion(nil)
                 }
@@ -451,13 +481,13 @@ class AuthViewModel: ObservableObject {
         Auth.auth().signIn(with: credential) { result, error in
             DispatchQueue.main.async {
                 if let error = error {
-                    print("Google sign-in error: \(error.localizedDescription)") // ADDED
+                    print("Google sign-in error: \(error.localizedDescription)")
                     completion(error)
                     return
                 }
                 if let user = result?.user {
-                    print("Signed in with Google: \(user.uid)") // ADDED
-                    self.updateAuthStateAfterLogin(user: user) 
+                    print("Signed in with Google: \(user.uid)")
+                    self.updateAuthStateAfterLogin(user: user)
                     completion(nil)
                 }
             }

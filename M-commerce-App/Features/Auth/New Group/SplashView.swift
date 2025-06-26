@@ -40,9 +40,12 @@ struct SplashView: View {
             }
         }
         .onAppear {
+            guard !authViewModel.isSigningOut else {
+                print("Skipping checkAuthState and completeSplash due to sign-out")
+                return
+            }
             
             authViewModel.checkAuthState()
-            
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 withAnimation {

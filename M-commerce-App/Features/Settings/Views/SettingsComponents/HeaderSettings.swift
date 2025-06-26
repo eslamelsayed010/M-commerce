@@ -1,13 +1,9 @@
-//
-//  HeaderSettings.swift
-//  M-commerce-App
-//
-//  Created by Macos on 08/06/2025.
-//
-
 import SwiftUI
+import FirebaseAuth
 
 struct HeaderSettings: View {
+    @EnvironmentObject var authViewModel: AuthViewModel
+    
     var body: some View {
         VStack(spacing: 8) {
             Image(systemName: "gearshape.fill")
@@ -23,9 +19,9 @@ struct HeaderSettings: View {
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
 
-            Text("eslimelseyd@gmail.com")
+            Text(authViewModel.isLoggedIn ? (Auth.auth().currentUser?.email ?? "No email available") : "Guest")
                 .font(.title3)
-                .foregroundColor(.secondary)
+                .foregroundColor(.orange)
         }
         .padding(.top, 20)
         .padding(.bottom, 10)
@@ -35,5 +31,6 @@ struct HeaderSettings: View {
 struct HeaderSettings_Previews: PreviewProvider {
     static var previews: some View {
         HeaderSettings()
+            .environmentObject(AuthViewModel())
     }
 }
