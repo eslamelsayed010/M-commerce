@@ -21,17 +21,17 @@ struct FavoriteView: View {
     @State private var navigateToDetails = false
     @State private var cancellables = Set<AnyCancellable>()
     @State private var refreshID = UUID()
-
+    
     @FetchRequest(
         entity: FavoriteProduct.entity(),
         sortDescriptors: [NSSortDescriptor(keyPath: \FavoriteProduct.title, ascending: true)]
     ) var favoriteProducts: FetchedResults<FavoriteProduct>
-
+    
     private let columns = [
         GridItem(.fixed(160), spacing: 12),
         GridItem(.fixed(160), spacing: 12)
     ]
-
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -61,9 +61,9 @@ struct FavoriteView: View {
                                                 .background(Color.white.opacity(0.8))
                                                 .clipShape(Circle())
                                         }
-
+                                        
                                         Spacer()
-
+                                        
                                         Button {
                                         } label: {
                                             Image(systemName: "cart")
@@ -73,8 +73,9 @@ struct FavoriteView: View {
                                                 .clipShape(Circle())
                                         }
                                     }
+                                    .disabled(true)
                                     .padding(.horizontal, 2)
-
+                                    
                                     if let imageData = favorite.image, let uiImage = UIImage(data: imageData) {
                                         Image(uiImage: uiImage)
                                             .resizable()
@@ -90,7 +91,7 @@ struct FavoriteView: View {
                                             .frame(height: 100)
                                             .foregroundColor(.gray)
                                     }
-
+                                    
                                     if isLoading && selectedProduct?.id == favorite.id {
                                         ProgressView()
                                             .frame(height: 20)
@@ -106,7 +107,7 @@ struct FavoriteView: View {
                                         .font(.subheadline)
                                         .bold()
                                         .foregroundColor(.orange)
-
+                                    
                                     Spacer()
                                 }
                                 .padding()
@@ -151,7 +152,7 @@ struct FavoriteView: View {
                 ) {
                     EmptyView()
                 }
-                .hidden()
+                    .hidden()
             )
             
             .onReceive(NotificationCenter.default.publisher(for: .NSManagedObjectContextObjectsDidChange)) { _ in
@@ -159,7 +160,7 @@ struct FavoriteView: View {
             }
         }
     }
-
+    
     private func handleProductTap(favorite: FavoriteProduct) {
         print("Tapped product: \(favorite.title ?? "Unknown"), Network: \(networkMonitor.isConnected)")
         
@@ -177,12 +178,12 @@ struct FavoriteView: View {
         }
         return graphqlId
     }
-
+    
     private func fetchProductDetails(productId: String) {
         isLoading = true
         
         let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2024-04/graphql.json")!
-
+        
         let query = """
         {
           product(id: "gid://shopify/Product/\(productId)") {
@@ -200,6 +201,7 @@ struct FavoriteView: View {
             variants(first: 1) {
               edges {
                 node {
+                  id
                   price
                   selectedOptions {
                     name
@@ -211,13 +213,13 @@ struct FavoriteView: View {
           }
         }
         """
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.httpBody = try? JSONSerialization.data(withJSONObject: ["query": query])
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.addValue("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", forHTTPHeaderField: "X-Shopify-Access-Token")
-
+        
         URLSession.shared.dataTaskPublisher(for: request)
             .tryMap { data, response -> Product in
                 guard let httpResponse = response as? HTTPURLResponse,
@@ -225,11 +227,11 @@ struct FavoriteView: View {
                     print("HTTP Response: \(response)")
                     throw URLError(.badServerResponse)
                 }
-
+                
                 if let jsonString = String(data: data, encoding: .utf8) {
                     print("Raw JSON response: \(jsonString)")
                 }
-
+                
                 let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
                 guard let productData = ((json?["data"] as? [String: Any])?["product"] as? [String: Any]),
                       let title = productData["title"] as? String,
@@ -238,22 +240,22 @@ struct FavoriteView: View {
                       let description = productData["descriptionHtml"] as? String else {
                     throw URLError(.cannotParseResponse)
                 }
-
+                
                 let imageEdges = ((productData["images"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
                 let imageUrls = imageEdges.compactMap { edge in
                     (edge["node"] as? [String: Any])?["url"] as? String
                 }
-
+                
                 let variantEdges = ((productData["variants"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
                 let variant = variantEdges.first?["node"] as? [String: Any]
                 let priceString = variant?["price"] as? String
                 let price = Double(priceString ?? "")
-
+                
                 let options = (variant?["selectedOptions"] as? [[String: Any]]) ?? []
                 let size = options.first(where: { ($0["name"] as? String) == "Size" })?["value"] as? String
                 let color = options.first(where: { ($0["name"] as? String) == "Color" })?["value"] as? String
                 let variantId = variant?["id"] as? String ?? ""
-
+                
                 return Product(
                     id: id,
                     title: title,
@@ -280,7 +282,7 @@ struct FavoriteView: View {
             }
             .store(in: &cancellables)
     }
-
+    
     private func mapFavoriteToProduct(_ favorite: FavoriteProduct) -> Product {
         return Product(
             id: favorite.id ?? UUID().uuidString,
@@ -295,7 +297,7 @@ struct FavoriteView: View {
             variantId: favorite.variantId ?? ""
         )
     }
-
+    
     private func productCurrencyCode(_ favorite: FavoriteProduct) -> String {
         return favorite.currencyCode ?? "$"
     }

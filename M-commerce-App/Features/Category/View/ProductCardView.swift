@@ -49,6 +49,7 @@ struct ProductCardView: View {
                             .background(Color.white.opacity(0.8))
                             .clipShape(Circle())
                     }
+                    .disabled(true)
                     .buttonStyle(.plain)
                 }
 
