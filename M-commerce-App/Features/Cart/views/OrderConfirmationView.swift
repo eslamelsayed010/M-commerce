@@ -44,7 +44,7 @@ struct OrderConfirmationView: View {
                 }
                 .padding()
 
-                Button("Back to cart") {
+                Button("Done") {
                     //cartViewModel.clearCart()
                     navigateToHome = true
                 }
