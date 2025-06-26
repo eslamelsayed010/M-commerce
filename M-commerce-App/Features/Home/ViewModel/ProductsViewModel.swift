@@ -153,6 +153,10 @@ class DefaultProductService: ProductServiceProtocol {
                         return nil
                     }
 
+                    var currencyCode: String
+                    let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+                    currencyCode = currency < 10 ? "$" : "E£"
+                    
                     let options = (variant["selectedOptions"] as? [[String: Any]]) ?? []
                     let size = options.first(where: { ($0["name"] as? String)?.lowercased() == "size" })?["value"] as? String
                     let color = options.first(where: { ($0["name"] as? String)?.lowercased() == "color" })?["value"] as? String
@@ -163,7 +167,7 @@ class DefaultProductService: ProductServiceProtocol {
                         description: description,
                         imageUrls: imageUrls,
                         price: price,
-                        currencyCode: nil,
+                        currencyCode: currencyCode,
                         productType: productType,
                         size: size,
                         color: color,
