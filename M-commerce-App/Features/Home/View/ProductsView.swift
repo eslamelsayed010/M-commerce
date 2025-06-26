@@ -22,7 +22,7 @@ struct ProductsView: View {
     ]
 
     init(brandName: String) {
-        _viewModel = StateObject(wrappedValue: ProductsViewModel(brandName: brandName))
+        _viewModel = StateObject(wrappedValue: ProductsViewModel(brandName: brandName, service: DefaultProductService()))
     }
 
     var body: some View {

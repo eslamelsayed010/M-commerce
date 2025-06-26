@@ -8,19 +8,25 @@
 import Foundation
 import Combine
 
+protocol ProductServiceProtocol {
+    func fetchProductsForBrand(_ brand: String) -> AnyPublisher<[Product], Error>
+}
+
 class ProductsViewModel: ObservableObject {
     @Published var products: [Product] = []
     @Published var filteredProducts: [Product] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
     @Published private var searchText: String = ""
-    @Published var selectedProductId: String? = nil 
+    @Published var selectedProductId: String? = nil
 
     private var cancellables = Set<AnyCancellable>()
     private let brandName: String
+    private let service: ProductServiceProtocol
 
-    init(brandName: String) {
+    init(brandName: String, service: ProductServiceProtocol) {
         self.brandName = brandName
+        self.service = service
         loadProducts()
     }
 
@@ -28,28 +34,24 @@ class ProductsViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
 
-        fetchProductsForBrand(brandName)
+        service.fetchProductsForBrand(brandName)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] completion in
                 self?.isLoading = false
                 if case let .failure(error) = completion {
-                    print("Error fetching products: \(error.localizedDescription)")
                     self?.errorMessage = error.localizedDescription
                 }
             } receiveValue: { [weak self] products in
-                print("Fetched products count: \(products.count)")
-                
-                //MARK: Currency
                 let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
                 let isCurrencySet = UserDefaults.standard.object(forKey: UserDefaultsKeys.Currency.currency) != nil
                 let finalCurrency = isCurrencySet ? currency : 1.0
-                
-                let updatedProducts = products.map { product in
-                    var updatedProduct = product
-                    if let price = product.price {
-                        updatedProduct.price = price * finalCurrency
+
+                let updatedProducts = products.map {
+                    var updated = $0
+                    if let price = $0.price {
+                        updated.price = price * finalCurrency
                     }
-                    return updatedProduct
+                    return updated
                 }
 
                 self?.products = updatedProducts
@@ -60,22 +62,25 @@ class ProductsViewModel: ObservableObject {
 
     func filterProducts(bySearch searchText: String) {
         self.searchText = searchText
-        if searchText.isEmpty {
-            filteredProducts = products
-        } else {
-            filteredProducts = products.filter {
-                $0.title.lowercased().contains(searchText.lowercased())
-            }
-        }
+        filteredProducts = searchText.isEmpty
+            ? products
+            : products.filter { $0.title.lowercased().contains(searchText.lowercased()) }
     }
 
     func selectProduct(_ product: Product) {
         selectedProductId = product.id
     }
+}
+//======
+// DefaultProductService.swift
 
-    private func fetchProductsForBrand(_ brand: String) -> AnyPublisher<[Product], Error> {
+import Foundation
+import Combine
+
+class DefaultProductService: ProductServiceProtocol {
+    func fetchProductsForBrand(_ brand: String) -> AnyPublisher<[Product], Error> {
         let url = URL(string: "https://ios2-ism.myshopify.com/admin/api/2024-04/graphql.json")!
-
+        
         let query = """
         {
           products(first: 20, query: "tag:\(brand)") {
@@ -117,15 +122,10 @@ class ProductsViewModel: ObservableObject {
         request.addValue("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", forHTTPHeaderField: "X-Shopify-Access-Token")
 
         return URLSession.shared.dataTaskPublisher(for: request)
-            .tryMap { data, response -> [Product] in
+            .tryMap { data, response in
                 guard let httpResponse = response as? HTTPURLResponse,
                       (200..<300).contains(httpResponse.statusCode) else {
-                    print("HTTP Response: \(response)")
                     throw URLError(.badServerResponse)
-                }
-
-                if let jsonString = String(data: data, encoding: .utf8) {
-                    print("Raw JSON response: \(jsonString)")
                 }
 
                 let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
@@ -148,24 +148,14 @@ class ProductsViewModel: ObservableObject {
                     let variantEdges = ((node["variants"] as? [String: Any])?["edges"] as? [[String: Any]]) ?? []
                     guard let variant = variantEdges.first?["node"] as? [String: Any],
                           let variantId = variant["id"] as? String,
-                          let priceString = variant["price"] as? String else {
+                          let priceString = variant["price"] as? String,
+                          let price = Double(priceString) else {
                         return nil
                     }
-
-                    let price = Double(priceString)
 
                     let options = (variant["selectedOptions"] as? [[String: Any]]) ?? []
                     let size = options.first(where: { ($0["name"] as? String)?.lowercased() == "size" })?["value"] as? String
                     let color = options.first(where: { ($0["name"] as? String)?.lowercased() == "color" })?["value"] as? String
-                    //MARK: Currency
-                    var currencyCode: String
-                    let currency: Double? = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
-                    if let newCurrency = currency, newCurrency < 10 {
-                        currencyCode = "$"
-                    } else {
-                        currencyCode = "E£"
-                    }
-                    print("variantId: \(variantId)")
 
                     return Product(
                         id: id,
@@ -184,5 +174,5 @@ class ProductsViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
-
 }
+
