@@ -1,14 +1,9 @@
-//
-//  OrderDetailView.swift
-//  M-commerce-App
-//
-//  Created by Macos on 25/06/2025.
-//
-
 import SwiftUI
 
 struct OrderDetailView: View {
     let order: ShopifyOrder
+
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         ScrollView {
@@ -28,7 +23,7 @@ struct OrderDetailView: View {
 
                 ForEach(order.lineItems) { item in
                     VStack(alignment: .leading) {
-                        Text("\(item.title)")
+                        Text(item.title)
                         Text("Qty: \(item.quantity) • $ \(item.price)")
                             .foregroundColor(.gray)
                     }
@@ -40,5 +35,13 @@ struct OrderDetailView: View {
             .padding()
         }
         .navigationTitle("Order Details")
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button("Done") {
+                    dismiss() 
+                }
+            }
+        }
     }
 }
