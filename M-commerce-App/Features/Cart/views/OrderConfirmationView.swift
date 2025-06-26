@@ -43,14 +43,14 @@ struct OrderConfirmationView: View {
                 }
                 .padding()
 
-                Button("Back to Home") {
-                    cartViewModel.clearCart()
+                Button("Back to cart") {
+                    //cartViewModel.clearCart()
                     navigateToHome = true
                 }
                 .buttonStyle(.borderedProminent)
 
                 NavigationLink(
-                    destination: HomeView()
+                    destination: CartView()
                         .navigationBarBackButtonHidden(true),
                     isActive: $navigateToHome
                 ) {

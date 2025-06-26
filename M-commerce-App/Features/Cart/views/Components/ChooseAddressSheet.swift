@@ -11,14 +11,14 @@ struct ChooseAddressSheet: View {
     @EnvironmentObject var viewModel: CartViewModel
     @EnvironmentObject var visibilityManager: TabBarVisibilityManager
     var totalPrice: Double
-
+    
     @State private var selectedAddressId: Int?
     @State private var selectedAddress: ShopifyAddress?
-
+    
     @State private var confirmedOrder: GetDraftOrder?
     @State private var confirmedEmail: String = ""
     @State private var selectedOrderID: Int? = nil
-
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -35,9 +35,9 @@ struct ChooseAddressSheet: View {
                                     }
                                 )
                             }
-
+                            
                             Spacer()
-
+                            
                             CustomProceedButton(text: "Cash on delivery(COD)", Icon: "creditcard") {
                                 guard let order = viewModel.draftOrder.first else { return }
                                 Task {
@@ -60,12 +60,13 @@ struct ChooseAddressSheet: View {
                                     )
                                 }
                             }
-
-
+                            
+                            
                             .padding(.top, 50)
                             .padding(.bottom, 10)
-
+                            
                             PaymentButton {
+                                
                                 viewModel.pay(
                                     selectedAddress: selectedAddress,
                                     total: totalPrice,
@@ -82,6 +83,7 @@ struct ChooseAddressSheet: View {
                                         }
                                     }
                                 )
+                                
                             }
                             .padding(.horizontal)
                             .padding(.bottom, 50)
@@ -102,8 +104,8 @@ struct ChooseAddressSheet: View {
                     }
                 }
             }
-
-           
+            
+            
             NavigationLink(
                 tag: Int(confirmedOrder?.id ?? -1),
                 selection: $selectedOrderID,

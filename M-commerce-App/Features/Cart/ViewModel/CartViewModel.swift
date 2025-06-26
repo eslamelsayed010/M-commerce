@@ -39,7 +39,7 @@ class CartViewModel: ObservableObject{
         }
         isLoading = false
     }
-
+    
     @MainActor
     func updateCart(cart: UpdateDraftOrderRequest, orderId: Int) async {
         do {
@@ -48,7 +48,7 @@ class CartViewModel: ObservableObject{
             errorMessage = error.localizedDescription
         }
     }
-
+    
     @MainActor
     func fetchCartsByCustomerId(customerId: Int) async {
         do {
@@ -59,12 +59,12 @@ class CartViewModel: ObservableObject{
                     self.totalPrice += price
                 }
             }
-
+            
         } catch {
             errorMessage = error.localizedDescription
         }
     }
-
+    
     @MainActor
     func fetchProductImage(productId: Int) async {
         do {
@@ -73,7 +73,7 @@ class CartViewModel: ObservableObject{
             guard let product = response?.product else {
                 return
             }
-                    
+            
             if let firstImage = product.images.first {
                 let imageUrl = firstImage.src
                 self.productImages[productId] = imageUrl
@@ -116,16 +116,16 @@ class CartViewModel: ObservableObject{
             print(error.localizedDescription)
         }
     }
+    
     func pay(selectedAddress: ShopifyAddress? = nil, total: Double,
              onSuccess: @escaping (GetDraftOrder, String) -> Void,
              onFailure: @escaping (String) -> Void) {
-
+        
         paymentHandler.startPayment(products: draftOrder, total: total, selectedAddress: selectedAddress) { success in
             Task {
                 await MainActor.run {
                     self.paymentSuccess = success
                 }
-
                 if success, let order = self.draftOrder.first {
                     await self.completeOrder(
                         orderId: Int(order.id),
@@ -142,16 +142,16 @@ class CartViewModel: ObservableObject{
             }
         }
     }
-
-
-
-    @MainActor
-    func clearCart() {
-        draftOrder = []
-        totalPrice = 0.0
-        productImages = [:]
-    }
-
+    
+    
+    
+//    @MainActor
+//    func clearCart() {
+//        draftOrder = []
+//        totalPrice = 0.0
+//        productImages = [:]
+//    }
+    
     @MainActor
     func completeOrder(
         orderId: Int,
@@ -162,28 +162,31 @@ class CartViewModel: ObservableObject{
     ) async {
         do {
             try await cartServices.completeDraftOrder(draftOrderId: orderId)
-
+            
             let confirmed = order
             let confirmedEmail = email
-
+            
+            await self.removeAllProductInCart()
+            
             onSuccess(confirmed, confirmedEmail)
-
+            
         } catch {
             errorMessage = "Failed to place order: \(error.localizedDescription)"
             onFailure(error.localizedDescription)
         }
     }
+    
     func removeAllProductInCart() async {
         for item in self.draftOrder{
             await removeFromCart(productID: Int(item.id))
         }
     }
-
+    
 }
 
 
-    
-   
-    
+
+
+
 
 

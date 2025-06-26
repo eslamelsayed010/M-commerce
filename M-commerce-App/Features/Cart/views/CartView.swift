@@ -73,6 +73,7 @@ struct CartView: View {
         .onAppear {
             visibilityManager.isTabBarHidden = false
             Task {
+                await cartViewModel.fetchCartsByCustomerId(customerId: Int(AuthViewModel().getCustomerIdAndUsername().customerId ?? 0))
                 await cartViewModel.fetchAllProductImages()
             }
         }
