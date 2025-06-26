@@ -14,7 +14,6 @@ struct EmailVerificationView: View {
     @State private var showingError = false
     @State private var isSendingVerification = false
     @State private var isCancelingSignUp = false
-
     var body: some View {
         NavigationView {
             ZStack {
@@ -88,7 +87,6 @@ struct EmailVerificationView: View {
                                     errorMessage = "Failed to cancel sign-up: \(error.localizedDescription)"
                                     showingError = true
                                 }
-                                // الانتقال إلى LoginView يتم تلقائيًا عبر cancelSignUpAndDeleteAccount
                             }
                         }
                     }) {
@@ -125,7 +123,6 @@ struct EmailVerificationView: View {
                     errorMessage = "Failed to check verification: \(error.localizedDescription)"
                     showingError = true
                 } else if isVerified {
-                    // البريد تم التحقق منه، إكمال التسجيل
                     if let user = Auth.auth().currentUser {
                         if let displayName = UserDefaults.standard.string(forKey: "pendingDisplayName") {
                             let changeRequest = user.createProfileChangeRequest()
@@ -138,8 +135,7 @@ struct EmailVerificationView: View {
                                         authViewModel.cancelSignUpAndDeleteAccount { _ in }
                                     } else {
                                         UserDefaults.standard.removeObject(forKey: "pendingDisplayName")
-                                        authViewModel.isEmailVerified = true
-                                        authViewModel.startOnboarding()
+                                        // Navigation is handled in AuthViewModel.checkEmailVerification
                                     }
                                 }
                             }
@@ -153,11 +149,10 @@ struct EmailVerificationView: View {
             }
         }
     }
-}
-
-struct EmailVerificationView_Previews: PreviewProvider {
-    static var previews: some View {
-        EmailVerificationView()
-            .environmentObject(AuthViewModel())
+    struct EmailVerificationView_Previews: PreviewProvider {
+        static var previews: some View {
+            EmailVerificationView()
+                .environmentObject(AuthViewModel())
+        }
     }
 }
