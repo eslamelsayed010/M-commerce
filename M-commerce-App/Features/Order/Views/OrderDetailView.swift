@@ -36,12 +36,6 @@ struct OrderDetailView: View {
         }
         .navigationTitle("Order Details")
         .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button("Done") {
-                    dismiss() 
-                }
-            }
-        }
+        
     }
 }
