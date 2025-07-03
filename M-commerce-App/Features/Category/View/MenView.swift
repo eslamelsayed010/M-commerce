@@ -6,12 +6,23 @@
 //
 
 import SwiftUI
+
 struct MenView: View {
     @StateObject var viewModel = MenProductViewModel()
 
     var body: some View {
-        ProductGridView(viewModel: viewModel)
-            .onAppear { viewModel.loadCategoryProducts() }
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Men Products")
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding(.horizontal)
+                .padding(.top)
+
+            ProductGridView(viewModel: viewModel)
+        }
+        .onAppear {
+            viewModel.loadCategoryProducts()
+        }
     }
 }
 
@@ -20,3 +31,4 @@ struct MenView_Previews: PreviewProvider {
         MenView()
     }
 }
+

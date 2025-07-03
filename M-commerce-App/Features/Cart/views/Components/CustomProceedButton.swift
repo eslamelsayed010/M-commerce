@@ -10,19 +10,22 @@ import SwiftUI
 struct CustomProceedButton: View {
     var text: String
     var Icon: String = "cart.badge.plus"
-    var action: ()-> Void
-    
+    var action: () async -> Void
+
     var body: some View {
-        Button(action: action) {
+        Button {
+            Task {
+                await action()
+            }
+        } label: {
             HStack(spacing: 12) {
                 Image(systemName: Icon)
                     .font(.system(size: 16, weight: .medium))
                     .foregroundColor(.white)
-                
+
                 Text(text)
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white)
-                
             }
             .frame(maxWidth: .infinity)
             .frame(height: 50)
@@ -38,7 +41,6 @@ struct CustomProceedButton: View {
                             endPoint: .bottomTrailing
                         )
                     )
-                    .opacity(1.0)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 12)

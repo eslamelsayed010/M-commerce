@@ -160,12 +160,9 @@ class ProductViewModel: ObservableObject {
 
                     //MARK: Currency
                     var currencyCode: String
-                    let currency: Double? = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
-                    if let newCurrency = currency, newCurrency < 10 {
-                        currencyCode = "$"
-                    } else {
-                        currencyCode = "E£"
-                    }
+                    let currency = UserDefaults.standard.double(forKey: UserDefaultsKeys.Currency.currency)
+                    currencyCode = currency < 10 ? "$" : "E£"
+                    
                     print("variantId: \(variantId)")
                     
                     return Product(

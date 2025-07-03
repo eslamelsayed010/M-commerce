@@ -31,6 +31,16 @@ struct CategoryView: View {
         NavigationStack {
             ZStack {
                 ScrollView {
+                    HStack(spacing: 10) {
+                        
+                        Text("Category")
+                            .font(.system(size: 26, weight: .heavy, design: .rounded))
+                            .foregroundColor(.primary)
+
+                        Spacer()
+                    }
+                    .padding(.horizontal)
+                    .padding(.top, 16)
                     VStack {
                         ToolBar(
                             searchText: $searchText,

@@ -65,7 +65,7 @@ struct ImgCouponView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(height: 200)
             .onAppear {
-                startTimer()
+                //startTimer()
             }
             
             HStack(spacing: 6) {
@@ -99,7 +99,7 @@ struct ImgCouponView: View {
     }
     
     private func startTimer() {
-        Timer.scheduledTimer(withTimeInterval: 3.0, repeats: true) { _ in
+        Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
             withAnimation {
                 currentIndex = (currentIndex + 1) % imageNames.count
             }

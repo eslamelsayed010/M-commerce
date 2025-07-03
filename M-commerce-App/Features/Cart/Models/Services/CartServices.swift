@@ -6,8 +6,7 @@
 //
 
 import Foundation
-
-import Foundation
+import Firebase
 
 protocol CartServicesProtocol{
     func addToCart(cart: DraftOrderWrapper) async throws
@@ -17,6 +16,7 @@ protocol CartServicesProtocol{
     func fetchCartsByCustomerId(cutomerId: Int) async throws -> [GetDraftOrder]
     
     func fetchUserAddresses(customerId: Int) async throws -> AddressResponse
+    func deleteAddress(customerId: Int, addressId: Int) async throws
 }
 
 class CartServices: CartServicesProtocol{
@@ -134,4 +134,53 @@ class CartServices: CartServicesProtocol{
         let response = try JSONDecoder().decode(AddressResponse.self, from: data)
         return response
     }
+
+    func deleteAddress(customerId: Int, addressId: Int) async throws{
+        let url = URL(string: "\(baseURL)/customers/\(customerId)/addresses/\(addressId).json")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ShopifyAPIError.invalidResponse
+        }
+        
+        if httpResponse.statusCode != 201 {
+            throw ShopifyAPIError.httpError(statusCode: httpResponse.statusCode, data: data)
+        }
+    }
+    
+    
+    
+    func completeDraftOrder(draftOrderId: Int) async throws {
+        let urlStr = "\(baseURL)/draft_orders/\(draftOrderId)/complete.json"
+        guard let url = URL(string: urlStr) else {
+           print("shopify api error")
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("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", forHTTPHeaderField: "X-Shopify-Access-Token")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw ShopifyAPIError.invalidResponse
+        }
+
+        if httpResponse.statusCode != 200 {
+            let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
+            print(" Error completing order: \(errorMessage)")
+            throw ShopifyAPIError.httpError(statusCode: httpResponse.statusCode, data: data)
+        }
+
+        print(" Shopify Draft Order completed successfullyyyyyyyyyyyyyyyyyyyyyyyyy.")
+    }
+
+
 }

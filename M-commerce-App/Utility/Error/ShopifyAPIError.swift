@@ -17,13 +17,16 @@ enum ShopifyAPIError: Error, LocalizedError {
         case .invalidResponse:
             return "Invalid response from server"
         case .httpError(let statusCode, let data):
+            
             if let errorString = String(data: data, encoding: .utf8) {
                 print("Error \(statusCode): \(errorString)")
-                return "\(errorString)"
+                return "\(errorString.description)"
             } else {
+                
                 print("HTTP Error: \(statusCode)")
-                return "\(statusCode)"
+                return "\(statusCode.words)"
             }
+            
         case .networkError(let error):
             print("Network error: \(error.localizedDescription)")
             return "\(error.localizedDescription)"
