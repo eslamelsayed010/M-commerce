@@ -14,6 +14,10 @@ A modern multi-vendor shopping application built for iOS using **SwiftUI** and *
 
 ![Image](https://github.com/eslamelsayed010/M-commerce/blob/f5aca16a160ccf9c5d84556ddc23f42a3a7ad8b7/Frame%201.png)
 
+## 🎥 Demo
+
+📽️ Watch the full demo on [LinkedIn](https://www.linkedin.com/posts/eslam-elsayed-a3b183264_iosdevelopment-swiftui-shopify-activity-7346490936538861568-w9Pv?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEDPLg8BBULkCm0f5lZEYq8VEACSXorKZeI)
+
 ## 📋 Project Board
 Track our progress on [Trello](https://trello.com/b/Cm0fJGfg/m-commerce)
 
